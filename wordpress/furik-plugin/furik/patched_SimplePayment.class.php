@@ -1,5 +1,9 @@
 <?php
 
+// This is a patched version of the provided library, please check the commit 2e3c1fcfe3a51ff845e91b66c4c913993ead74d7 before updating.
+
+
+
 /**
  *  Copyright (C) 2016 OTP Mobil Kft.
  *
