@@ -57,7 +57,7 @@ function furik_redirect() {
 	    'qty' => 1
 	));
 	$lu->setField("BILL_EMAIL", "sdk_test@otpmobil.com"); 
-	$display = $lu->createHtmlForm('SimplePayForm', 'auto', "Adományozz!");
+	$display = $lu->createHtmlForm('SimplePayForm', 'auto', "Átirányítás a SimplePay oldalára");
 	echo $display;
 	die("Redirecting to Simple Pay");
 }
