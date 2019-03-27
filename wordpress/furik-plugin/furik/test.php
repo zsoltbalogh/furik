@@ -5,33 +5,21 @@
     ini_set('display_errors', '1');
  
      //Import config data    
-    require_once 'sdk/config.php';
+    require_once 'config.php';
 
     //Import SimplePayment class
-    require_once 'sdk/SimplePayment.class.php';
+    require_once 'SimplePayment.class.php';
 
     //Set merchant account data by currency
     $orderCurrency = 'HUF';
 	$testOrderId = str_replace(array('.', ':'), "", $_SERVER['SERVER_ADDR']) . @date("U", time()) . rand(1000, 9999); 
-	
-    //Test helper functions  -- ONLY FOR TEST!
-    require_once 'demo/demo_functions.php';
-    if (isset($_REQUEST['testcurrency'])) {
-        $orderCurrency = $_REQUEST['testcurrency'];
-    }
 	      
     //Start LiveUpdate
     $lu = new SimpleLiveUpdate($config, $orderCurrency);     
 
     //Order global data (need to fill by YOUR order data)    	
     $lu->setField("ORDER_REF", $testOrderId);
-	
-	//Payment page language
-	$ppLanguage = LANGUAGE;
-	if (isset($_REQUEST['testlanguage'])) {
-        $ppLanguage = $_REQUEST['testlanguage'];
-    }	
-	$lu->setField("LANGUAGE", $ppLanguage);						//DEFAULT: HU
+	$lu->setField("LANGUAGE", "HU");						//DEFAULT: HU
 	
     //optional fields
 	//$lu->setField("ORDER_DATE", @date("Y-m-d H:i:s"));		//DEFAULT: current date
@@ -45,9 +33,9 @@
  
     //Sample product with gross price
     $lu->addProduct(array(
-        'name' => 'Lorem 1',                            		//product name [ string ]
+        'name' => 'Adomány',                            		//product name [ string ]
         'code' => 'sku0001',                            		//merchant systemwide unique product ID [ string ]
-        'info' => 'ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP',     				//product description [ string ]
+        'info' => 'A házra',     				//product description [ string ]
         'price' => 1207,                              			//product price [ HUF: integer | EUR, USD decimal 0.00 ]
         'vat' => 0,                                     		//product tax rate [ in case of gross price: 0 ] (percent)
         'qty' => 1                                      		//product quantity [ integer ] 
@@ -66,7 +54,7 @@
     $lu->setField("BILL_ADDRESS", 'First line address'); 
     //$lu->setField("BILL_ADDRESS2", "Second line address");    //optional
     $lu->setField("BILL_ZIPCODE", "1234"); 
-            
+
     //Delivery data
     $lu->setField("DELIVERY_FNAME", "Tester"); 
     $lu->setField("DELIVERY_LNAME", "SimplePay"); 
@@ -76,16 +64,10 @@
     $lu->setField("DELIVERY_STATE", "State");
     $lu->setField("DELIVERY_CITY", "City");
     $lu->setField("DELIVERY_ADDRESS", "First line address"); 
-    //$lu->setField("DELIVERY_ADDRESS2", "Second line address");//optional
+    $lu->setField("DELIVERY_ADDRESS2", "Second line address");//optional
     $lu->setField("DELIVERY_ZIPCODE", "1234"); 
-    
-    /*
-     * Generate fields and print form
-     * In the test environment no need to use it because it will be handled in HTML demo page 
-     * Must have to use it in your environment
-     */     
-/*         
-    $display = $lu->createHtmlForm('SimplePayForm', 'button', PAYMENT_BUTTON);   // format: link, button, auto (auto is redirects to payment page immediately )
+   
+    $display = $lu->createHtmlForm('SimplePayForm', 'button', "Adományozz!");   // format: link, button, auto (auto is redirects to payment page immediately )
 	$lu->errorLogger(); 
 	if ($lu->debug_liveupdate_page) {
 	    print "<pre>";
@@ -100,22 +82,5 @@
 		exit; 
 	} 
 	echo $display;
-*/ 
 
-?>
-
-<!--
-
-    All of following code for test purpose only. 
-
--->
-<?php 
-	$mydata = Array(
-		'type'=>'liveupdate',
-		'title'=>'LiveUpdate',
-		'message'=>''
-	);
-
-	require_once('demo/template.php');
-?>
 
