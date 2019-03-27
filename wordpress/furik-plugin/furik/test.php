@@ -6,7 +6,7 @@ ini_set('display_errors', '1');
 require_once 'config.php';
 
 //Import SimplePayment class
-require_once 'SimplePayment.class.php';
+require_once 'patched_SimplePayment.class.php';
 
 //Set merchant account data by currency
 $orderCurrency = 'HUF';
@@ -52,18 +52,6 @@ $lu->setField("BILL_CITY", "City");
 $lu->setField("BILL_ADDRESS", 'First line address'); 
 //$lu->setField("BILL_ADDRESS2", "Second line address");    //optional
 $lu->setField("BILL_ZIPCODE", "1234"); 
-
-//Delivery data
-$lu->setField("DELIVERY_FNAME", "Tester"); 
-$lu->setField("DELIVERY_LNAME", "SimplePay"); 
-//$lu->setField("DELIVERY_EMAIL", ""); 						//optional
-$lu->setField("DELIVERY_PHONE", "36201234567"); 
-$lu->setField("DELIVERY_COUNTRYCODE", "HU");
-$lu->setField("DELIVERY_STATE", "State");
-$lu->setField("DELIVERY_CITY", "City");
-$lu->setField("DELIVERY_ADDRESS", "First line address"); 
-$lu->setField("DELIVERY_ADDRESS2", "Second line address");//optional
-$lu->setField("DELIVERY_ZIPCODE", "1234"); 
 
 $display = $lu->createHtmlForm('SimplePayForm', 'button', "Adományozz!");   // format: link, button, auto (auto is redirects to payment page immediately )
 $lu->errorLogger(); 
