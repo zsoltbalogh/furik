@@ -38,15 +38,18 @@ function furik_process_simple_workflow_elements() {
 }
 
 function furik_redirect() {
+	global $wpdb;
+
 	require "config.php";
 	require_once 'patched_SimplePayment.class.php';
 
 	$amount = is_numeric($_POST['furik_form_amount']) && $_POST['furik_form_amount'] > 0 ? $_POST['furik_form_amount'] : die("Error: amount is not a number.");
+	$email = $_POST['furik_form_email'];
 
 	$orderCurrency = 'HUF';
-	$testOrderId = str_replace(array('.', ':'), "", $_SERVER['SERVER_ADDR']) . @date("U", time()) . rand(1000, 9999);
+	$transactionId = str_replace(array('.', ':'), "", $_SERVER['SERVER_ADDR']) . @date("U", time()) . rand(1000, 9999);
 	$lu = new SimpleLiveUpdate($config, $orderCurrency);
-	$lu->setField("ORDER_REF", $testOrderId);
+	$lu->setField("ORDER_REF", $transactionId);
 	$lu->setField("LANGUAGE", "HU");
 	$lu->addProduct(array(
 	    'name' => 'Adomány',
@@ -59,8 +62,45 @@ function furik_redirect() {
 	$lu->setField("BILL_EMAIL", "sdk_test@otpmobil.com"); 
 	$display = $lu->createHtmlForm('SimplePayForm', 'auto', "Átirányítás a SimplePay oldalára");
 	echo $display;
+
+	$table_name = $wpdb->prefix . 'furik_transactions';
+
+	$wpdb->insert(
+		$table_name,
+		array(
+			'time' => current_time( 'mysql' ),
+			'transaction_id' => $transactionId,
+			'email' => $email,
+			'amount' => $amount
+		)
+	);
 	die("Redirecting to Simple Pay");
 }
 
+function furik_install() {
+	global $wpdb;
+
+	$table_name = $wpdb->prefix . 'furik_transactions';
+
+	$charset_collate = $wpdb->get_charset_collate();
+
+	$sql = "CREATE TABLE $table_name (
+		id mediumint(9) NOT NULL AUTO_INCREMENT,
+		time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+		transaction_id varchar(100) NOT NULL,
+		email varchar(255),
+		amount int,
+		transation_status int,
+		PRIMARY KEY  (id)
+	) $charset_collate;";
+
+	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+	dbDelta($sql);
+
+	add_option('furik_db_version', 1);
+}
+
 add_shortcode( 'furik_form', 'furik_form_func' );
+register_activation_hook( __FILE__, 'furik_install' );
+
 furik_process_simple_workflow_elements();
