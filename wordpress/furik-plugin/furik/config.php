@@ -7,7 +7,7 @@ $config = array(
     'SANDBOX' => true,				//true: sandbox transaction, false: live transaction
     'PROTOCOL' => 'http',			//http or https
 
-    'BACK_REF' => $_SERVER['HTTP_HOST'] . '/wordpress/wp-content/plugins/furik/backref.php',		   //url of payment backref page
+    'BACK_REF' => $_SERVER['HTTP_HOST'] . '/wordpress/',		   //url of payment backref page
     'TIMEOUT_URL' => $_SERVER['HTTP_HOST'] . '/timeout.php',     //url of payment timeout page
     'IRN_BACK_URL' => $_SERVER['HTTP_HOST'] . '/irn.php',        //url of payment irn page
     'IDN_BACK_URL' => $_SERVER['HTTP_HOST'] . '/idn.php',        //url of payment idn page

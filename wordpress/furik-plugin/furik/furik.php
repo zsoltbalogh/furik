@@ -3,6 +3,10 @@
  * Plugin Name: Furik Donation Plugin
  */
 
+define("FURIK_STATUS_UNKNOWN", 0);
+define("FURIK_STATUS_SUCCESSFUL", 1);
+define("FURIK_STATUS_UNSUCCESSFUL", 2);
+
 function furik_form_func( $atts ) {
 	global $furik_wordpress_url;
     $a = shortcode_atts( array(
@@ -35,6 +39,39 @@ function furik_process_simple_workflow_elements() {
 	if ($_POST['furik_action'] == "redirect") {
 		furik_redirect();
 	}
+	if (isset($_GET['order_ref'])) {
+		furik_process_payment();
+	}
+}
+
+
+function furik_process_payment() {
+	require "config.php";
+	require_once 'patched_SimplePayment.class.php';
+
+	$backref = new SimpleBackRef($config, "HUF");
+	$backref->order_ref = (isset($_REQUEST['order_ref'])) ? $_REQUEST['order_ref'] : 'N/A';
+
+	if ($backref->checkResponse()){
+		furik_update_status($backref->order_ref, FURIK_STATUS_SUCCESSFUL);
+		echo "Sikeres" . $backref->order_ref;
+	}
+	else {
+		furik_update_status($backref->order_ref, FURIK_STATUS_UNSUCCESSFUL);
+		echo "Sikertelen.";
+	}
+	die();
+}
+
+function furik_update_status($order_ref, $status) {
+	global $wpdb;
+
+	$table_name = $wpdb->prefix . 'furik_transactions';
+	$wpdb->update(
+		$table_name,
+		array("transaction_status" => $status),
+		array("transaction_id" => $order_ref)
+	);
 }
 
 function furik_redirect() {
@@ -54,7 +91,7 @@ function furik_redirect() {
 	$lu->addProduct(array(
 	    'name' => 'Adomány',
 	    'code' => 'sku0001',
-	    'info' => 'A házra',
+	    'info' => 'Az alapítvány támogatása',
 	    'price' => $amount,
 	    'vat' => 0,
 	    'qty' => 1
@@ -90,7 +127,7 @@ function furik_install() {
 		transaction_id varchar(100) NOT NULL,
 		email varchar(255),
 		amount int,
-		transation_status int,
+		transaction_status int,
 		PRIMARY KEY  (id)
 	) $charset_collate;";
 
