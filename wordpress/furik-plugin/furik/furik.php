@@ -2,6 +2,7 @@
 /**
  * Plugin Name: Furik Donation Plugin
  */
+include_once "config.php";
 
 include_once "furik_database.php";
 include_once "furik_shortcode_form.php";

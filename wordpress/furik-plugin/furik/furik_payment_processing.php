@@ -7,7 +7,7 @@ function furik_process_payment() {
 	require "config.php";
 	require_once 'patched_SimplePayment.class.php';
 
-	$backref = new SimpleBackRef($config, "HUF");
+	$backref = new SimpleBackRef(furik_get_simple_config(), "HUF");
 	$backref->order_ref = (isset($_REQUEST['order_ref'])) ? $_REQUEST['order_ref'] : 'N/A';
 
 	if ($backref->checkResponse()){
@@ -27,7 +27,6 @@ function furik_process_payment() {
 function furik_redirect() {
 	global $wpdb;
 
-	require "config.php";
 	require_once 'patched_SimplePayment.class.php';
 
 	$amount = is_numeric($_POST['furik_form_amount']) && $_POST['furik_form_amount'] > 0 ? $_POST['furik_form_amount'] : die("Error: amount is not a number.");
@@ -35,7 +34,8 @@ function furik_redirect() {
 
 	$orderCurrency = 'HUF';
 	$transactionId = str_replace(array('.', ':'), "", $_SERVER['SERVER_ADDR']) . @date("U", time()) . rand(1000, 9999);
-	$lu = new SimpleLiveUpdate($config, $orderCurrency);
+
+	$lu = new SimpleLiveUpdate(furik_get_simple_config(), $orderCurrency);
 	$lu->setField("ORDER_REF", $transactionId);
 	$lu->setField("LANGUAGE", "HU");
 	$lu->addProduct(array(
@@ -62,6 +62,49 @@ function furik_redirect() {
 		)
 	);
 	die("Redirecting to Simple Pay");
+}
+
+/**
+ * Prepares SimplePay SDK configuration based on plugin configuration
+ */
+function furik_get_simple_config() {
+	global
+		$furik_payment_merchant,
+		$furik_payment_secret_key,
+		$furik_production_system;
+
+	$config = array(
+	    'HUF_MERCHANT' => $furik_payment_merchant,
+	    'HUF_SECRET_KEY' => $furik_payment_secret_key,
+	    'CURL' => true,
+	    'SANDBOX' => !$furik_production_system,
+	    'PROTOCOL' => 'http',			//http or https
+
+	    'BACK_REF' => $_SERVER['HTTP_HOST'] . '/wordpress/',		   //url of payment backref page
+	    'TIMEOUT_URL' => $_SERVER['HTTP_HOST'] . '/timeout.php',     //url of payment timeout page
+	    'IRN_BACK_URL' => $_SERVER['HTTP_HOST'] . '/irn.php',        //url of payment irn page
+	    'IDN_BACK_URL' => $_SERVER['HTTP_HOST'] . '/idn.php',        //url of payment idn page
+	    'IOS_BACK_URL' => $_SERVER['HTTP_HOST'] . '/ios.php',        //url of payment idn page
+
+	    'GET_DATA' => $_GET,
+	    'POST_DATA' => $_POST,
+	    'SERVER_DATA' => $_SERVER,
+
+	    'LOGGER' => false,                                   //basic transaction log
+	    'LOG_PATH' => 'log',  								//path of log file
+
+		'DEBUG_LIVEUPDATE_PAGE' => false,					//Debug message on demo LiveUpdate page (only for development purpose)
+		'DEBUG_LIVEUPDATE' => false,						//LiveUpdate debug into log file
+		'DEBUG_BACKREF' => false,							//BackRef debug into log file
+		'DEBUG_IPN' => false,								//IPN debug into log file
+		'DEBUG_IRN' => false,								//IRN debug into log file
+		'DEBUG_IDN' => false,								//IDN debug into log file
+		'DEBUG_IOS' => false,								//IOS debug into log file
+		'DEBUG_ONECLICK' => false,							//OneClick debug into log file
+		'DEBUG_ALU' => false,								//ALU debug into log file
+	);
+
+	return $config;
 }
 
 if ($_POST['furik_action'] == "redirect") {
