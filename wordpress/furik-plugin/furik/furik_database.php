@@ -26,7 +26,7 @@ function furik_install() {
 	add_option('furik_db_version', 1);
 }
 
-function furik_update_status($order_ref, $status) {
+function furik_update_transaction_status($order_ref, $status) {
 	global $wpdb;
 
 	$table_name = $wpdb->prefix . 'furik_transactions';

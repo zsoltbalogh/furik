@@ -10,11 +10,11 @@ function furik_process_payment() {
 	$backref->order_ref = (isset($_REQUEST['order_ref'])) ? $_REQUEST['order_ref'] : 'N/A';
 
 	if ($backref->checkResponse()){
-		furik_update_status($backref->order_ref, FURIK_STATUS_SUCCESSFUL);
+		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_SUCCESSFUL);
 		echo "Sikeres" . $backref->order_ref;
 	}
 	else {
-		furik_update_status($backref->order_ref, FURIK_STATUS_UNSUCCESSFUL);
+		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_UNSUCCESSFUL);
 		echo "Sikertelen.";
 	}
 	die();
