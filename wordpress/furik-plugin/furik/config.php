@@ -31,5 +31,8 @@ $config = array(
 	'DEBUG_ALU' => false,								//ALU debug into log file
 );
 
+$furik_payment_successful_url = "/wordpress/?page_id=24";
+$furik_payment_unsuccessful_url = "/wordpress/?page_id=26";
+
 @include_once "config_local.php";
 ?>

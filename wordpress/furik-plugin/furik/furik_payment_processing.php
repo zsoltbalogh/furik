@@ -3,6 +3,7 @@
  * Processes payment information which is provided right after the visitor filled the SimplePay form.
  */
 function furik_process_payment() {
+	global $furik_payment_successful_url, $furik_payment_unsuccessful_url;
 	require "config.php";
 	require_once 'patched_SimplePayment.class.php';
 
@@ -11,11 +12,11 @@ function furik_process_payment() {
 
 	if ($backref->checkResponse()){
 		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_SUCCESSFUL);
-		echo "Sikeres" . $backref->order_ref;
+		header("Location: $furik_payment_successful_url");
 	}
 	else {
 		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_UNSUCCESSFUL);
-		echo "Sikertelen.";
+		header("Location: $furik_payment_unsuccessful_url");
 	}
 	die();
 }
