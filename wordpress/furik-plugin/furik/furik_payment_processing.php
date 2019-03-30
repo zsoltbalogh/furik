@@ -63,12 +63,9 @@ function furik_redirect() {
 	));
 	$lu->setField("BILL_EMAIL", "sdk_test@otpmobil.com"); 
 	$display = $lu->createHtmlForm('SimplePayForm', 'auto', "Átirányítás a SimplePay oldalára");
-	echo $display;
-
-	$table_name = $wpdb->prefix . 'furik_transactions';
 
 	$wpdb->insert(
-		$table_name,
+		"{$wpdb->prefix}furik_transactions",
 		array(
 			'time' => current_time( 'mysql' ),
 			'transaction_id' => $transactionId,
@@ -79,6 +76,15 @@ function furik_redirect() {
 			'amount' => $amount
 		)
 	);
+
+	$results = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}furik_transactions WHERE transaction_id = %s", $transactionId), OBJECT);
+
+	if (count($results) != 1) {
+		die("Adatbázis hiba. Kérlek vedd fel a kapcsolatot velünk és add meg ezt az azonosítót: " . $transactionId);
+	}
+
+	echo $display;
+
 	die("Redirecting to Simple Pay");
 }
 
