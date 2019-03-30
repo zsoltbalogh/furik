@@ -1,4 +1,7 @@
 <?php
+/**
+ * Processes payment information which is provided right after the visitor filled the SimplePay form.
+ */
 function furik_process_payment() {
 	require "config.php";
 	require_once 'patched_SimplePayment.class.php';
@@ -17,6 +20,9 @@ function furik_process_payment() {
 	die();
 }
 
+/**
+ * Prepares an automatic redirect link to SimplePay with the posted data
+ */
 function furik_redirect() {
 	global $wpdb;
 

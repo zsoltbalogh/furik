@@ -1,4 +1,7 @@
 <?php
+/**
+ * WordPress shortcode: [furik_form], paramters: amount and name. 
+ */
 function furik_form_func( $atts ) {
 	global $furik_wordpress_url;
     $a = shortcode_atts( array(
