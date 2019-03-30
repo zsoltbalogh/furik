@@ -67,7 +67,7 @@ function furik_redirect() {
 	    'vat' => 0,
 	    'qty' => 1
 	));
-	$lu->setField("BILL_EMAIL", "sdk_test@otpmobil.com"); 
+	$lu->setField("BILL_EMAIL", $email);
 	$display = $lu->createHtmlForm('SimplePayForm', 'auto', "Átirányítás a SimplePay oldalára");
 
 	$wpdb->insert(
