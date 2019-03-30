@@ -1,10 +1,22 @@
 <?php
 /**
+ * Processes IPN messages from Simple
+ */
+function furik_process_ipn() {
+	require_once 'patched_SimplePayment.class.php';
+	$ipn = new SimpleIpn(furik_get_simple_config(), "HUF");
+
+	if ($ipn->validateReceived()) {
+		furik_update_transaction_status($_POST['REFNOEXT'], FURIK_STATUS_IPN_SUCCESSFUL);
+		$ipn->confirmReceived();
+	}
+}
+
+/**
  * Processes payment information which is provided right after the visitor filled the SimplePay form.
  */
 function furik_process_payment() {
 	global $furik_payment_successful_url, $furik_payment_unsuccessful_url;
-	require "config.php";
 	require_once 'patched_SimplePayment.class.php';
 
 	$backref = new SimpleBackRef(furik_get_simple_config(), "HUF");
@@ -115,3 +127,6 @@ if (isset($_GET['order_ref'])) {
 	furik_process_payment();
 }
 
+if (isset($_GET['furik_process_ipn'])) {
+	furik_process_ipn();
+}

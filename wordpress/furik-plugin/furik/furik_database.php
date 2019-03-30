@@ -2,6 +2,7 @@
 define("FURIK_STATUS_UNKNOWN", 0);
 define("FURIK_STATUS_SUCCESSFUL", 1);
 define("FURIK_STATUS_UNSUCCESSFUL", 2);
+define("FURIK_STATUS_IPN_SUCCESSFUL", 10);
 
 function furik_install() {
 	global $wpdb;
