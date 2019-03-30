@@ -42,7 +42,10 @@ function furik_redirect() {
 	require_once 'patched_SimplePayment.class.php';
 
 	$amount = is_numeric($_POST['furik_form_amount']) && $_POST['furik_form_amount'] > 0 ? $_POST['furik_form_amount'] : die("Error: amount is not a number.");
+	$name = $_POST['furik_form_name'];
+	$anon = $_POST['furik_form_anon'] ? 1 : 0;
 	$email = $_POST['furik_form_email'];
+	$message = $_POST['furik_form_message'];
 
 	$orderCurrency = 'HUF';
 	$transactionId = str_replace(array('.', ':'), "", $_SERVER['SERVER_ADDR']) . @date("U", time()) . rand(1000, 9999);
@@ -69,7 +72,10 @@ function furik_redirect() {
 		array(
 			'time' => current_time( 'mysql' ),
 			'transaction_id' => $transactionId,
+			'name' => $name,
+			'anon' => $anon,
 			'email' => $email,
+			'message' => $message,
 			'amount' => $amount
 		)
 	);

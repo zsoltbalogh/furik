@@ -12,7 +12,19 @@ function furik_form_func( $atts ) {
     $r .= "<input type=\"hidden\" name=\"furik_action\" value=\"redirect\" />";
 
     $r .= "<div class=\"form-field form-required\">";
-    $r .= "<label for=\"furik_form_email\">E-mailcímed:</label>";
+    $r .= "<label for=\"furik_form_email\">Neved:</label>";
+    $r .= "<input type=\"text\" name=\"furik_form_name\" id=\"furik_form_name\" />";
+    $r .= "</div>";
+
+
+    $r .= "<div class=\"form-field\">";
+    $r .= "<label for=\"furik_form_anon\"><input type=\"checkbox\" name=\"furik_form_anon\" id=\"furik_form_anon\">Szeretnék publikusan névtelen maradni</label>";
+    $r .= "</div>";
+
+    $r .= "<br />";
+
+    $r .= "<div class=\"form-field form-required\">";
+    $r .= "<label for=\"furik_form_email\">E-mail címed:</label>";
     $r .= "<input type=\"text\" name=\"furik_form_email\" id=\"furik_form_email\" />";
     $r .= "</div>";
 
@@ -21,6 +33,13 @@ function furik_form_func( $atts ) {
     $r .= "<div class=\"form-field form-required\">";
     $r .= "<label for=\"furik_form_email\">Az adomány összege:</label>";
     $r .= "<input type=\"text\" name=\"furik_form_amount\" id=\"furik_form_amount\" value=\"" . $atts['amount'] ."\"/>";
+    $r .= "</div>";
+
+    $r .= "<br />";
+
+    $r .= "<div class=\"form-field\">";
+    $r .= "<label for=\"furik_form_message\">Üzenet:</label>";
+    $r .= "<textarea name=\"furik_form_message\" id=\"furik_form_message\"></textarea>";
     $r .= "</div>";
 
     $r .= "<br />";

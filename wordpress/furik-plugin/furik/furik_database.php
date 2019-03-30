@@ -15,8 +15,11 @@ function furik_install() {
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
 		time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
 		transaction_id varchar(100) NOT NULL,
+		name varchar(255),
+		anon int,
 		email varchar(255),
 		amount int,
+		message longtext,
 		transaction_status int,
 		PRIMARY KEY  (id)
 	) $charset_collate;";
