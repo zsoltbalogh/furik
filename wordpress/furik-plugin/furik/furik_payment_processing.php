@@ -16,19 +16,25 @@ function furik_process_ipn() {
  * Processes payment information which is provided right after the visitor filled the SimplePay form.
  */
 function furik_process_payment() {
-	global $furik_payment_successful_url, $furik_payment_unsuccessful_url;
+	global
+		$furik_homepage_https,
+		$furik_homepage_url,
+		$furik_payment_successful_url,
+		$furik_payment_unsuccessful_url;
 	require_once 'patched_SimplePayment.class.php';
 
 	$backref = new SimpleBackRef(furik_get_simple_config(), "HUF");
 	$backref->order_ref = (isset($_REQUEST['order_ref'])) ? $_REQUEST['order_ref'] : 'N/A';
 
+	$baseurl = $furik_homepage_https ? "https" : "http" . "://" . $furik_homepage_url;
+
 	if ($backref->checkResponse()){
 		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_SUCCESSFUL);
-		header("Location: $furik_payment_successful_url");
+		header("Location: $baseurl$furik_payment_successful_url");
 	}
 	else {
 		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_UNSUCCESSFUL);
-		header("Location: $furik_payment_unsuccessful_url");
+		header("Location: $baseurl$furik_payment_unsuccessful_url");
 	}
 	die();
 }
@@ -93,8 +99,11 @@ function furik_redirect() {
  */
 function furik_get_simple_config() {
 	global
+		$furik_homepage_https,
+		$furik_homepage_url,
 		$furik_payment_merchant,
 		$furik_payment_secret_key,
+		$furik_payment_timeout_url,
 		$furik_production_system;
 
 	$config = array(
@@ -102,10 +111,10 @@ function furik_get_simple_config() {
 	    'HUF_SECRET_KEY' => $furik_payment_secret_key,
 	    'CURL' => true,
 	    'SANDBOX' => !$furik_production_system,
-	    'PROTOCOL' => 'http',			//http or https
+	    'PROTOCOL' => $furik_homepage_https ? 'https' : 'http',			//http or https
 
-	    'BACK_REF' => $_SERVER['HTTP_HOST'] . '/wordpress/',		   //url of payment backref page
-	    'TIMEOUT_URL' => $_SERVER['HTTP_HOST'] . '/timeout.php',     //url of payment timeout page
+	    'BACK_REF' => $furik_homepage_url,
+	    'TIMEOUT_URL' => $furik_homepage_url . $furik_payment_timeout_url,
 	    'IRN_BACK_URL' => $_SERVER['HTTP_HOST'] . '/irn.php',        //url of payment irn page
 	    'IDN_BACK_URL' => $_SERVER['HTTP_HOST'] . '/idn.php',        //url of payment idn page
 	    'IOS_BACK_URL' => $_SERVER['HTTP_HOST'] . '/ios.php',        //url of payment idn page

@@ -4,8 +4,14 @@ $furik_production_system = false;
 $furik_payment_merchant = "";
 $furik_payment_secret_key = "";
 
-$furik_payment_successful_url = "/wordpress/?page_id=24";
-$furik_payment_unsuccessful_url = "/wordpress/?page_id=26";
+// Do NOT add the protocol here (only indahousehungary.hu)
+$furik_homepage_url = $_SERVER['HTTP_HOST'];
+$furik_homepage_https = false;
+
+// Paths of prepared pages, relative to $furik_homepage_url
+$furik_payment_successful_url = "payment-successful";
+$furik_payment_unsuccessful_url = "payment-unsuccessful";
+$furik_payment_timeout_url = "payment-unsuccessful";
 
 @include_once "config_local.php";
 ?>
