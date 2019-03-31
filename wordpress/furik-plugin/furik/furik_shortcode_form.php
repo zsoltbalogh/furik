@@ -13,7 +13,7 @@ function furik_form_func( $atts ) {
 
     $r .= "<div class=\"form-field form-required\">";
     $r .= "<label for=\"furik_form_email\">Neved:</label>";
-    $r .= "<input type=\"text\" name=\"furik_form_name\" id=\"furik_form_name\" />";
+    $r .= "<input type=\"text\" name=\"furik_form_name\" id=\"furik_form_name\" required=\"1\"/>";
     $r .= "</div>";
 
 
@@ -25,14 +25,14 @@ function furik_form_func( $atts ) {
 
     $r .= "<div class=\"form-field form-required\">";
     $r .= "<label for=\"furik_form_email\">E-mail címed:</label>";
-    $r .= "<input type=\"text\" name=\"furik_form_email\" id=\"furik_form_email\" />";
+    $r .= "<input type=\"email\" name=\"furik_form_email\" id=\"furik_form_email\" required=\"1\" />";
     $r .= "</div>";
 
     $r .= "<br />";
 
     $r .= "<div class=\"form-field form-required\">";
     $r .= "<label for=\"furik_form_email\">Az adomány összege:</label>";
-    $r .= "<input type=\"text\" name=\"furik_form_amount\" id=\"furik_form_amount\" value=\"" . $atts['amount'] ."\"/>";
+    $r .= "<input type=\"number\" name=\"furik_form_amount\" id=\"furik_form_amount\" value=\"" . $atts['amount'] ."\" required=\"1\" />";
     $r .= "</div>";
 
     $r .= "<br />";
