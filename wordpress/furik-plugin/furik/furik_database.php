@@ -7,12 +7,10 @@ define("FURIK_STATUS_IPN_SUCCESSFUL", 10);
 function furik_install() {
 	global $wpdb;
 
-	$table_name = $wpdb->prefix . 'furik_transactions';
-
 	$charset_collate = $wpdb->get_charset_collate();
 
-	$sql = "CREATE TABLE $table_name (
-		id mediumint(9) NOT NULL AUTO_INCREMENT,
+	$sql_transactions = "CREATE TABLE {$wpdb->prefix}furik_transactions (
+		id int NOT NULL AUTO_INCREMENT,
 		time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
 		transaction_id varchar(100) NOT NULL,
 		name varchar(255),
@@ -24,8 +22,18 @@ function furik_install() {
 		PRIMARY KEY  (id)
 	) $charset_collate;";
 
+	$sql_campaign_groups = "CREATE TABLE {$wpdb->prefix}furik_campaign_groups (
+		id int NOT NULL AUTO_INCREMENT,
+		created datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+		campaign_group_status int,
+		name varchar(255),
+		page_url varchar(255)
+		PRIMARY KEY (id)
+	) $charset_collate;";
+
 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-	dbDelta($sql);
+	dbDelta($sql_transactions);
+	dbDelta($sql_campaign_groups);
 
 	add_option('furik_db_version', 1);
 }
