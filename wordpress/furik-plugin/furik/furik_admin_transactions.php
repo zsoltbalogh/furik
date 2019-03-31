@@ -17,6 +17,22 @@ class Donations_List extends WP_List_Table {
 		return $item[$column_name];
 	}
 
+	public function column_transaction_status($item) {
+		switch ($item['transaction_status']) {
+			case "":
+				return __('Pending card payment', 'furik');
+			case 1:
+				return __('Successful, waiting for confirmation', 'furik');
+			case 2:
+				return __('Unsuccessful card payment', 'furik');
+			case 10:
+				return __('Successful and confirmed', 'furik');
+			default:
+				return __('Unknown', 'furik');
+		}
+
+	}
+
 	public static function get_donations( $per_page = 5, $page_number = 1 ) {
 		global $wpdb;
 
@@ -48,7 +64,8 @@ class Donations_List extends WP_List_Table {
 			'name' => __( 'Name', 'sp' ),
 			'email' => __('E-mail', 'sp'),
 		    'amount' => __( 'Amount', 'sp' ),
-		    'time' => __('Time', 'sp')
+		    'time' => __('Time', 'sp'),
+		    'transaction_status' => __('Status', 'sp')
 		];
 
 		return $columns;
@@ -59,7 +76,8 @@ class Donations_List extends WP_List_Table {
 			'name' => array( 'name', false ),
 			'email' => array( 'email', false ),
 			'amount' => array( 'amount', false ),
-			'time' => array('time', true)
+			'time' => array('time', true),
+			'transaction_status' => array('transaction_status', false)
 		);
 
 		return $sortable_columns;
