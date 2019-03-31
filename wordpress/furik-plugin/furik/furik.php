@@ -9,6 +9,6 @@ include_once "furik_shortcode_form.php";
 
 include_once "furik_payment_processing.php";
 
-include_once "furik_admin_transactions.php";
+include_once "furik_admin_donations.php";
 
 register_activation_hook( __FILE__, 'furik_install' );
