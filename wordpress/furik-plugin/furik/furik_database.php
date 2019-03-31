@@ -27,7 +27,7 @@ function furik_install() {
 		created datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
 		campaign_group_status int,
 		name varchar(255),
-		page_url varchar(255)
+		page_url varchar(255),
 		PRIMARY KEY (id)
 	) $charset_collate;";
 

@@ -7,8 +7,8 @@ class Campaign_Groups_List extends WP_List_Table {
 
 	public function __construct() {
 		parent::__construct( [
-			'singular' => __( 'Donation', 'sp' ),
-			'plural'   => __( 'Donations', 'sp' ),
+			'singular' => __( 'Campaign group', 'sp' ),
+			'plural'   => __( 'Campaign groups', 'sp' ),
 			'ajax'     => false
 		] );
 	}
@@ -17,26 +17,10 @@ class Campaign_Groups_List extends WP_List_Table {
 		return $item[$column_name];
 	}
 
-	public function column_transaction_status($item) {
-		switch ($item['transaction_status']) {
-			case "":
-				return __('Pending card payment', 'furik');
-			case 1:
-				return __('Successful, waiting for confirmation', 'furik');
-			case 2:
-				return __('Unsuccessful card payment', 'furik');
-			case 10:
-				return __('Successful and confirmed', 'furik');
-			default:
-				return __('Unknown', 'furik');
-		}
-
-	}
-
-	public static function get_donations( $per_page = 5, $page_number = 1 ) {
+	public static function get_campaign_groups( $per_page = 5, $page_number = 1 ) {
 		global $wpdb;
 
-		$sql = "SELECT * FROM {$wpdb->prefix}furik_transactions";
+		$sql = "SELECT * FROM {$wpdb->prefix}furik_campaign_groups";
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
 			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
@@ -50,22 +34,18 @@ class Campaign_Groups_List extends WP_List_Table {
 	public static function record_count() {
 		global $wpdb;
 
-		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}furik_transactions";
+		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}furik_campaign_groups";
 
 		return $wpdb->get_var( $sql );
 	}
 
 	public function no_items() {
-		_e( 'No donations avaliable.', 'sp' );
+		_e( 'No campaign groups are avaliable.', 'sp' );
 	}
 
 	function get_columns() {
 		$columns = [
 			'name' => __( 'Name', 'sp' ),
-			'email' => __('E-mail', 'sp'),
-		    'amount' => __( 'Amount', 'sp' ),
-		    'time' => __('Time', 'sp'),
-		    'transaction_status' => __('Status', 'sp')
 		];
 
 		return $columns;
@@ -74,17 +54,13 @@ class Campaign_Groups_List extends WP_List_Table {
 	public function get_sortable_columns() {
 		$sortable_columns = array(
 			'name' => array( 'name', false ),
-			'email' => array( 'email', false ),
-			'amount' => array( 'amount', false ),
-			'time' => array('time', true),
-			'transaction_status' => array('transaction_status', false)
 		);
 
 		return $sortable_columns;
 	}
 
 	public function prepare_items() {
-		$per_page     = $this->get_items_per_page('donations_per_page', 20);
+		$per_page     = $this->get_items_per_page('campaign_groups_per_page', 20);
 		$current_page = $this->get_pagenum();
 		$total_items  = self::record_count();
 
@@ -93,14 +69,14 @@ class Campaign_Groups_List extends WP_List_Table {
 		    'per_page'    => $per_page
 		] );
 
-		$this->items = self::get_donations($per_page, $current_page);
+		$this->items = self::get_campaign_groups($per_page, $current_page);
 	}
 }
 
 class Campaign_Groups_List_Plugin {
 
 	static $instance;
-	public $donations_obj;
+	public $campaign_groups_obj;
 
 	public function __construct() {
 		add_filter( 'set-screen-option', [ __CLASS__, 'set_screen' ], 10, 3 );
@@ -117,8 +93,8 @@ class Campaign_Groups_List_Plugin {
 			'Campaign Groups',
 			'manage_options',
 			'campaign_groups',
-			[ $this, 'donations_list_page' ],
-			'dashicons-chart-line'
+			[ $this, 'campaign_groups_list_page' ],
+			'dashicons-portfolio'
 		);
 		add_action( "load-$hook", [ $this, 'screen_option' ] );
 	}
@@ -126,17 +102,17 @@ class Campaign_Groups_List_Plugin {
 	public function screen_option() {
 		$option = 'per_page';
 		$args   = [
-			'label'   => 'Donations',
+			'label'   => 'Campaign Groups',
 			'default' => 20,
-			'option'  => 'donations_per_page'
+			'option'  => 'campaign_groups_per_page'
 		];
 
 		add_screen_option( $option, $args );
 
-		$this->donations_obj = new Campaign_Groups_List();
+		$this->campaign_groups_obj = new Campaign_Groups_List();
 	}
 
-	public function donations_list_page() {
+	public function campaign_groups_list_page() {
 		?>
 		<div class="wrap">
 			<h2>Campaign Groups</h2>
@@ -147,8 +123,8 @@ class Campaign_Groups_List_Plugin {
 						<div class="meta-box-sortables ui-sortable">
 							<form method="post">
 								<?php
-								$this->donations_obj->prepare_items();
-								$this->donations_obj->display(); ?>
+								$this->campaign_groups_obj->prepare_items();
+								$this->campaign_groups_obj->display(); ?>
 							</form>
 						</div>
 					</div>
