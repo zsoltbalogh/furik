@@ -26,15 +26,13 @@ function furik_process_payment() {
 	$backref = new SimpleBackRef(furik_get_simple_config(), "HUF");
 	$backref->order_ref = (isset($_REQUEST['order_ref'])) ? $_REQUEST['order_ref'] : 'N/A';
 
-	$baseurl = $furik_homepage_https ? "https" : "http" . "://" . $furik_homepage_url;
-
 	if ($backref->checkResponse()){
 		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_SUCCESSFUL);
-		header("Location: $baseurl$furik_payment_successful_url");
+		header("Location: " . furik_url($furik_payment_successful_url));
 	}
 	else {
 		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_UNSUCCESSFUL);
-		header("Location: $baseurl$furik_payment_unsuccessful_url");
+		header("Location: $baseurl" . furik_url($furik_payment_unsuccessful_url));
 	}
 	die();
 }
