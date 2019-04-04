@@ -45,7 +45,7 @@ function furik_form_func( $atts ) {
     $r .= "<br />";
 
     $r .= "<div class=\"form-field\">";
-    $r .= "<label for=\"furik_form_accept\"><input type=\"checkbox\" name=\"furik_form_accept\" id=\"furik_form_accept\">Az <a href=\"".$furik_wordpress_url.$furik_data_transmission_declaration_url."\" target=\"_blank\">adatkezelési és adattovábbítási nyilatkozatot</a> elfogadom</label>";
+    $r .= "<label for=\"furik_form_accept\"><input type=\"checkbox\" name=\"furik_form_accept\" id=\"furik_form_accept\" required=\"1\">Az <a href=\"".$furik_wordpress_url.$furik_data_transmission_declaration_url."\" target=\"_blank\">adatkezelési és adattovábbítási nyilatkozatot</a> elfogadom</label>";
     $r .= "</div>";
 
     $r .= "<br />";

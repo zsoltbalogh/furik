@@ -47,6 +47,11 @@ function furik_redirect() {
 
 	require_once 'patched_SimplePayment.class.php';
 
+	if (!$_POST['furik_form_accept']) {
+		echo "Kérlek fogadd el az adatkezelési nyilatkozatot.";
+		die();
+	}
+
 	$amount = is_numeric($_POST['furik_form_amount']) && $_POST['furik_form_amount'] > 0 ? $_POST['furik_form_amount'] : die("Error: amount is not a number.");
 	$name = $_POST['furik_form_name'];
 	$anon = $_POST['furik_form_anon'] ? 1 : 0;
