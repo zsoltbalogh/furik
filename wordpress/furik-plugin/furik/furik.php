@@ -4,6 +4,8 @@
  */
 include_once "config.php";
 
+include_once "furik_helper.php";
+
 include_once "furik_database.php";
 include_once "furik_shortcode_form.php";
 

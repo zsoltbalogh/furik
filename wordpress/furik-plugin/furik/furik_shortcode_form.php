@@ -3,7 +3,7 @@
  * WordPress shortcode: [furik_form], paramters: amount and name. 
  */
 function furik_form_func( $atts ) {
-	global $furik_wordpress_url, $furik_data_transmission_declaration_url;
+	global $furik_data_transmission_declaration_url;
     $a = shortcode_atts( array(
 	'amount' => '5000',
 	'name' => 'támogasd az Alapítványt',
@@ -45,12 +45,14 @@ function furik_form_func( $atts ) {
     $r .= "<br />";
 
     $r .= "<div class=\"form-field\">";
-    $r .= "<label for=\"furik_form_accept\"><input type=\"checkbox\" name=\"furik_form_accept\" id=\"furik_form_accept\" required=\"1\">Az <a href=\"".$furik_wordpress_url.$furik_data_transmission_declaration_url."\" target=\"_blank\">adatkezelési és adattovábbítási nyilatkozatot</a> elfogadom</label>";
+    $r .= "<label for=\"furik_form_accept\"><input type=\"checkbox\" name=\"furik_form_accept\" id=\"furik_form_accept\" required=\"1\">Az <a href=\"".furik_url($furik_data_transmission_declaration_url)."\" target=\"_blank\">adatkezelési és adattovábbítási nyilatkozatot</a> elfogadom</label>";
     $r .= "</div>";
 
     $r .= "<br />";
     $r .= "<p class=\"submit\"><input type=\"submit\" class=\"button button-primary\" value=\"Online támogatás\" /></p>";
     $r .= "</form>";
+
+    $r .= "<a href=\"http://simplepartner.hu/PaymentService/Fizetesi_tajekoztato.pdf\" target=\"_blank\"><img src=\"".furik_url("/wp-content/plugins/furik/images/simplepay.png")."\" title=\"SimplePay - Online bankkártyás fizetés\" alt=\"SimplePay vásárlói tájékoztató\"></a>";
 
     return $r;
 }
