@@ -3,7 +3,7 @@
  * WordPress shortcode: [furik_form], paramters: amount and name. 
  */
 function furik_form_func( $atts ) {
-	global $furik_wordpress_url;
+	global $furik_wordpress_url, $furik_data_transmission_declaration_url;
     $a = shortcode_atts( array(
 	'amount' => '5000',
 	'name' => 'támogasd az Alapítványt',
@@ -40,6 +40,12 @@ function furik_form_func( $atts ) {
     $r .= "<div class=\"form-field\">";
     $r .= "<label for=\"furik_form_message\">Üzenet:</label>";
     $r .= "<textarea name=\"furik_form_message\" id=\"furik_form_message\"></textarea>";
+    $r .= "</div>";
+
+    $r .= "<br />";
+
+    $r .= "<div class=\"form-field\">";
+    $r .= "<label for=\"furik_form_accept\"><input type=\"checkbox\" name=\"furik_form_accept\" id=\"furik_form_accept\">Az <a href=\"".$furik_wordpress_url.$furik_data_transmission_declaration_url."\" target=\"_blank\">adatkezelési és adattovábbítási nyilatkozatot</a> elfogadom</label>";
     $r .= "</div>";
 
     $r .= "<br />";

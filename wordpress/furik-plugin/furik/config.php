@@ -13,5 +13,7 @@ $furik_payment_successful_url = "payment-successful";
 $furik_payment_unsuccessful_url = "payment-unsuccessful";
 $furik_payment_timeout_url = "payment-unsuccessful";
 
+$furik_data_transmission_declaration_url = "data-transmission-declaration";
+
 @include_once "config_local.php";
 ?>
