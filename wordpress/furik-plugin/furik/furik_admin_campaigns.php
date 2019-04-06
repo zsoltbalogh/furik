@@ -115,8 +115,8 @@ class Campaigns_List_Plugin {
 	public function campaigns_list_page() {
 		?>
 		<div class="wrap">
-			<h2>Campaigns</h2>
-
+			<h1 class="wp-heading-inline">Campaigns</h1>
+			<a href="wp-admin/post-new.php?post_type=page" class="page-title-action">Add New</a>
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder">
 					<div id="post-body-content">

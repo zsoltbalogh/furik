@@ -139,8 +139,7 @@ class Donations_List_Plugin {
 	public function donations_list_page() {
 		?>
 		<div class="wrap">
-			<h2>Donations</h2>
-
+			<h1 class="wp-heading-inline">Donations</h1>
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder">
 					<div id="post-body-content">
