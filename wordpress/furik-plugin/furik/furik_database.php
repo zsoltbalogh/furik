@@ -22,10 +22,10 @@ function furik_install() {
 		PRIMARY KEY  (id)
 	) $charset_collate;";
 
-	$sql_campaign_groups = "CREATE TABLE {$wpdb->prefix}furik_campaign_groups (
+	$sql_campaigns = "CREATE TABLE {$wpdb->prefix}furik_campaigns (
 		id int NOT NULL AUTO_INCREMENT,
 		created datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-		campaign_group_status int,
+		campaign_status int,
 		name varchar(255),
 		page_url varchar(255),
 		PRIMARY KEY (id)
@@ -33,7 +33,7 @@ function furik_install() {
 
 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 	dbDelta($sql_transactions);
-	dbDelta($sql_campaign_groups);
+	dbDelta($sql_campaigns);
 
 	add_option('furik_db_version', 1);
 }

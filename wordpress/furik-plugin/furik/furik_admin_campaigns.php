@@ -3,12 +3,12 @@ if (!class_exists('WP_List_Table') ) {
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
-class Campaign_Groups_List extends WP_List_Table {
+class Campaigns_List extends WP_List_Table {
 
 	public function __construct() {
 		parent::__construct( [
-			'singular' => __( 'Campaign group', 'sp' ),
-			'plural'   => __( 'Campaign groups', 'sp' ),
+			'singular' => __( 'Campaign', 'sp' ),
+			'plural'   => __( 'Campaigns', 'sp' ),
 			'ajax'     => false
 		] );
 	}
@@ -17,10 +17,10 @@ class Campaign_Groups_List extends WP_List_Table {
 		return $item[$column_name];
 	}
 
-	public static function get_campaign_groups( $per_page = 5, $page_number = 1 ) {
+	public static function get_campaigns( $per_page = 5, $page_number = 1 ) {
 		global $wpdb;
 
-		$sql = "SELECT * FROM {$wpdb->prefix}furik_campaign_groups";
+		$sql = "SELECT * FROM {$wpdb->prefix}furik_campaigns";
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
 			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
@@ -34,13 +34,13 @@ class Campaign_Groups_List extends WP_List_Table {
 	public static function record_count() {
 		global $wpdb;
 
-		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}furik_campaign_groups";
+		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}furik_campaigns";
 
 		return $wpdb->get_var( $sql );
 	}
 
 	public function no_items() {
-		_e( 'No campaign groups are avaliable.', 'sp' );
+		_e( 'No campaigns are avaliable.', 'sp' );
 	}
 
 	function get_columns() {
@@ -60,7 +60,7 @@ class Campaign_Groups_List extends WP_List_Table {
 	}
 
 	public function prepare_items() {
-		$per_page     = $this->get_items_per_page('campaign_groups_per_page', 20);
+		$per_page     = $this->get_items_per_page('campaigns_per_page', 20);
 		$current_page = $this->get_pagenum();
 		$total_items  = self::record_count();
 
@@ -69,14 +69,14 @@ class Campaign_Groups_List extends WP_List_Table {
 		    'per_page'    => $per_page
 		] );
 
-		$this->items = self::get_campaign_groups($per_page, $current_page);
+		$this->items = self::get_campaigns($per_page, $current_page);
 	}
 }
 
-class Campaign_Groups_List_Plugin {
+class Campaigns_List_Plugin {
 
 	static $instance;
-	public $campaign_groups_obj;
+	public $campaigns_obj;
 
 	public function __construct() {
 		add_filter( 'set-screen-option', [ __CLASS__, 'set_screen' ], 10, 3 );
@@ -90,10 +90,10 @@ class Campaign_Groups_List_Plugin {
 	public function plugin_menu() {
 		$hook = add_menu_page(
 			'Furik Donations Page',
-			'Campaign Groups',
+			'Campaigns',
 			'manage_options',
-			'campaign_groups',
-			[ $this, 'campaign_groups_list_page' ],
+			'campaigns',
+			[ $this, 'campaigns_list_page' ],
 			'dashicons-portfolio'
 		);
 		add_action( "load-$hook", [ $this, 'screen_option' ] );
@@ -102,20 +102,20 @@ class Campaign_Groups_List_Plugin {
 	public function screen_option() {
 		$option = 'per_page';
 		$args   = [
-			'label'   => 'Campaign Groups',
+			'label'   => 'Campaigns',
 			'default' => 20,
-			'option'  => 'campaign_groups_per_page'
+			'option'  => 'campaigns_per_page'
 		];
 
 		add_screen_option( $option, $args );
 
-		$this->campaign_groups_obj = new Campaign_Groups_List();
+		$this->campaigns_obj = new Campaigns_List();
 	}
 
-	public function campaign_groups_list_page() {
+	public function campaigns_list_page() {
 		?>
 		<div class="wrap">
-			<h2>Campaign Groups</h2>
+			<h2>Campaigns</h2>
 
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder">
@@ -123,8 +123,8 @@ class Campaign_Groups_List_Plugin {
 						<div class="meta-box-sortables ui-sortable">
 							<form method="post">
 								<?php
-								$this->campaign_groups_obj->prepare_items();
-								$this->campaign_groups_obj->display(); ?>
+								$this->campaigns_obj->prepare_items();
+								$this->campaigns_obj->display(); ?>
 							</form>
 						</div>
 					</div>
@@ -145,5 +145,5 @@ class Campaign_Groups_List_Plugin {
 }
 
 add_action( 'plugins_loaded', function () {
-	Campaign_Groups_List_Plugin::get_instance();
+	Campaigns_List_Plugin::get_instance();
 } );
