@@ -34,7 +34,14 @@ function furik_shortcode_donations($atts) {
 	$r .= "<table><tbody>";
 	foreach ($result as $donation) {
 		$r .= "<tr><td>".substr($donation->time, 0, 10)."</td>";
-		$r .= "<td>{$donation->name}</td>";
+
+		if ($donation->anon) {
+			$r .= "<td>".__('Anonymous donation', 'furik')."</td>";
+		}
+		else {
+			$r .= "<td>{$donation->name}</td>";
+		}
+
 		$r .= "<td>{$donation->amount}</td>";
 		if (!$post->parent_post) {
 			if ($post->ID != $donation->campaign_id) {
