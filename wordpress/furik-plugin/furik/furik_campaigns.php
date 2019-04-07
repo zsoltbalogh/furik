@@ -21,7 +21,7 @@ function furik_campaign_post_type() {
         'label' => __('Campaigns', 'furik'),
         'description' => __('Donation campaigns', 'furik'),
         'labels' => $labels,
-        'supports' => array('title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields','page-attributes'),
+        'supports' => array('title', 'editor', 'excerpt', 'author', 'thumbnail', 'revisions', 'custom-fields','page-attributes'),
         'hierarchical' => true,
         'public' => true,
         'show_ui' => true,
