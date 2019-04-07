@@ -9,7 +9,7 @@ function furik_form_func( $atts ) {
 	'name' => 'támogasd az Alapítványt',
     ), $atts );
 
-    $amount = is_numeric($_GET['amount']) ? $_GET['amount'] : $atts['amount'];
+    $amount = is_numeric($_GET['furik_amount']) ? $_GET['furik_amount'] : $atts['amount'];
 
     $r = "<form method=\"POST\" action=\"".$_SERVER['REQUEST_URI']."\">";
     $r .= "<input type=\"hidden\" name=\"furik_action\" value=\"redirect\" />";

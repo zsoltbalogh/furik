@@ -9,7 +9,11 @@ function furik_shortcode_donate_link( $atts ) {
 	'name' => '',
     ), $atts );
 
-    return furik_url($furik_donations_url, array('amount' => $atts['amount']));
+    $post = get_post();
+    return furik_url($furik_donations_url,
+		array(
+			'furik_amount' => $atts['amount'],
+			'furik_campaign' => $post->ID));
 }
 
 add_shortcode( 'furik_donate_link', 'furik_shortcode_donate_link' );
