@@ -17,6 +17,16 @@ class Donations_List extends WP_List_Table {
 		return $item[$column_name];
 	}
 
+	public function column_campaign_name($item) {
+		if (!$item['campaign_name']) {
+			return "Általános támogatás";
+		}
+		if (!$item['parent_campaign_name']) {
+			return $item['campaign_name'];
+		}
+		return $item['campaign_name'] . " (" . $item['parent_campaign_name'] .")";
+	}
+
 	public function column_transaction_status($item) {
 		switch ($item['transaction_status']) {
 			case "":
@@ -38,8 +48,12 @@ class Donations_List extends WP_List_Table {
 
 		$sql = "SELECT
 				{$wpdb->prefix}furik_transactions.*,
-				{$wpdb->prefix}posts.post_title AS campaign
-			FROM {$wpdb->prefix}furik_transactions LEFT OUTER JOIN {$wpdb->prefix}posts ON ({$wpdb->prefix}furik_transactions.campaign={$wpdb->prefix}posts.ID)";
+				campaigns.post_title AS campaign_name,
+				parentcampaigns.post_title AS parent_campaign_name
+			FROM
+				{$wpdb->prefix}furik_transactions
+				LEFT OUTER JOIN {$wpdb->prefix}posts campaigns ON ({$wpdb->prefix}furik_transactions.campaign=campaigns.ID)
+				LEFT OUTER JOIN {$wpdb->prefix}posts parentcampaigns ON (campaigns.post_parent=parentcampaigns.ID)";
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
 			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
@@ -67,7 +81,7 @@ class Donations_List extends WP_List_Table {
 			'name' => __( 'Name', 'sp' ),
 			'email' => __('E-mail', 'sp'),
 		    'amount' => __( 'Amount', 'sp' ),
-		    'campaign' => __('Campaign', 'furik'),
+		    'campaign_name' => __('Campaign', 'furik'),
 		    'time' => __('Time', 'sp'),
 		    'transaction_status' => __('Status', 'sp')
 		];
@@ -80,7 +94,7 @@ class Donations_List extends WP_List_Table {
 			'name' => array( 'name', false ),
 			'email' => array( 'email', false ),
 			'amount' => array( 'amount', false ),
-			'campaign' => array('campaign', false),
+			'campaign_name' => array('campaign_name', false),
 			'time' => array('time', true),
 			'transaction_status' => array('transaction_status', false)
 		);
