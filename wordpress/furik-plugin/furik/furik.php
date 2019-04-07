@@ -9,6 +9,7 @@ include_once "furik_localization.php";
 
 include_once "furik_database.php";
 
+include_once "furik_shortcode_back_to_campaign_url.php";
 include_once "furik_shortcode_campaigns.php";
 include_once "furik_shortcode_donate_link.php";
 include_once "furik_shortcode_donations.php";
