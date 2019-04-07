@@ -36,7 +36,10 @@ class Donations_List extends WP_List_Table {
 	public static function get_donations( $per_page = 5, $page_number = 1 ) {
 		global $wpdb;
 
-		$sql = "SELECT * FROM {$wpdb->prefix}furik_transactions";
+		$sql = "SELECT
+				{$wpdb->prefix}furik_transactions.*,
+				{$wpdb->prefix}posts.post_title AS campaign
+			FROM {$wpdb->prefix}furik_transactions LEFT OUTER JOIN {$wpdb->prefix}posts ON ({$wpdb->prefix}furik_transactions.campaign={$wpdb->prefix}posts.ID)";
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
 			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
@@ -64,6 +67,7 @@ class Donations_List extends WP_List_Table {
 			'name' => __( 'Name', 'sp' ),
 			'email' => __('E-mail', 'sp'),
 		    'amount' => __( 'Amount', 'sp' ),
+		    'campaign' => __('Campaign', 'furik'),
 		    'time' => __('Time', 'sp'),
 		    'transaction_status' => __('Status', 'sp')
 		];
@@ -76,6 +80,7 @@ class Donations_List extends WP_List_Table {
 			'name' => array( 'name', false ),
 			'email' => array( 'email', false ),
 			'amount' => array( 'amount', false ),
+			'campaign' => array('campaign', false),
 			'time' => array('time', true),
 			'transaction_status' => array('transaction_status', false)
 		);
