@@ -4,6 +4,12 @@ define("FURIK_STATUS_SUCCESSFUL", 1);
 define("FURIK_STATUS_UNSUCCESSFUL", 2);
 define("FURIK_STATUS_IPN_SUCCESSFUL", 10);
 
+function furik_get_post_id_from_order_ref($order_ref) {
+	global $wpdb;
+
+	return $wpdb->get_var($wpdb->prepare("SELECT campaign FROM {$wpdb->prefix}furik_transactions WHERE transaction_id=%s", $order_ref));
+}
+
 function furik_install() {
 	global $wpdb;
 

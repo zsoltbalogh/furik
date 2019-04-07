@@ -26,13 +26,15 @@ function furik_process_payment() {
 	$backref = new SimpleBackRef(furik_get_simple_config(), "HUF");
 	$backref->order_ref = (isset($_REQUEST['order_ref'])) ? $_REQUEST['order_ref'] : 'N/A';
 
+	$campaign_id = furik_get_post_id_from_order_ref($backref->order_ref);
+
 	if ($backref->checkResponse()){
 		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_SUCCESSFUL);
-		header("Location: " . furik_url($furik_payment_successful_url));
+		header("Location: " . furik_url($furik_payment_successful_url, ['campaign_id' => $campaign_id]));
 	}
 	else {
 		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_UNSUCCESSFUL);
-		header("Location: $baseurl" . furik_url($furik_payment_unsuccessful_url));
+		header("Location: $baseurl" . furik_url($furik_payment_unsuccessful_url, ['campaign_id' => $campaign_id]));
 	}
 	die();
 }
