@@ -24,14 +24,14 @@ function furik_form_func( $atts ) {
 
 
     $r .= "<div class=\"form-field form-required\">";
-    $r .= "<label for=\"furik_form_email\">".__('Supported cause').":</label>";
+    $r .= "<label for=\"furik_form_email\">".__('Supported cause', 'furik').":</label>";
     $r .= "<input type=\"text\" id=\"furik_campaign\" disabled=\"1\" value=\"$campaign\"/>";
     $r .= "</div>";
 
     $r .= "<br />";
 
     $r .= "<div class=\"form-field form-required\">";
-    $r .= "<label for=\"furik_form_email\">".__('Your name').":</label>";
+    $r .= "<label for=\"furik_form_email\">".__('Your name', 'furik').":</label>";
     $r .= "<input type=\"text\" name=\"furik_form_name\" id=\"furik_form_name\" required=\"1\"/>";
     $r .= "</div>";
 
@@ -42,21 +42,21 @@ function furik_form_func( $atts ) {
     $r .= "<br />";
 
     $r .= "<div class=\"form-field form-required\">";
-    $r .= "<label for=\"furik_form_email\">".__('E-mail address').":</label>";
+    $r .= "<label for=\"furik_form_email\">".__('E-mail address', 'furik').":</label>";
     $r .= "<input type=\"email\" name=\"furik_form_email\" id=\"furik_form_email\" required=\"1\" />";
     $r .= "</div>";
 
     $r .= "<br />";
 
     $r .= "<div class=\"form-field form-required\">";
-    $r .= "<label for=\"furik_form_email\">".__('Donation amount')." (Forint):</label>";
+    $r .= "<label for=\"furik_form_email\">".__('Donation amount', 'furik')." (Forint):</label>";
     $r .= "<input type=\"number\" name=\"furik_form_amount\" id=\"furik_form_amount\" value=\"$amount\" required=\"1\" />";
     $r .= "</div>";
 
     $r .= "<br />";
 
     $r .= "<div class=\"form-field\">";
-    $r .= "<label for=\"furik_form_message\">".__('Message').":</label>";
+    $r .= "<label for=\"furik_form_message\">".__('Message', 'furik').":</label>";
     $r .= "<textarea name=\"furik_form_message\" id=\"furik_form_message\"></textarea>";
     $r .= "</div>";
 

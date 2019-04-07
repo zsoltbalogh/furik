@@ -1,0 +1,177 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Furik\n"
+"POT-Creation-Date: 2019-04-07 13:07+0200\n"
+"PO-Revision-Date: 2019-04-07 13:13+0200\n"
+"Last-Translator: \n"
+"Language-Team: Furik\n"
+"Language: hu_HU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.1\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: _x;__;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: furik_admin_donations.php:10
+msgid "Donation"
+msgstr "Támogatás"
+
+#: furik_admin_donations.php:11 furik_admin_donations.php:136
+#: furik_admin_donations.php:161
+msgid "Donations"
+msgstr "Támogatások"
+
+#: furik_admin_donations.php:22 furik_shortcode_form.php:18
+msgid "General donation"
+msgstr "Általános támogatás"
+
+#: furik_admin_donations.php:33
+msgid "Pending card payment"
+msgstr "Függőben lévő kártyás fizetés"
+
+#: furik_admin_donations.php:35
+msgid "Successful, waiting for confirmation"
+msgstr "Sikeres fizetés, visszajelzésre vár"
+
+#: furik_admin_donations.php:37
+msgid "Unsuccessful card payment"
+msgstr "Sikertelen kártyás fizetés"
+
+#: furik_admin_donations.php:39
+msgid "Successful and confirmed"
+msgstr "Sikeres és visszaigazolt"
+
+#: furik_admin_donations.php:41
+msgid "Unknown"
+msgstr "Ismeretlen"
+
+#: furik_admin_donations.php:76
+msgid "No donations avaliable."
+msgstr "Nincs támogatás a rendszerben."
+
+#: furik_admin_donations.php:81
+msgid "Name"
+msgstr "Név"
+
+#: furik_admin_donations.php:82
+msgid "E-mail"
+msgstr "E-mail"
+
+#: furik_admin_donations.php:83
+msgid "Amount"
+msgstr "Összeg"
+
+#: furik_admin_donations.php:84 furik_campaigns.php:6
+msgid "Campaign"
+msgstr "Kampány"
+
+#: furik_admin_donations.php:85
+msgid "Time"
+msgstr "Idő"
+
+#: furik_admin_donations.php:86
+msgid "Status"
+msgstr "Állapot"
+
+#: furik_admin_donations.php:135
+msgid "Furik Donations"
+msgstr "Furik Támogatások"
+
+#: furik_campaigns.php:5 furik_campaigns.php:7 furik_campaigns.php:21
+msgid "Campaigns"
+msgstr "Kampányok"
+
+#: furik_campaigns.php:8
+msgid "Parent Campaign"
+msgstr "Főkampány"
+
+#: furik_campaigns.php:9
+msgid "All Campaigns"
+msgstr "Összes kampány"
+
+#: furik_campaigns.php:10
+msgid "View Campaign"
+msgstr "Kampány megnyitása"
+
+#: furik_campaigns.php:11
+msgid "Add New Campaign"
+msgstr "Új kampány hozzáadása"
+
+#: furik_campaigns.php:12
+msgid "Add New"
+msgstr "Új hozzáadása"
+
+#: furik_campaigns.php:13
+msgid "Edit Campaign"
+msgstr "Kampány szerkesztése"
+
+#: furik_campaigns.php:14
+msgid "Update Campaign"
+msgstr "Kampány frissítése"
+
+#: furik_campaigns.php:15
+msgid "Search Campaign"
+msgstr "Kampány keresése"
+
+#: furik_campaigns.php:16
+msgid "Not Found"
+msgstr "Nincs találat"
+
+#: furik_campaigns.php:17
+msgid "Not found in Trash"
+msgstr "Nincs találat a kukában"
+
+#: furik_campaigns.php:22
+msgid "Donation campaigns"
+msgstr "Támogatási kampányok"
+
+#: furik_payment_processing.php:49
+msgid "Please accept the data transmission agreement."
+msgstr "Kérjük fogadd el az adatkezelési nyilatkozatot."
+
+#: furik_payment_processing.php:75
+msgid "Redirecting to the payment partner page"
+msgstr "Átirányítás a pénzügyi szolgáltató partner oldalára."
+
+#: furik_payment_processing.php:94
+msgid "Database error. Please contact the site administrator."
+msgstr "Adatbázis hiba. Kérjük vedd fel a kapcsolatot az oldal üzemeltetőivel."
+
+#: furik_payment_processing.php:99
+msgid "Redirecting to our payment partner."
+msgstr ""
+
+#: furik_shortcode_form.php:27
+msgid "Supported cause"
+msgstr "Támogatott kezdeményezés"
+
+#: furik_shortcode_form.php:34
+msgid "Your name"
+msgstr "Neved"
+
+#: furik_shortcode_form.php:39
+msgid "Anonymous donation"
+msgstr "Aninom támogatás"
+
+#: furik_shortcode_form.php:45
+msgid "E-mail address"
+msgstr "E-mail címed"
+
+#: furik_shortcode_form.php:52
+msgid "Donation amount"
+msgstr "Támogatás összege"
+
+#: furik_shortcode_form.php:59
+msgid "Message"
+msgstr "Üzenet"
+
+#: furik_shortcode_form.php:66
+msgid "I accept the data transmission declaration"
+msgstr "Az adatkezélési és továbbítási nyilatkozatot elfogadom."
+
+#: furik_shortcode_form.php:70
+msgid "Donate"
+msgstr "Támogatás"
