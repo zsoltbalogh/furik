@@ -7,7 +7,7 @@ function furik_shortcode_campaigns($atts) {
     $campaigns = get_posts(['post_parent' => $post->ID, 'post_type' => 'campaign']);
 
     foreach ($campaigns as $campaign) {
-		$r .= "<a href=\"".$campaign->guid."\">".$campaign->post_title."</a><br />";
+		$r .= "<a href=\"".$campaign->guid."\">".esc_html($campaign->post_title)."</a><br />";
     }
 
     return $r;
