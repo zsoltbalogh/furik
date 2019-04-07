@@ -1,11 +1,6 @@
 <?php
-/*
-* Creating a function to create our CPT
-*/
- 
 function furik_campaign_post_type() {
  
-// Set UI labels for Custom Post Type
     $labels = array(
         'name'                => _x( 'Campaigns', 'Post Type General Name', 'furik' ),
         'singular_name'       => _x( 'Campaign', 'Post Type Singular Name', 'furik' ),
@@ -21,19 +16,12 @@ function furik_campaign_post_type() {
         'not_found'           => __( 'Not Found', 'furik' ),
         'not_found_in_trash'  => __( 'Not found in Trash', 'furik' ),
     );
-     
-// Set other options for Custom Post Type
-     
+
     $args = array(
         'label'               => __( 'Campaigns', 'furik' ),
         'description'         => __( 'Donation campaigns', 'furik' ),
         'labels'              => $labels,
-        // Features this CPT supports in Post Editor
         'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields','page-attributes'),
-        /* A hierarchical CPT is like Pages and can have
-        * Parent and child items. A non-hierarchical CPT
-        * is like Posts.
-        */ 
         'hierarchical'        => true,
         'public'              => true,
         'show_ui'             => true,
@@ -46,16 +34,27 @@ function furik_campaign_post_type() {
         'exclude_from_search' => false,
         'publicly_queryable'  => true,
         'capability_type'     => 'page',
+        'capabilities'        => array(
+            'edit_post' => 'edit_page',
+            'read_post' => 'read_page',
+            'delete_post' => 'delete_page',
+            'edit_posts' => 'edit_pages',
+            'edit_others_posts' => 'edit_others_pages',
+            'publish_posts' => 'publish_pages',
+            'read_private_posts' => 'read_private_pages',
+            'read' => 'read',
+            'delete_posts' => 'delete_pages',
+            'delete_private_posts' => 'delete_private_pages',
+            'delete_published_posts' => 'delete_published_campaigns',
+            'delete_others_posts' => 'delete_others_pages',
+            'edit_private_posts' => 'edit_private_pages',
+            'edit_published_posts' => 'edit_published_pages',
+            'create_posts' => 'edit_pages'),
+        'map_meta_cap'        => 'true'
     );
      
-    // Registering your Custom Post Type
     register_post_type( 'campaign', $args );
  
 }
- 
-/* Hook into the 'init' action so that the function
-* Containing our post type registration is not 
-* unnecessarily executed. 
-*/
  
 add_action( 'init', 'furik_campaign_post_type', 0 );
