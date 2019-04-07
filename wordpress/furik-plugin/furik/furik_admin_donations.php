@@ -14,7 +14,7 @@ class Donations_List extends WP_List_Table {
 	}
 
 	public function column_default($item, $column_name) {
-		return $item[$column_name];
+		return esc_html($item[$column_name]);
 	}
 
 	public function column_campaign_name($item) {

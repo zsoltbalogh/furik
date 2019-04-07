@@ -39,19 +39,19 @@ function furik_shortcode_donations($atts) {
 			$r .= "<td>".__('Anonymous donation', 'furik')."</td>";
 		}
 		else {
-			$r .= "<td>{$donation->name}</td>";
+			$r .= "<td>".esc_html($donation->name)."</td>";
 		}
 
 		$r .= "<td>{$donation->amount}</td>";
 		if (!$post->parent_post) {
 			if ($post->ID != $donation->campaign_id) {
-				$r .= "<td>{$donation->campaign_name}</td>";
+				$r .= "<td>".esc_html($donation->campaign_name)."</td>";
 			}
 			else {
 				$r .= "<td></td>";
 			}
 		}
-		$r .= "<td>{$donation->message}</td>";
+		$r .= "<td>".esc_html($donation->message)."</td>";
 		$r .= "</tr>";
 	}
 	$r .= "</tbody></table>";
