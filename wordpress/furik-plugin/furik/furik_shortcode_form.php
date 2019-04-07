@@ -13,6 +13,7 @@ function furik_form_func( $atts ) {
     if (is_numeric($_GET['furik_campaign'])) {
         $post = get_post($_GET['furik_campaign']);
         $campaign = $post->post_title;
+        $campaign_id = $post->ID;
     }
     else {
         $campaign = "Általános támogatás";
@@ -20,6 +21,7 @@ function furik_form_func( $atts ) {
 
     $r = "<form method=\"POST\" action=\"".$_SERVER['REQUEST_URI']."\">";
     $r .= "<input type=\"hidden\" name=\"furik_action\" value=\"redirect\" />";
+    $r .= "<input type=\"hidden\" name=\"furik_campaign\" value=\"$campaign_id\" />";
 
 
     $r .= "<div class=\"form-field form-required\">";

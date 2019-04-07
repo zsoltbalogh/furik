@@ -55,6 +55,7 @@ function furik_redirect() {
 	$anon = $_POST['furik_form_anon'] ? 1 : 0;
 	$email = $_POST['furik_form_email'];
 	$message = $_POST['furik_form_message'];
+	$campaign = is_numeric($_POST['furik_campaign']) ? $_POST['furik_campaign'] : 0;
 
 	$orderCurrency = 'HUF';
 	$transactionId = str_replace(array('.', ':'), "", $_SERVER['SERVER_ADDR']) . @date("U", time()) . rand(1000, 9999);
@@ -82,7 +83,8 @@ function furik_redirect() {
 			'anon' => $anon,
 			'email' => $email,
 			'message' => $message,
-			'amount' => $amount
+			'amount' => $amount,
+			'campaign' => $campaign
 		)
 	);
 

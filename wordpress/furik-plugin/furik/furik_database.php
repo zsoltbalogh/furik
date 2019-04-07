@@ -17,23 +17,14 @@ function furik_install() {
 		anon int,
 		email varchar(255),
 		amount int,
+		campaign int,
 		message longtext,
 		transaction_status int,
 		PRIMARY KEY  (id)
 	) $charset_collate;";
 
-	$sql_campaigns = "CREATE TABLE {$wpdb->prefix}furik_campaigns (
-		id int NOT NULL AUTO_INCREMENT,
-		created datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-		campaign_status int,
-		name varchar(255),
-		page_url varchar(255),
-		PRIMARY KEY (id)
-	) $charset_collate;";
-
 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 	dbDelta($sql_transactions);
-	dbDelta($sql_campaigns);
 
 	add_option('furik_db_version', 1);
 }
