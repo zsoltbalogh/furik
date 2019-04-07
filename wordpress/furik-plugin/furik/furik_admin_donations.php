@@ -19,7 +19,7 @@ class Donations_List extends WP_List_Table {
 
 	public function column_campaign_name($item) {
 		if (!$item['campaign_name']) {
-			return "Általános támogatás";
+			return __('General donation');
 		}
 		if (!$item['parent_campaign_name']) {
 			return $item['campaign_name'];
@@ -132,8 +132,8 @@ class Donations_List_Plugin {
 
 	public function plugin_menu() {
 		$hook = add_menu_page(
-			'Furik Donations Page',
-			'Donations',
+			__('Furik Donations', 'furik'),
+			__('Donations', 'furik'),
 			'manage_options',
 			'wp_list_table_class',
 			[$this, 'donations_list_page'],
@@ -158,7 +158,7 @@ class Donations_List_Plugin {
 	public function donations_list_page() {
 		?>
 		<div class="wrap">
-			<h1 class="wp-heading-inline">Donations</h1>
+			<h1 class="wp-heading-inline"><?php _e('Donations', 'furik') ?></h1>
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder">
 					<div id="post-body-content">

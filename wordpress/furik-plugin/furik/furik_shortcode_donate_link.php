@@ -5,8 +5,8 @@
 function furik_shortcode_donate_link( $atts ) {
 	global $furik_donations_url;
     $a = shortcode_atts( array(
-	'amount' => '5000',
-	'name' => '',
+		'amount' => '5000',
+		'name' => '',
     ), $atts );
 
     $post = get_post();

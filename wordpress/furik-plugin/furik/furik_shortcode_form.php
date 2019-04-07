@@ -5,8 +5,7 @@
 function furik_form_func( $atts ) {
 	global $furik_data_transmission_declaration_url;
     $a = shortcode_atts( array(
-	'amount' => '5000',
-	'name' => 'támogasd az Alapítványt',
+	   'amount' => '5000',
     ), $atts );
 
     $amount = is_numeric($_GET['furik_amount']) ? $_GET['furik_amount'] : $atts['amount'];
@@ -16,7 +15,7 @@ function furik_form_func( $atts ) {
         $campaign_id = $post->ID;
     }
     else {
-        $campaign = "Általános támogatás";
+        $campaign = __('General donation', 'furik');
     }
 
     $r = "<form method=\"POST\" action=\"".$_SERVER['REQUEST_URI']."\">";
@@ -25,50 +24,50 @@ function furik_form_func( $atts ) {
 
 
     $r .= "<div class=\"form-field form-required\">";
-    $r .= "<label for=\"furik_form_email\">Támogatott kezdeményezés:</label>";
+    $r .= "<label for=\"furik_form_email\">".__('Supported cause').":</label>";
     $r .= "<input type=\"text\" id=\"furik_campaign\" disabled=\"1\" value=\"$campaign\"/>";
     $r .= "</div>";
 
     $r .= "<br />";
 
     $r .= "<div class=\"form-field form-required\">";
-    $r .= "<label for=\"furik_form_email\">Neved:</label>";
+    $r .= "<label for=\"furik_form_email\">".__('Your name').":</label>";
     $r .= "<input type=\"text\" name=\"furik_form_name\" id=\"furik_form_name\" required=\"1\"/>";
     $r .= "</div>";
 
     $r .= "<div class=\"form-field\">";
-    $r .= "<label for=\"furik_form_anon\"><input type=\"checkbox\" name=\"furik_form_anon\" id=\"furik_form_anon\">Szeretnék publikusan névtelen maradni</label>";
+    $r .= "<label for=\"furik_form_anon\"><input type=\"checkbox\" name=\"furik_form_anon\" id=\"furik_form_anon\">".__('Anonymous donation', 'furik')."</label>";
     $r .= "</div>";
 
     $r .= "<br />";
 
     $r .= "<div class=\"form-field form-required\">";
-    $r .= "<label for=\"furik_form_email\">E-mail címed:</label>";
+    $r .= "<label for=\"furik_form_email\">".__('E-mail address').":</label>";
     $r .= "<input type=\"email\" name=\"furik_form_email\" id=\"furik_form_email\" required=\"1\" />";
     $r .= "</div>";
 
     $r .= "<br />";
 
     $r .= "<div class=\"form-field form-required\">";
-    $r .= "<label for=\"furik_form_email\">Az adomány összege:</label>";
+    $r .= "<label for=\"furik_form_email\">".__('Donation amount')." (Forint):</label>";
     $r .= "<input type=\"number\" name=\"furik_form_amount\" id=\"furik_form_amount\" value=\"$amount\" required=\"1\" />";
     $r .= "</div>";
 
     $r .= "<br />";
 
     $r .= "<div class=\"form-field\">";
-    $r .= "<label for=\"furik_form_message\">Üzenet:</label>";
+    $r .= "<label for=\"furik_form_message\">".__('Message').":</label>";
     $r .= "<textarea name=\"furik_form_message\" id=\"furik_form_message\"></textarea>";
     $r .= "</div>";
 
     $r .= "<br />";
 
     $r .= "<div class=\"form-field\">";
-    $r .= "<label for=\"furik_form_accept\"><input type=\"checkbox\" name=\"furik_form_accept\" id=\"furik_form_accept\" required=\"1\">Az <a href=\"".furik_url($furik_data_transmission_declaration_url)."\" target=\"_blank\">adatkezelési és adattovábbítási nyilatkozatot</a> elfogadom</label>";
+    $r .= "<label for=\"furik_form_accept\"><input type=\"checkbox\" name=\"furik_form_accept\" id=\"furik_form_accept\" required=\"1\"><a href=\"".furik_url($furik_data_transmission_declaration_url)."\" target=\"_blank\">".__('I accept the data transmission declaration', 'furik')."</a></label>";
     $r .= "</div>";
 
     $r .= "<br />";
-    $r .= "<p class=\"submit\"><input type=\"submit\" class=\"button button-primary\" value=\"Online támogatás\" /></p>";
+    $r .= "<p class=\"submit\"><input type=\"submit\" class=\"button button-primary\" value=\"".__('Donate', 'furik')."\" /></p>";
     $r .= "</form>";
 
     $r .= "<a href=\"http://simplepartner.hu/PaymentService/Fizetesi_tajekoztato.pdf\" target=\"_blank\"><img src=\"".furik_url("/wp-content/plugins/furik/images/simplepay.png")."\" title=\"SimplePay - Online bankkártyás fizetés\" alt=\"SimplePay vásárlói tájékoztató\"></a>";

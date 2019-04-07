@@ -46,7 +46,7 @@ function furik_redirect() {
 	require_once 'patched_SimplePayment.class.php';
 
 	if (!$_POST['furik_form_accept']) {
-		echo "Kérlek fogadd el az adatkezelési nyilatkozatot.";
+		_e('Please accept the data transmission agreement.', 'furik');
 		die();
 	}
 
@@ -72,7 +72,7 @@ function furik_redirect() {
 	    'qty' => 1
 	));
 	$lu->setField("BILL_EMAIL", $email);
-	$display = $lu->createHtmlForm('SimplePayForm', 'auto', "Átirányítás a SimplePay oldalára");
+	$display = $lu->createHtmlForm('SimplePayForm', 'auto', __('Redirecting to the payment partner page', 'furik'));
 
 	$wpdb->insert(
 		"{$wpdb->prefix}furik_transactions",
@@ -91,12 +91,12 @@ function furik_redirect() {
 	$results = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}furik_transactions WHERE transaction_id = %s", $transactionId), OBJECT);
 
 	if (count($results) != 1) {
-		die("Adatbázis hiba. Kérlek vedd fel a kapcsolatot velünk és add meg ezt az azonosítót: " . $transactionId);
+		die(__('Database error. Please contact the site administrator.'));
 	}
 
 	echo $display;
 
-	die("Redirecting to Simple Pay");
+	die(__('Redirecting to our payment partner.'));
 }
 
 /**
