@@ -8,6 +8,9 @@ function furik_form_func( $atts ) {
 	'amount' => '5000',
 	'name' => 'támogasd az Alapítványt',
     ), $atts );
+
+    $amount = is_numeric($_GET['amount']) ? $_GET['amount'] : $atts['amount'];
+
     $r = "<form method=\"POST\" action=\"".$_SERVER['REQUEST_URI']."\">";
     $r .= "<input type=\"hidden\" name=\"furik_action\" value=\"redirect\" />";
 
@@ -32,7 +35,7 @@ function furik_form_func( $atts ) {
 
     $r .= "<div class=\"form-field form-required\">";
     $r .= "<label for=\"furik_form_email\">Az adomány összege:</label>";
-    $r .= "<input type=\"number\" name=\"furik_form_amount\" id=\"furik_form_amount\" value=\"" . $atts['amount'] ."\" required=\"1\" />";
+    $r .= "<input type=\"number\" name=\"furik_form_amount\" id=\"furik_form_amount\" value=\"$amount\" required=\"1\" />";
     $r .= "</div>";
 
     $r .= "<br />";
