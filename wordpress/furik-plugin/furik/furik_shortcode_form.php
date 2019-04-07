@@ -10,15 +10,29 @@ function furik_form_func( $atts ) {
     ), $atts );
 
     $amount = is_numeric($_GET['furik_amount']) ? $_GET['furik_amount'] : $atts['amount'];
+    if (is_numeric($_GET['furik_campaign'])) {
+        $post = get_post($_GET['furik_campaign']);
+        $campaign = $post->post_title;
+    }
+    else {
+        $campaign = "Általános támogatás";
+    }
 
     $r = "<form method=\"POST\" action=\"".$_SERVER['REQUEST_URI']."\">";
     $r .= "<input type=\"hidden\" name=\"furik_action\" value=\"redirect\" />";
+
+
+    $r .= "<div class=\"form-field form-required\">";
+    $r .= "<label for=\"furik_form_email\">Támogatott kezdeményezés:</label>";
+    $r .= "<input type=\"text\" id=\"furik_campaign\" disabled=\"1\" value=\"$campaign\"/>";
+    $r .= "</div>";
+
+    $r .= "<br />";
 
     $r .= "<div class=\"form-field form-required\">";
     $r .= "<label for=\"furik_form_email\">Neved:</label>";
     $r .= "<input type=\"text\" name=\"furik_form_name\" id=\"furik_form_name\" required=\"1\"/>";
     $r .= "</div>";
-
 
     $r .= "<div class=\"form-field\">";
     $r .= "<label for=\"furik_form_anon\"><input type=\"checkbox\" name=\"furik_form_anon\" id=\"furik_form_anon\">Szeretnék publikusan névtelen maradni</label>";
