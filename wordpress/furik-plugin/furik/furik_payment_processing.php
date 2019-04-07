@@ -55,7 +55,8 @@ function furik_redirect() {
 	$anon = $_POST['furik_form_anon'] ? 1 : 0;
 	$email = $_POST['furik_form_email'];
 	$message = $_POST['furik_form_message'];
-	$campaign = is_numeric($_POST['furik_campaign']) ? $_POST['furik_campaign'] : 0;
+	$campaign_id = is_numeric($_POST['furik_campaign']) ? $_POST['furik_campaign'] : 0;
+	$campaign = get_post($campaign_id);
 
 	$orderCurrency = 'HUF';
 	$transactionId = str_replace(array('.', ':'), "", $_SERVER['SERVER_ADDR']) . @date("U", time()) . rand(1000, 9999);
@@ -64,9 +65,9 @@ function furik_redirect() {
 	$lu->setField("ORDER_REF", $transactionId);
 	$lu->setField("LANGUAGE", "HU");
 	$lu->addProduct(array(
-	    'name' => 'Adomány',
-	    'code' => 'sku0001',
-	    'info' => 'Az alapítvány támogatása',
+	    'name' => "$campaign->post_title",
+	    'code' => "$campaign_id",
+	    'info' => "$campaign->post_title",
 	    'price' => $amount,
 	    'vat' => 0,
 	    'qty' => 1
@@ -84,7 +85,7 @@ function furik_redirect() {
 			'email' => $email,
 			'message' => $message,
 			'amount' => $amount,
-			'campaign' => $campaign
+			'campaign' => $campaign_id
 		)
 	);
 
