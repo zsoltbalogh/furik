@@ -3,6 +3,7 @@ define("FURIK_STATUS_UNKNOWN", 0);
 define("FURIK_STATUS_SUCCESSFUL", 1);
 define("FURIK_STATUS_UNSUCCESSFUL", 2);
 define("FURIK_STATUS_IPN_SUCCESSFUL", 10);
+define("FURIK_STATUS_DISPLAYABLE", "1, 10");
 
 function furik_get_post_id_from_order_ref($order_ref) {
 	global $wpdb;

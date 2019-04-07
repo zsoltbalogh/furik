@@ -16,13 +16,14 @@ function furik_shortcode_donations($atts) {
     $id_list = implode($ids, ",");
 
     $sql = "SELECT
-			{$wpdb->prefix}furik_transactions.*,
+			transaction.*,
 			campaigns.post_title AS campaign_name,
 			campaigns.ID AS campaign_id
 		FROM
-			{$wpdb->prefix}furik_transactions
-			LEFT OUTER JOIN {$wpdb->prefix}posts campaigns ON ({$wpdb->prefix}furik_transactions.campaign=campaigns.ID)
+			{$wpdb->prefix}furik_transactions AS transaction
+			LEFT OUTER JOIN {$wpdb->prefix}posts campaigns ON (transaction.campaign=campaigns.ID)
 		WHERE campaigns.ID in ($id_list)
+			AND transaction.transaction_status in (".FURIK_STATUS_DISPLAYABLE.")
 		ORDER BY time DESC";
 
 	$result = $wpdb->get_results($sql);
