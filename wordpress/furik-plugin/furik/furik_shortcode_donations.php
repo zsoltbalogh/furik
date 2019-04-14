@@ -29,7 +29,7 @@ function furik_shortcode_donations($atts) {
 	$result = $wpdb->get_results($sql);
 
 	if (count($result)) {
-		$r .= "Donations so far: ";
+		$r .= __('Donations so far', 'furik') . ': ';
 	}
 
 	$r .= "<table><tbody>";
