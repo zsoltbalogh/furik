@@ -35,16 +35,18 @@ function furik_process_payment() {
 		'furik_check' => furik_order_sign($backref->order_ref)
 	];
 
+	$vendor_ref = $backref->backStatusArray['PAYREFNO'];
+
 	if ($backref->checkResponse()){
-		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_SUCCESSFUL);
+		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_SUCCESSFUL, $vendor_ref);
 		header("Location: " . furik_url($furik_payment_successful_url, $url_config));
 	}
 	elseif ($_REQUEST['furik_timeout']) {
-		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_CANCELLED);
+		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_CANCELLED, $vendor_ref);
 		header("Location: $baseurl" . furik_url($furik_payment_timeout_url, $url_config));
 	}
 	else {
-		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_UNSUCCESSFUL);
+		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_UNSUCCESSFUL, $vendor_ref);
 		header("Location: $baseurl" . furik_url($furik_payment_unsuccessful_url, $url_config));
 	}
 	die();

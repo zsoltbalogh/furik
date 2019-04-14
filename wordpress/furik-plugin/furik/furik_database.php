@@ -28,6 +28,7 @@ function furik_install() {
 		campaign int,
 		message longtext,
 		transaction_status int,
+		vendor_ref varchar(255),
 		PRIMARY KEY  (id)
 	) $charset_collate;";
 
@@ -37,13 +38,13 @@ function furik_install() {
 	add_option('furik_db_version', 1);
 }
 
-function furik_update_transaction_status($order_ref, $status) {
+function furik_update_transaction_status($order_ref, $status, $vendor_ref) {
 	global $wpdb;
 
 	$table_name = $wpdb->prefix . 'furik_transactions';
 	$wpdb->update(
 		$table_name,
-		array("transaction_status" => $status),
+		array("transaction_status" => $status, "vendor_ref" => $vendor_ref),
 		array("transaction_id" => $order_ref)
 	);
 }
