@@ -14,6 +14,7 @@ include_once "furik_shortcode_campaigns.php";
 include_once "furik_shortcode_donate_link.php";
 include_once "furik_shortcode_donations.php";
 include_once "furik_shortcode_form.php";
+include_once "furik_shortcode_payment_info.php";
 
 include_once "furik_payment_processing.php";
 
