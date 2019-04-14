@@ -44,13 +44,17 @@ function furik_install() {
 	add_option('furik_db_version', 1);
 }
 
-function furik_update_transaction_status($order_ref, $status, $vendor_ref) {
+function furik_update_transaction_status($order_ref, $status, $vendor_ref = "") {
 	global $wpdb;
 
 	$table_name = $wpdb->prefix . 'furik_transactions';
+	$update = array("transaction_status" => $status);
+	if ($vendor_ref) {
+		$update["vendor_ref"] = $vendor_ref;
+	}
 	$wpdb->update(
 		$table_name,
-		array("transaction_status" => $status, "vendor_ref" => $vendor_ref),
+		$update,
 		array("transaction_id" => $order_ref)
 	);
 }
