@@ -21,6 +21,7 @@ function furik_process_payment() {
 		$furik_homepage_url,
 		$furik_payment_secret_key,
 		$furik_payment_successful_url,
+		$furik_payment_timeout_url,
 		$furik_payment_unsuccessful_url;
 
 	require_once 'patched_SimplePayment.class.php';
