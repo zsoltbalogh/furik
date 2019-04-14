@@ -43,11 +43,11 @@ function furik_process_payment() {
 	}
 	elseif ($_REQUEST['furik_timeout']) {
 		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_CANCELLED, $vendor_ref);
-		header("Location: $baseurl" . furik_url($furik_payment_timeout_url, $url_config));
+		header("Location: " . furik_url($furik_payment_timeout_url, $url_config));
 	}
 	else {
 		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_UNSUCCESSFUL, $vendor_ref);
-		header("Location: $baseurl" . furik_url($furik_payment_unsuccessful_url, $url_config));
+		header("Location: " . furik_url($furik_payment_unsuccessful_url, $url_config));
 	}
 	die();
 }
