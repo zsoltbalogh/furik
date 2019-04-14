@@ -6,6 +6,12 @@ define("FURIK_STATUS_CANCELLED", 3);
 define("FURIK_STATUS_IPN_SUCCESSFUL", 10);
 define("FURIK_STATUS_DISPLAYABLE", "1, 10");
 
+function furik_get_transaction($order_ref) {
+	global $wpdb;
+
+	return $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->prefix}furik_transactions WHERE transaction_id=%s", $order_ref));
+}
+
 function furik_get_post_id_from_order_ref($order_ref) {
 	global $wpdb;
 
