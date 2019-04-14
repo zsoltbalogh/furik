@@ -1,4 +1,10 @@
 <?php
+function furik_order_sign($order_ref) {
+	global $furik_payment_secret_key;
+
+	return md5($order_ref . $furik_payment_secret_key . "internal");
+}
+
 function furik_url($uri, $parameters = array(), $add_proto = true) {
 	global $furik_homepage_https, $furik_homepage_url;
 	$url = "";

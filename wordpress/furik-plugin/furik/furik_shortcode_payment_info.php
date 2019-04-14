@@ -4,9 +4,12 @@
  */
 function furik_shortcode_payment_info($atts) {
 	$s = "";
-	if ($_REQUEST['furik_order_ref']) {
-		$s .= __('Order reference', 'furik') . ': ' . $_REQUEST['furik_order_ref'] . '<br />';
+	$order_ref = "unknown";
+	if ($_REQUEST['furik_order_ref'] && furik_order_sign($_REQUEST['furik_order_ref']) == $_REQUEST['furik_check']) {
+		$order_ref = $_REQUEST['furik_order_ref'];
 	}
+
+	$s .= __('Order reference', 'furik') . ': ' . $order_ref . '<br />';
 	$s .= __('Date', 'furik') . ': ' . date("Y-m-d H:i:s");
 	return $s;
 }

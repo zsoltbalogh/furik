@@ -19,7 +19,6 @@ function furik_process_payment() {
 	global
 		$furik_homepage_https,
 		$furik_homepage_url,
-		$furik_payment_secret_key,
 		$furik_payment_successful_url,
 		$furik_payment_timeout_url,
 		$furik_payment_unsuccessful_url;
@@ -33,7 +32,7 @@ function furik_process_payment() {
 	$url_config = [
 		'campaign_id' => $campaign_id,
 		'furik_order_ref' => $backref->order_ref,
-		'furik_check' => md5($backref->order_ref . $furik_payment_secret_key . "internal")
+		'furik_check' => furik_order_sign($backref->order_ref)
 	];
 
 	if ($backref->checkResponse()){
