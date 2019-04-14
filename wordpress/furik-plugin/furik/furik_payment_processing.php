@@ -74,7 +74,29 @@ function furik_redirect() {
 	$campaign = get_post($campaign_id);
 
 	$orderCurrency = 'HUF';
-	$transactionId = str_replace(array('.', ':'), "", $_SERVER['SERVER_ADDR']) . @date("U", time()) . rand(1000, 9999);
+
+	$wpdb->insert(
+		"{$wpdb->prefix}furik_transactions",
+		array(
+			'time' => current_time( 'mysql' ),
+			'name' => $name,
+			'anon' => $anon,
+			'email' => $email,
+			'message' => $message,
+			'amount' => $amount,
+			'campaign' => $campaign_id
+		)
+	);
+
+	$local_id = $wpdb->insert_id;
+
+	$transactionId = substr(md5($_SERVER['SERVER_ADDR']), 0, 4) . '-' . $local_id;
+
+	$wpdb->update(
+		"{$wpdb->prefix}furik_transactions",
+		array("transaction_id" => $transactionId),
+		array("id" => $local_id)
+	);
 
 	$lu = new SimpleLiveUpdate(furik_get_simple_config(), $orderCurrency);
 	$lu->setField("ORDER_REF", $transactionId);
@@ -87,22 +109,9 @@ function furik_redirect() {
 	    'vat' => 0,
 	    'qty' => 1
 	));
+
 	$lu->setField("BILL_EMAIL", $email);
 	$display = $lu->createHtmlForm('SimplePayForm', 'auto', __('Redirecting to the payment partner page', 'furik'));
-
-	$wpdb->insert(
-		"{$wpdb->prefix}furik_transactions",
-		array(
-			'time' => current_time( 'mysql' ),
-			'transaction_id' => $transactionId,
-			'name' => $name,
-			'anon' => $anon,
-			'email' => $email,
-			'message' => $message,
-			'amount' => $amount,
-			'campaign' => $campaign_id
-		)
-	);
 
 	$results = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}furik_transactions WHERE transaction_id = %s", $transactionId), OBJECT);
 
