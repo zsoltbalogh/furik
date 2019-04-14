@@ -19,22 +19,33 @@ function furik_process_payment() {
 	global
 		$furik_homepage_https,
 		$furik_homepage_url,
+		$furik_payment_secret_key,
 		$furik_payment_successful_url,
 		$furik_payment_unsuccessful_url;
+
 	require_once 'patched_SimplePayment.class.php';
 
 	$backref = new SimpleBackRef(furik_get_simple_config(), "HUF");
 	$backref->order_ref = (isset($_REQUEST['order_ref'])) ? $_REQUEST['order_ref'] : 'N/A';
 
 	$campaign_id = furik_get_post_id_from_order_ref($backref->order_ref);
+	$url_config = [
+		'campaign_id' => $campaign_id,
+		'furik_order_ref' => $backref->order_ref,
+		'furik_check' => md5($backref->order_ref . $furik_payment_secret_key . "internal")
+	];
 
 	if ($backref->checkResponse()){
 		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_SUCCESSFUL);
-		header("Location: " . furik_url($furik_payment_successful_url, ['campaign_id' => $campaign_id]));
+		header("Location: " . furik_url($furik_payment_successful_url, $url_config));
+	}
+	elseif ($_REQUEST['furik_timeout']) {
+		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_CANCELLED);
+		header("Location: $baseurl" . furik_url($furik_payment_timeout_url, $url_config));
 	}
 	else {
 		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_UNSUCCESSFUL);
-		header("Location: $baseurl" . furik_url($furik_payment_unsuccessful_url, ['campaign_id' => $campaign_id]));
+		header("Location: $baseurl" . furik_url($furik_payment_unsuccessful_url, $url_config));
 	}
 	die();
 }
@@ -121,8 +132,9 @@ function furik_get_simple_config() {
 	    'SANDBOX' => !$furik_production_system,
 	    'PROTOCOL' => $furik_homepage_https ? 'https' : 'http',			//http or https
 
-	    'BACK_REF' => $furik_homepage_url,
-	    'TIMEOUT_URL' => $furik_homepage_url . $furik_payment_timeout_url,
+	    'BACK_REF' => furik_url('', ['furik_process_payment' => 1], false),
+	    'TIMEOUT_URL' => furik_url($furik_payment_timeout_url, ['furik_process_payment' => 1, 'furik_timeout' => 1], false),
+	    'ORDER_TIMEOUT' => 30,
 	    'IRN_BACK_URL' => $_SERVER['HTTP_HOST'] . '/irn.php',        //url of payment irn page
 	    'IDN_BACK_URL' => $_SERVER['HTTP_HOST'] . '/idn.php',        //url of payment idn page
 	    'IOS_BACK_URL' => $_SERVER['HTTP_HOST'] . '/ios.php',        //url of payment idn page
@@ -152,7 +164,7 @@ if ($_POST['furik_action'] == "redirect") {
 	furik_redirect();
 }
 
-if (isset($_GET['order_ref'])) {
+if (isset($_GET['furik_process_payment'])) {
 	furik_process_payment();
 }
 

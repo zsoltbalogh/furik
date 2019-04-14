@@ -1,7 +1,13 @@
 <?php
-function furik_url($url, $parameters = array()) {
+function furik_url($uri, $parameters = array(), $add_proto = true) {
 	global $furik_homepage_https, $furik_homepage_url;
-	$url = ($furik_homepage_https ? "https" : "http") . "://" . $furik_homepage_url . $url;
+	$url = "";
+
+	if ($add_proto) {
+		$url .= ($furik_homepage_https ? "https" : "http") . "://" ;
+	}
+
+	$url .= $furik_homepage_url . $uri;
 
 	if (count($parameters)) {
 		foreach ($parameters as $key => $value) {
