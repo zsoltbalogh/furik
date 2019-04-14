@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Furik\n"
-"POT-Creation-Date: 2019-04-07 13:07+0200\n"
-"PO-Revision-Date: 2019-04-07 13:13+0200\n"
+"POT-Creation-Date: 2019-04-14 15:13+0200\n"
+"PO-Revision-Date: 2019-04-14 15:14+0200\n"
 "Last-Translator: \n"
 "Language-Team: Furik\n"
 "Language: hu_HU\n"
@@ -128,21 +128,29 @@ msgstr "Nincs találat a kukában"
 msgid "Donation campaigns"
 msgstr "Támogatási kampányok"
 
-#: furik_payment_processing.php:49
+#: furik_payment_processing.php:64
 msgid "Please accept the data transmission agreement."
 msgstr "Kérjük fogadd el az adatkezelési nyilatkozatot."
 
-#: furik_payment_processing.php:75
+#: furik_payment_processing.php:114
 msgid "Redirecting to the payment partner page"
-msgstr "Átirányítás a pénzügyi szolgáltató partner oldalára."
+msgstr "Átirányítás a pénzügyi szolgáltató partner oldalára"
 
-#: furik_payment_processing.php:94
+#: furik_payment_processing.php:119
 msgid "Database error. Please contact the site administrator."
 msgstr "Adatbázis hiba. Kérjük vedd fel a kapcsolatot az oldal üzemeltetőivel."
 
-#: furik_payment_processing.php:99
+#: furik_payment_processing.php:124
 msgid "Redirecting to our payment partner."
-msgstr ""
+msgstr "Átirányítás a pénzügyi partnerünkhöz."
+
+#: furik_shortcode_donations.php:32
+msgid "Donations so far"
+msgstr "Eddigi támogatások"
+
+#: furik_shortcode_donations.php:40 furik_shortcode_form.php:39
+msgid "Anonymous donation"
+msgstr "Aninom támogatás"
 
 #: furik_shortcode_form.php:27
 msgid "Supported cause"
@@ -151,10 +159,6 @@ msgstr "Támogatott kezdeményezés"
 #: furik_shortcode_form.php:34
 msgid "Your name"
 msgstr "Neved"
-
-#: furik_shortcode_form.php:39
-msgid "Anonymous donation"
-msgstr "Aninom támogatás"
 
 #: furik_shortcode_form.php:45
 msgid "E-mail address"
@@ -170,8 +174,20 @@ msgstr "Üzenet"
 
 #: furik_shortcode_form.php:66
 msgid "I accept the data transmission declaration"
-msgstr "Az adatkezélési és továbbítási nyilatkozatot elfogadom."
+msgstr "Az adatkezélési és továbbítási nyilatkozatot elfogadom"
 
 #: furik_shortcode_form.php:70
 msgid "Donate"
 msgstr "Támogatás"
+
+#: furik_shortcode_payment_info.php:12
+msgid "SimplePay reference id"
+msgstr "SimplePay referenciaszám"
+
+#: furik_shortcode_payment_info.php:15
+msgid "Order reference"
+msgstr "Tranzakció azonosító"
+
+#: furik_shortcode_payment_info.php:16
+msgid "Date"
+msgstr "Dátum"
