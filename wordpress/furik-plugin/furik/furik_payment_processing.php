@@ -70,11 +70,13 @@ function furik_process_payment_form() {
 	$message = $_POST['furik_form_message'];
 	$campaign_id = is_numeric($_POST['furik_campaign']) ? $_POST['furik_campaign'] : 0;
 	$campaign = get_post($campaign_id);
+	$type = furik_numr("furik_form_type");
 
 	$wpdb->insert(
 		"{$wpdb->prefix}furik_transactions",
 		array(
 			'time' => current_time( 'mysql' ),
+			'transaction_type' => $type,
 			'name' => $name,
 			'anon' => $anon,
 			'email' => $email,
@@ -100,7 +102,15 @@ function furik_process_payment_form() {
 		die(__('Database error. Please contact the site administrator.', 'furik'));
 	}
 
-	furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $email);
+	if ($type == 0) {
+		furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $email);
+	}
+	elseif ($type == 1) {
+		furik_redirect_to_transfer_page($transactionId);
+	}
+	elseif ($type == 2) {
+		furik_redirect_to_thank_you_cash($transactionId);
+	}
 }
 
 function furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $email) {
@@ -124,6 +134,20 @@ function furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $e
 	echo $display;
 
 	die(__('Redirecting to the payment partner page', 'furik'));
+}
+
+function furik_redirect_to_transfer_page($transactionId) {
+	global $furik_payment_transfer_url;
+
+	header("Location: " . furik_url($furik_payment_transfer_url, ['transactionId' => $transactionId]));
+	die();
+}
+
+function furik_redirect_to_thank_you_cash($transactionId) {
+	global $furik_payment_cash_url;
+
+	header("Location: " . furik_url($furik_payment_cash_url, ['transactionId' => $transactionId]));
+	die();
 }
 
 /**

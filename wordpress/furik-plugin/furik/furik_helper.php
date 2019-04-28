@@ -1,4 +1,8 @@
 <?php
+function furik_numr($name, $def = 0) {
+	return is_numeric($_REQUEST[$name]) ? $_REQUEST[$name] : $def;
+}
+
 function furik_order_sign($order_ref) {
 	global $furik_payment_secret_key;
 
