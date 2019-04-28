@@ -1,6 +1,6 @@
 <?php
 /**
- * WordPress shortcode: [furik_form], paramters: amount and name. 
+ * WordPress shortcode: [furik_form], paramters: amount.
  */
 function furik_form_func( $atts ) {
 	global $furik_data_transmission_declaration_url;

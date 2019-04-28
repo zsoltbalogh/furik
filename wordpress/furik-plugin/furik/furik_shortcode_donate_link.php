@@ -1,12 +1,11 @@
 <?php
 /**
- * WordPress shortcode: [furik_donate_link], paramters: amount and name.
+ * WordPress shortcode: [furik_donate_link], paramters: amount.
  */
 function furik_shortcode_donate_link( $atts ) {
 	global $furik_donations_url;
     $a = shortcode_atts( array(
-		'amount' => '5000',
-		'name' => '',
+		'amount' => '5000'
     ), $atts );
 
     $post = get_post();
