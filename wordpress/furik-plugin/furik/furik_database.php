@@ -6,6 +6,10 @@ define("FURIK_STATUS_CANCELLED", 3);
 define("FURIK_STATUS_IPN_SUCCESSFUL", 10);
 define("FURIK_STATUS_DISPLAYABLE", "1, 10");
 
+define("FURIK_TRANSACTION_TYPE_SIMPLEPAY", 0);
+define("FURIK_TRANSACTION_TYPE_TRANSFER", 1);
+define("FURIK_TRANSACTION_TYPE_CASH", 2);
+
 function furik_get_transaction($order_ref) {
 	global $wpdb;
 
@@ -27,6 +31,7 @@ function furik_install() {
 		id int NOT NULL AUTO_INCREMENT,
 		time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
 		transaction_id varchar(100) NOT NULL,
+		transaction_type int DEFAULT 0,
 		name varchar(255),
 		anon int,
 		email varchar(255),

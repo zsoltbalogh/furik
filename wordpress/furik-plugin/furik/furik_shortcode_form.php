@@ -19,7 +19,7 @@ function furik_form_func( $atts ) {
     }
 
     $r = "<form method=\"POST\" action=\"".$_SERVER['REQUEST_URI']."\">";
-    $r .= "<input type=\"hidden\" name=\"furik_action\" value=\"redirect\" />";
+    $r .= "<input type=\"hidden\" name=\"furik_action\" value=\"process_payment_form\" />";
     $r .= "<input type=\"hidden\" name=\"furik_campaign\" value=\"$campaign_id\" />";
 
 
@@ -58,6 +58,15 @@ function furik_form_func( $atts ) {
     $r .= "<div class=\"form-field\">";
     $r .= "<label for=\"furik_form_message\">".__('Message', 'furik').":</label>";
     $r .= "<textarea name=\"furik_form_message\" id=\"furik_form_message\"></textarea>";
+    $r .= "</div>";
+
+    $r .= "<br />";
+
+    $r .= "<div class=\"form-field\">";
+    $r .= __('Type of donation', 'furik') . ": <br />";
+    $r .= "<label for=\"furik_form_type_0\"><input type=\"radio\" id=\"furik_form_type_0\" name=\"furik_form_type\" checked=\"1\">".__('Online payment', 'furik')."</label>";
+    $r .= "<label for=\"furik_form_type_1\"><input type=\"radio\" id=\"furik_form_type_1\" name=\"furik_form_type\">".__('Bank transfer', 'furik')."</label>";
+    $r .= "<label for=\"furik_form_type_2\"><input type=\"radio\" id=\"furik_form_type_2\" name=\"furik_form_type\">".__('Cash donation', 'furik')."</label>";
     $r .= "</div>";
 
     $r .= "<br />";

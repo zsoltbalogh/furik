@@ -55,10 +55,8 @@ function furik_process_payment() {
 /**
  * Prepares an automatic redirect link to SimplePay with the posted data
  */
-function furik_redirect() {
+function furik_process_payment_form() {
 	global $wpdb;
-
-	require_once 'patched_SimplePayment.class.php';
 
 	if (!$_POST['furik_form_accept']) {
 		_e('Please accept the data transmission agreement.', 'furik');
@@ -72,8 +70,6 @@ function furik_redirect() {
 	$message = $_POST['furik_form_message'];
 	$campaign_id = is_numeric($_POST['furik_campaign']) ? $_POST['furik_campaign'] : 0;
 	$campaign = get_post($campaign_id);
-
-	$orderCurrency = 'HUF';
 
 	$wpdb->insert(
 		"{$wpdb->prefix}furik_transactions",
@@ -98,12 +94,24 @@ function furik_redirect() {
 		array("id" => $local_id)
 	);
 
-	$lu = new SimpleLiveUpdate(furik_get_simple_config(), $orderCurrency);
+	$results = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}furik_transactions WHERE transaction_id = %s", $transactionId), OBJECT);
+
+	if (count($results) != 1) {
+		die(__('Database error. Please contact the site administrator.', 'furik'));
+	}
+
+	furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $email);
+}
+
+function furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $email) {
+	require_once 'patched_SimplePayment.class.php';
+
+	$lu = new SimpleLiveUpdate(furik_get_simple_config(), 'HUF');
 	$lu->setField("ORDER_REF", $transactionId);
 	$lu->setField("LANGUAGE", "HU");
 	$lu->addProduct(array(
 	    'name' => "$campaign->post_title",
-	    'code' => "$campaign_id",
+	    'code' => "$campaign->post_id",
 	    'info' => "$campaign->post_title",
 	    'price' => $amount,
 	    'vat' => 0,
@@ -113,15 +121,9 @@ function furik_redirect() {
 	$lu->setField("BILL_EMAIL", $email);
 	$display = $lu->createHtmlForm('SimplePayForm', 'auto', __('Redirecting to the payment partner page', 'furik'));
 
-	$results = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}furik_transactions WHERE transaction_id = %s", $transactionId), OBJECT);
-
-	if (count($results) != 1) {
-		die(__('Database error. Please contact the site administrator.'));
-	}
-
 	echo $display;
 
-	die(__('Redirecting to our payment partner.'));
+	die(__('Redirecting to the payment partner page', 'furik'));
 }
 
 /**
@@ -171,8 +173,8 @@ function furik_get_simple_config() {
 	return $config;
 }
 
-if ($_POST['furik_action'] == "redirect") {
-	furik_redirect();
+if ($_POST['furik_action'] == "process_payment_form") {
+	furik_process_payment_form();
 }
 
 if (isset($_GET['furik_process_payment'])) {
