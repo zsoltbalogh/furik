@@ -24,14 +24,14 @@ function furik_form_func( $atts ) {
 
 
     $r .= "<div class=\"form-field form-required\">";
-    $r .= "<label for=\"furik_form_email\">".__('Supported cause', 'furik').":</label>";
-    $r .= "<input type=\"text\" id=\"furik_campaign\" disabled=\"1\" value=\"$campaign\"/>";
+    $r .= "<label for=\"furik_form_campaign\">".__('Supported cause', 'furik').":</label>";
+    $r .= "<input type=\"text\" id=\"furik_form_campaign\" disabled=\"1\" value=\"$campaign\"/>";
     $r .= "</div>";
 
     $r .= "<br />";
 
     $r .= "<div class=\"form-field form-required\">";
-    $r .= "<label for=\"furik_form_email\">".__('Your name', 'furik').":</label>";
+    $r .= "<label for=\"furik_form_name\">".__('Your name', 'furik').":</label>";
     $r .= "<input type=\"text\" name=\"furik_form_name\" id=\"furik_form_name\" required=\"1\"/>";
     $r .= "</div>";
 
