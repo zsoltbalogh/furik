@@ -27,4 +27,4 @@ Lists the donations.
 Prepares a donation form with the provided `amount` value as default donation amount.
 
 ### [furik_payment_info]
-Provides information about the payment (date, referece ids), it's used on return pages.
+Provides information about the payment (date, referece ids), it's used on return page.
