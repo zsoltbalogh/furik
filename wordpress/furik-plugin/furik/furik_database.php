@@ -43,10 +43,32 @@ function furik_install() {
 		PRIMARY KEY  (id)
 	) $charset_collate;";
 
+	$sql_transaction_log = "CREATE TABLE {$wpdb->prefix}furik_transaction_log (
+		id int NOT NULL AUTO_INCREMENT,
+		time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+		transaction_id varchar(100) NOT NULL,
+		message text,
+		PRIMARY KEY (id)
+	) $charset_collate;";
+
 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 	dbDelta($sql_transactions);
+	dbDelta($sql_transaction_log);
 
 	add_option('furik_db_version', 1);
+}
+
+function furik_transaction_log($transaction_id, $message) {
+	global $wpdb;
+
+	$wpdb->insert(
+		"{$wpdb->prefix}furik_transaction_log",
+		array(
+			'time' => current_time( 'mysql' ),
+			'transaction_id' => $transaction_id,
+			'message' => $message
+		)
+	);
 }
 
 function furik_update_transaction_status($order_ref, $status, $vendor_ref = "") {

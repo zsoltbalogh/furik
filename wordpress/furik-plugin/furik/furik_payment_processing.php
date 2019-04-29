@@ -37,6 +37,10 @@ function furik_process_payment() {
 
 	$vendor_ref = $backref->backStatusArray['PAYREFNO'];
 
+	if ($_REQUEST['err']) {
+		furik_transaction_log($backref->order_ref, $_REQUEST['err']);
+	}
+
 	if ($backref->checkResponse()){
 		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_SUCCESSFUL, $vendor_ref);
 		header("Location: " . furik_url($furik_payment_successful_url, $url_config));
@@ -69,7 +73,7 @@ function furik_process_payment_form() {
 	$email = $_POST['furik_form_email'];
 	$message = $_POST['furik_form_message'];
 	$campaign_id = is_numeric($_POST['furik_campaign']) ? $_POST['furik_campaign'] : 0;
-	$campaign = get_post($campaign_id);
+	$campaign = $campaign_id > 0 ? get_post($campaign_id) : null;
 	$type = furik_numr("furik_form_type");
 
 	$wpdb->insert(
@@ -119,17 +123,29 @@ function furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $e
 	$lu = new SimpleLiveUpdate(furik_get_simple_config(), 'HUF');
 	$lu->setField("ORDER_REF", $transactionId);
 	$lu->setField("LANGUAGE", "HU");
-	$lu->addProduct(array(
-	    'name' => "$campaign->post_title",
-	    'code' => "$campaign->post_id",
-	    'info' => "$campaign->post_title",
-	    'price' => $amount,
-	    'vat' => 0,
-	    'qty' => 1
-	));
+	if ($campaign) {
+		$lu->addProduct(array(
+		    'name' => "$campaign->post_title",
+		    'code' => "$campaign->ID",
+		    'info' => "$campaign->post_title",
+		    'price' => $amount,
+		    'vat' => 0,
+		    'qty' => 1
+		));
+	}
+	else {
+		$lu->addProduct(array(
+		    'name' => __('General donation', 'furik'),
+		    'code' => 0,
+		    'info' => __('General donation', 'furik'),
+		    'price' => $amount,
+		    'vat' => 0,
+		    'qty' => 1
+		));
+	}
 
 	$lu->setField("BILL_EMAIL", $email);
-	$display = $lu->createHtmlForm('SimplePayForm', 'auto', __('Redirecting to the payment partner page', 'furik'));
+	$display = $lu->createHtmlForm('SimplePayForm', 'button', __('Redirecting to the payment partner page', 'furik'));
 
 	echo $display;
 
