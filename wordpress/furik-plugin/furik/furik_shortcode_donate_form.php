@@ -1,8 +1,8 @@
 <?php
 /**
- * WordPress shortcode: [furik_form], paramters: amount.
+ * WordPress shortcode: [furik_donate_form], paramters: amount.
  */
-function furik_form_func( $atts ) {
+function furik_shortcode_donate_form( $atts ) {
 	global $furik_data_transmission_declaration_url;
     $a = shortcode_atts( array(
 	   'amount' => '5000',
@@ -84,4 +84,4 @@ function furik_form_func( $atts ) {
     return $r;
 }
 
-add_shortcode( 'furik_form', 'furik_form_func' );
+add_shortcode( 'furik_donate_form', 'furik_shortcode_donate_form' );

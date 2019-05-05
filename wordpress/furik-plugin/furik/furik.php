@@ -11,11 +11,10 @@ include_once "furik_database.php";
 
 include_once "furik_shortcode_back_to_campaign_url.php";
 include_once "furik_shortcode_campaigns.php";
+include_once "furik_shortcode_donate_form.php";
 include_once "furik_shortcode_donate_link.php";
 include_once "furik_shortcode_donations.php";
-include_once "furik_shortcode_form.php";
 include_once "furik_shortcode_payment_info.php";
-
 include_once "furik_payment_processing.php";
 
 include_once "furik_admin_donations.php";
