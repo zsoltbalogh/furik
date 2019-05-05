@@ -33,8 +33,11 @@ function furik_shortcode_donations($atts) {
 	}
 
 	$r .= "<table><tbody>";
+	$c = 0;
 	foreach ($result as $donation) {
-		$r .= "<tr><td>".substr($donation->time, 0, 10)."</td>";
+		$c++;
+
+		$r .= "<tr class=\"furik-table-" . ($c % 2 == 0 ? "even" : "odd"). "\"><td>".substr($donation->time, 0, 10)."</td>";
 
 		if ($donation->anon) {
 			$r .= "<td>".__('Anonymous donation', 'furik')."</td>";
@@ -43,7 +46,7 @@ function furik_shortcode_donations($atts) {
 			$r .= "<td>".esc_html($donation->name)."</td>";
 		}
 
-		$r .= "<td>{$donation->amount}</td>";
+		$r .= "<td nowrap>".number_format($donation->amount, 0, ',', ' ') ." Ft</td>";
 		if (!$post->parent_post) {
 			if ($post->ID != $donation->campaign_id) {
 				$r .= "<td>".esc_html($donation->campaign_name)."</td>";
