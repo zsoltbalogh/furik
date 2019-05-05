@@ -28,3 +28,6 @@ Prepares a donation form with the provided `amount` value as default donation am
 
 ### [furik_payment_info]
 Provides information about the payment (date, referece ids), it's used on return page.
+
+### [furik_progress]
+Shows the percentage of the collected amount. The full amount can be specified with the "amount" variable, if it's not set, the full amount is shown.
