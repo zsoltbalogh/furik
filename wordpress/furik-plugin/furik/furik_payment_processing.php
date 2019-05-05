@@ -145,7 +145,7 @@ function furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $e
 	}
 
 	$lu->setField("BILL_EMAIL", $email);
-	$display = $lu->createHtmlForm('SimplePayForm', 'button', __('Redirecting to the payment partner page', 'furik'));
+	$display = $lu->createHtmlForm('SimplePayForm', 'auto', __('Redirecting to the payment partner page', 'furik'));
 
 	echo $display;
 
