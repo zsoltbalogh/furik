@@ -30,7 +30,7 @@ class Donations_List extends WP_List_Table {
 	public function column_transaction_status($item) {
 		switch ($item['transaction_status']) {
 			case "":
-				return __('Pending card payment', 'furik');
+				return __('Pending', 'furik');
 			case 1:
 				return __('Successful, waiting for confirmation', 'furik');
 			case 2:
@@ -40,7 +40,19 @@ class Donations_List extends WP_List_Table {
 			default:
 				return __('Unknown', 'furik');
 		}
+	}
 
+	public function column_transaction_type($item) {
+		switch ($item['transaction_type']) {
+			case 0:
+				return __('SimplePay Card', 'furik');
+			case 1:
+				return __('Bank transfer', 'furik');
+			case 2:
+				return __('Cash payment', 'furik');
+			default:
+				return __('Unknown', 'furik');
+		}
 	}
 
 	public static function get_donations($per_page = 5, $page_number = 1) {
@@ -81,6 +93,7 @@ class Donations_List extends WP_List_Table {
 			'name' => __('Name', 'furik'),
 			'email' => __('E-mail', 'furik'),
 		    'amount' => __('Amount', 'furik'),
+		    'transaction_type' => __('Type', 'furik'),
 		    'campaign_name' => __('Campaign', 'furik'),
 		    'time' => __('Time', 'sp'),
 		    'transaction_status' => __('Status', 'furik')
@@ -94,6 +107,7 @@ class Donations_List extends WP_List_Table {
 			'name' => array('name', false),
 			'email' => array('email', false),
 			'amount' => array('amount', false),
+			'transaction_type' => array('transaction_type', false),
 			'campaign_name' => array('campaign_name', false),
 			'time' => array('time', true),
 			'transaction_status' => array('transaction_status', false)
