@@ -29,7 +29,40 @@ function furik_shortcode_progress($atts) {
 		ORDER BY time DESC";
 
 	$result = $wpdb->get_var($sql);
-	$r .= "Amount: $result";
+
+	$r .= "<p class=\"furik-collected\">".number_format($result, 0, ',', ' ') . " Ft</p>";
+
+
+	if ($a['amount'] > 0) {
+		$percentage = 1.0 * $result/$a['amount']*100;
+		$r .= "<style>
+				.furik-progress-bar {
+					background-color: #aaaaaaa;
+					height: 30px;
+					padding: 5px;
+					width: 500px;
+					margin: 5px 0;
+					border-radius: 5px;
+					box-shadow: 0 1px 5px #444 inset, 0 1px 0 #888;
+					}
+				.furik-progress-bar span {
+					display: inline-block;
+					float: left;
+					height: 100%;
+					border-radius: 3px;
+					box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
+					transition: width .4s ease-in-out;
+					overflow: hidden;
+					background-color: #fecf23;
+					}
+				</style>";
+		$r .= "<p class=\"furik-goal\">".__('Goal', 'furik') . ": " . number_format($a['amount'], 0, ',', ' ') . " Ft</p>";
+		$r .= "<p class=\"furik-percentage\">" . $percentage . "% ".__('completed', 'furik')."</p>";
+		$r .= "<div class=\"furik-progress-bar\"><span style=\"width: " . ($percentage > 100 ? 100 : $percentage) . "%\"></span></div>";
+	}
+	else {
+		$r .= "<p class=\"furik-collected\">$result Ft</p>";
+	}
 
     return $r;
 }
