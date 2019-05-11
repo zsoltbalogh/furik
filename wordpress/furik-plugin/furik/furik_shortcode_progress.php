@@ -34,7 +34,7 @@ function furik_shortcode_progress($atts) {
 
 
 	if ($a['amount'] > 0) {
-		$percentage = 1.0 * $result/$a['amount']*100;
+		$percentage = round(1.0 * $result/$a['amount']*100);
 		$r .= "<style>
 				.furik-progress-bar {
 					background-color: #aaaaaaa;
