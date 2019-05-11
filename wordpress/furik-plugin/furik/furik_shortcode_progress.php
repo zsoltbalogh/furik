@@ -63,9 +63,9 @@ function furik_shortcode_progress($atts) {
 					background-color: #D44236;
 					}
 				</style>";
-		$r .= "<p class=\"furik-goal\">".__('Goal', 'furik') . ": " . number_format($amount, 0, ',', ' ') . " Ft</p>";
-		$r .= "<p class=\"furik-percentage\">" . $percentage . "% ".__('completed', 'furik')."</p>";
 		$r .= "<div class=\"furik-progress-bar\"><span style=\"width: " . ($percentage > 100 ? 100 : $percentage) . "%\"></span></div>";
+		$r .= "<p class=\"furik-percentage\">" . $percentage . "% ".__('completed', 'furik')."</p>";
+		$r .= "<p class=\"furik-goal\">".__('Goal', 'furik') . ": " . number_format($amount, 0, ',', ' ') . " Ft</p>";
 	}
 
     return $r;
