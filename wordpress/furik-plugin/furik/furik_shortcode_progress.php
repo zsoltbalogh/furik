@@ -30,7 +30,7 @@ function furik_shortcode_progress($atts) {
 
 	$result = $wpdb->get_var($sql);
 
-	$r .= "<p class=\"furik-collected\">".number_format($result, 0, ',', ' ') . " Ft</p>";
+	$r .= "<p class=\"furik-collected\">" . __('Donations so far', 'furik') . ': ' . number_format($result, 0, ',', ' ') . " Ft</p>";
 
 
 	if ($a['amount'] > 0) {
@@ -43,7 +43,7 @@ function furik_shortcode_progress($atts) {
 					width: 500px;
 					margin: 5px 0;
 					border-radius: 5px;
-					box-shadow: 0 1px 5px #444 inset, 0 1px 0 #888;
+					box-shadow: 0 1px 1px #444 inset, 0 1px 0 #888;
 					}
 				.furik-progress-bar span {
 					display: inline-block;
@@ -53,7 +53,7 @@ function furik_shortcode_progress($atts) {
 					box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
 					transition: width .4s ease-in-out;
 					overflow: hidden;
-					background-color: #fecf23;
+					background-color: #D44236;
 					}
 				</style>";
 		$r .= "<p class=\"furik-goal\">".__('Goal', 'furik') . ": " . number_format($a['amount'], 0, ',', ' ') . " Ft</p>";

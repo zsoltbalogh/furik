@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Furik\n"
-"POT-Creation-Date: 2019-05-11 13:05+0200\n"
-"PO-Revision-Date: 2019-05-11 13:08+0200\n"
+"POT-Creation-Date: 2019-05-11 13:18+0200\n"
+"PO-Revision-Date: 2019-05-11 13:18+0200\n"
 "Last-Translator: \n"
 "Language-Team: Furik\n"
 "Language: hu_HU\n"
@@ -202,8 +202,8 @@ msgid "Donate"
 msgstr "Támogatás"
 
 #: furik_shortcode_donations.php:32
-msgid "Donations so far"
-msgstr "Eddigi támogatások"
+msgid "No donations yet. Be the first one!"
+msgstr "Egyelőre nem érkezett be támogatás. Legyél Te az első!"
 
 #: furik_shortcode_payment_info.php:12
 msgid "SimplePay reference id"
@@ -217,13 +217,17 @@ msgstr "Tranzakció azonosító"
 msgid "Date"
 msgstr "Dátum"
 
+#: furik_shortcode_progress.php:33
+msgid "Donations so far"
+msgstr "Eddigi támogatások"
+
 #: furik_shortcode_progress.php:59
 msgid "Goal"
 msgstr "Cél"
 
 #: furik_shortcode_progress.php:60
 msgid "completed"
-msgstr "Teljesítve"
+msgstr "teljesítve"
 
 #~ msgid "Redirecting to our payment partner."
 #~ msgstr "Átirányítás a pénzügyi partnerünkhöz."

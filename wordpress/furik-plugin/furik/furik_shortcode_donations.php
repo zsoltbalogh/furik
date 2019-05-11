@@ -28,37 +28,38 @@ function furik_shortcode_donations($atts) {
 
 	$result = $wpdb->get_results($sql);
 
-	if (count($result)) {
-		$r .= __('Donations so far', 'furik') . ': ';
+	if (!count($result)) {
+		$r .= __('No donations yet. Be the first one!', 'furik') . ': ';
 	}
+	else {
+		$r .= "<table><tbody>";
+		$c = 0;
+		foreach ($result as $donation) {
+			$c++;
 
-	$r .= "<table><tbody>";
-	$c = 0;
-	foreach ($result as $donation) {
-		$c++;
+			$r .= "<tr class=\"furik-table-" . ($c % 2 == 0 ? "even" : "odd"). "\"><td>".substr($donation->time, 0, 10)."</td>";
 
-		$r .= "<tr class=\"furik-table-" . ($c % 2 == 0 ? "even" : "odd"). "\"><td>".substr($donation->time, 0, 10)."</td>";
-
-		if ($donation->anon) {
-			$r .= "<td>".__('Anonymous donation', 'furik')."</td>";
-		}
-		else {
-			$r .= "<td>".esc_html($donation->name)."</td>";
-		}
-
-		$r .= "<td nowrap>".number_format($donation->amount, 0, ',', ' ') ." Ft</td>";
-		if (!$post->parent_post) {
-			if ($post->ID != $donation->campaign_id) {
-				$r .= "<td>".esc_html($donation->campaign_name)."</td>";
+			if ($donation->anon) {
+				$r .= "<td>".__('Anonymous donation', 'furik')."</td>";
 			}
 			else {
-				$r .= "<td></td>";
+				$r .= "<td>".esc_html($donation->name)."</td>";
 			}
+
+			$r .= "<td nowrap>".number_format($donation->amount, 0, ',', ' ') ." Ft</td>";
+			if (!$post->parent_post) {
+				if ($post->ID != $donation->campaign_id) {
+					$r .= "<td>".esc_html($donation->campaign_name)."</td>";
+				}
+				else {
+					$r .= "<td></td>";
+				}
+			}
+			$r .= "<td>".esc_html($donation->message)."</td>";
+			$r .= "</tr>";
 		}
-		$r .= "<td>".esc_html($donation->message)."</td>";
-		$r .= "</tr>";
+		$r .= "</tbody></table>";
 	}
-	$r .= "</tbody></table>";
 
     return $r;
 }
