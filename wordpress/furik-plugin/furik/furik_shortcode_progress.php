@@ -67,9 +67,6 @@ function furik_shortcode_progress($atts) {
 		$r .= "<p class=\"furik-percentage\">" . $percentage . "% ".__('completed', 'furik')."</p>";
 		$r .= "<div class=\"furik-progress-bar\"><span style=\"width: " . ($percentage > 100 ? 100 : $percentage) . "%\"></span></div>";
 	}
-	else {
-		$r .= "<p class=\"furik-collected\">$result Ft</p>";
-	}
 
     return $r;
 }
