@@ -10,6 +10,13 @@ function furik_shortcode_progress($atts) {
 	global $wpdb;
 
     $post = get_post();
+    $amount = $a['amount'];
+    if (!$amount) {
+		$meta = get_post_custom($post->ID);
+		if (is_numeric($meta['GOAL'][0])) {
+			$amount = $meta['GOAL'][0];
+		}
+    }
     $campaigns = get_posts(['post_parent' => $post->ID, 'post_type' => 'campaign']);
     $ids = array();
     $ids[] = $post->ID;
@@ -30,17 +37,17 @@ function furik_shortcode_progress($atts) {
 
 	$result = $wpdb->get_var($sql);
 
-	$r .= "<p class=\"furik-collected\">" . __('Donations so far', 'furik') . ': ' . number_format($result, 0, ',', ' ') . " Ft</p>";
+	$r .= "<p class=\"furik-collected\">" . number_format($result, 0, ',', ' ') . " Ft</p>";
 
 
-	if ($a['amount'] > 0) {
-		$percentage = round(1.0 * $result/$a['amount']*100);
+	if ($amount > 0) {
+		$percentage = round(1.0 * $result/$amount*100);
 		$r .= "<style>
 				.furik-progress-bar {
 					background-color: #aaaaaaa;
-					height: 30px;
+					height: 20px;
 					padding: 5px;
-					width: 500px;
+					width: 200px;
 					margin: 5px 0;
 					border-radius: 5px;
 					box-shadow: 0 1px 1px #444 inset, 0 1px 0 #888;
@@ -56,7 +63,7 @@ function furik_shortcode_progress($atts) {
 					background-color: #D44236;
 					}
 				</style>";
-		$r .= "<p class=\"furik-goal\">".__('Goal', 'furik') . ": " . number_format($a['amount'], 0, ',', ' ') . " Ft</p>";
+		$r .= "<p class=\"furik-goal\">".__('Goal', 'furik') . ": " . number_format($amount, 0, ',', ' ') . " Ft</p>";
 		$r .= "<p class=\"furik-percentage\">" . $percentage . "% ".__('completed', 'furik')."</p>";
 		$r .= "<div class=\"furik-progress-bar\"><span style=\"width: " . ($percentage > 100 ? 100 : $percentage) . "%\"></span></div>";
 	}
