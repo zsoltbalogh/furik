@@ -26,6 +26,10 @@ Lists the donations.
 ### [furik_form amount=5000]
 Prepares a donation form with the provided `amount` value as default donation amount.
 
+### [furik_order_ref]
+Displays the order reference if it's valid. Used on the bank transfer thank you pages.
+
+
 ### [furik_payment_info]
 Provides information about the payment (date, referece ids), it's used on return page.
 

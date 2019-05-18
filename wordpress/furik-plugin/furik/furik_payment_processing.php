@@ -154,17 +154,28 @@ function furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $e
 
 function furik_redirect_to_transfer_page($transactionId) {
 	global $furik_payment_transfer_url;
+	$url_config = [
+		'campaign_id' => $campaign_id,
+		'furik_order_ref' => $transactionId,
+		'furik_check' => furik_order_sign($transactionId)
+	];
 
 	furik_update_transaction_status($transactionId, FURIK_STATUS_TRANSFER_ADDED);
-	header("Location: " . furik_url($furik_payment_transfer_url, ['transactionId' => $transactionId]));
+	header("Location: " . furik_url($furik_payment_transfer_url, $url_config));
 	die();
 }
 
 function furik_redirect_to_thank_you_cash($transactionId) {
 	global $furik_payment_cash_url;
 
+	$url_config = [
+		'campaign_id' => $campaign_id,
+		'furik_order_ref' => $transactionId,
+		'furik_check' => furik_order_sign($transactionId)
+	];
+
 	furik_update_transaction_status($transactionId, FURIK_STATUS_CASH_ADDED);
-	header("Location: " . furik_url($furik_payment_cash_url, ['transactionId' => $transactionId]));
+	header("Location: " . furik_url($furik_payment_cash_url, $url_config));
 	die();
 }
 
