@@ -29,7 +29,7 @@ function furik_shortcode_donations($atts) {
 	$result = $wpdb->get_results($sql);
 
 	if (!count($result)) {
-		$r .= __('No donations yet. Be the first one!', 'furik') . ': ';
+		$r .= __('No donations yet. Be the first one!', 'furik');
 	}
 	else {
 		$r .= "<table><tbody>";
