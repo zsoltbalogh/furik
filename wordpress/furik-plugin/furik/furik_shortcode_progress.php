@@ -17,7 +17,7 @@ function furik_shortcode_progress($atts) {
 			$amount = $meta['GOAL'][0];
 		}
     }
-    $campaigns = get_posts(['post_parent' => $post->ID, 'post_type' => 'campaign']);
+    $campaigns = get_posts(['post_parent' => $post->ID, 'post_type' => 'campaign', 'numberposts' => 100]);
     $ids = array();
     $ids[] = $post->ID;
 
