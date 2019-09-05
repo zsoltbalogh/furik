@@ -9,8 +9,15 @@ function furik_shortcode_donate_form( $atts ) {
     ), $atts );
 
     $amount = is_numeric($_GET['furik_amount']) ? $_GET['furik_amount'] : $atts['amount'];
+
     if (is_numeric($_GET['furik_campaign'])) {
         $post = get_post($_GET['furik_campaign']);
+    }
+    else {
+        $post = get_post();
+    }
+
+    if ($post->post_type == 'campaign') {
         $campaign = $post->post_title;
         $campaign_id = $post->ID;
     }
