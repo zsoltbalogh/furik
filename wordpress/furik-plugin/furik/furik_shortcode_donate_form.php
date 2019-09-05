@@ -6,6 +6,7 @@ function furik_shortcode_donate_form( $atts ) {
 	global $furik_data_transmission_declaration_url;
     $a = shortcode_atts( array(
 	   'amount' => '5000',
+       'skip_message' => false
     ), $atts );
 
     $amount = is_numeric($_GET['furik_amount']) ? $_GET['furik_amount'] : $atts['amount'];
@@ -62,12 +63,14 @@ function furik_shortcode_donate_form( $atts ) {
 
     $r .= "<br />";
 
-    $r .= "<div class=\"form-field\">";
-    $r .= "<label for=\"furik_form_message\">".__('Message', 'furik').":</label>";
-    $r .= "<textarea name=\"furik_form_message\" id=\"furik_form_message\"></textarea>";
-    $r .= "</div>";
+    if (!$a['skip_message']) {
+        $r .= "<div class=\"form-field\">";
+        $r .= "<label for=\"furik_form_message\">".__('Message', 'furik').":</label>";
+        $r .= "<textarea name=\"furik_form_message\" id=\"furik_form_message\"></textarea>";
+        $r .= "</div>";
 
-    $r .= "<br />";
+        $r .= "<br />";
+    }
 
     $r .= "<div class=\"form-field\">";
     $r .= __('Type of donation', 'furik') . ": <br />";
