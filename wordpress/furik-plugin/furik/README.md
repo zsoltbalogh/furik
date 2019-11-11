@@ -15,7 +15,7 @@ the wordpress site + the `furik_process_ipn=1` request parameter. Example:
 Provides an URL back to the campaign which received the payment. It requires the campaign_id variable set in the request.
 
 ### [furik_campaigns]
-Lists all the child campaigns.
+Lists all the child campaigns. It can be configured with the `show` parameter which lists the type of data we should list and the order, comma separated. Available data types: `image`, `title`, `excerpt`. The `image` URL is taken from the `IMAGE` custom field of the campaign. Default value: `image,title,excerpt`.
 
 ### [furik_donate_link amount=5000]
 Prepares a link to the donations page and sets the default amount to the `amount` value. If this is put on a campaign page, the campaign information is included in the donation.
