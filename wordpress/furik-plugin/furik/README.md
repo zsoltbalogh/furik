@@ -34,4 +34,4 @@ Displays the order reference if it's valid. Used on the bank transfer thank you 
 Provides information about the payment (date, referece ids), it's used on return page.
 
 ### [furik_progress]
-Shows the percentage of the collected amount. The full amount can be specified with the "amount" variable, if it's not set, the full amount is shown.
+Shows the percentage of the collected amount. The full amount can be specified with the "amount" variable, if it's not set, the full amount is shown. The goal of the campaign can be set in the `GOAL` custom field.
