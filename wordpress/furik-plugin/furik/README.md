@@ -15,7 +15,7 @@ the wordpress site + the `furik_process_ipn=1` request parameter. Example:
 Provides an URL back to the campaign which received the payment. It requires the campaign_id variable set in the request.
 
 ### [furik_campaigns]
-Lists all the child campaigns. It can be configured with the `show` parameter which lists the type of data we should list and the order, comma separated. Available data types: `image`, `title`, `excerpt`. The `image` URL is taken from the `IMAGE` custom field of the campaign. Default value: `image,title,excerpt`.
+Lists all the child campaigns. It can be configured with the `show` parameter which lists the type of data we should list and the order, comma separated. Available data types: `image`, `title`, `excerpt`, `progress_bar`, `completed`. The `image` URL is taken from the `IMAGE` custom field of the campaign. Default value: `image,title,excerpt,progress_bar,completed`.
 
 ### [furik_donate_form]
 Displays the donation form. The `amount` is the default amount value in the form. If the `enable_cash` option is set to true, the cash donation option appears. If the `AMOUNT_CONTENT` custom field is set for the campaign or the parent campaign, it replaces the amount box. This field should contain a form field with the name `furik_form_amount`. If the `furik_form_amount` value is `other`, it will use the value of the `furik_form_amount_other` POST variable.

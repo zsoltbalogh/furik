@@ -4,7 +4,7 @@
  */
 function furik_shortcode_campaigns($atts) {
 	$a = shortcode_atts( array(
-	   'show' => 'image,title,excerpt,progress_bar'
+	   'show' => 'image,title,excerpt,progress_bar,completed'
 	), $atts );
 
 	$post = get_post();
@@ -28,8 +28,10 @@ function furik_shortcode_campaigns($atts) {
 					$r .= "<div class=\"sub-campaign-title\">".esc_html($campaign->post_excerpt)."</div>";
 					break;
 				case "progress_bar":
-					$r .= print_r($progress, true);
 					$r .= "<div class=\"sub-campaign-progress-bar\">" . $progress['progress_bar'] . "</div>";
+					break;
+				case "completed":
+					$r .= "<div class=\"sub-campaign-percentage\">" . $progress['percentage'] . "% " . __('completed', 'furik') . "</div>";
 					break;
 				default:
 					$r .= __('Unknown field: ', 'furik') . $field;
