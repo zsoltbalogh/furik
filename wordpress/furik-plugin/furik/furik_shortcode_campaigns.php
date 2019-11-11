@@ -4,7 +4,7 @@
  */
 function furik_shortcode_campaigns($atts) {
 	$a = shortcode_atts( array(
-	   'show' => 'image,title,excerpt,progress'
+	   'show' => 'image,title,excerpt'
 	), $atts );
 
 	$post = get_post();
