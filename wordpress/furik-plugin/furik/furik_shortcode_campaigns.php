@@ -4,7 +4,7 @@
  */
 function furik_shortcode_campaigns($atts) {
 	$a = shortcode_atts( array(
-	   'show' => 'image,title,excerpt,progress_bar,completed'
+	   'show' => 'image,title,excerpt,progress_bar,completed,goal'
 	), $atts );
 
 	$post = get_post();
@@ -32,6 +32,9 @@ function furik_shortcode_campaigns($atts) {
 					break;
 				case "completed":
 					$r .= "<div class=\"sub-campaign-percentage\">" . $progress['percentage'] . "% " . __('completed', 'furik') . "</div>";
+					break;
+				case "goal":
+					$r .= "<p class=\"sub-campaign-goal\">".__('Goal', 'furik') . ": " . number_format($progress['goal'], 0, ',', ' ') . " Ft</p>";
 					break;
 				default:
 					$r .= __('Unknown field: ', 'furik') . $field;
