@@ -60,6 +60,50 @@ function furik_install() {
 	add_option('furik_db_version', 1);
 }
 
+function furik_progress($campaign_id, $amount = 0) {
+	global $wpdb;
+
+	$return = array();
+
+    $post = get_post($campaign_id);
+
+    if (!$amount) {
+		$meta = get_post_custom($post->ID);
+		if (is_numeric($meta['GOAL'][0])) {
+			$amount = $meta['GOAL'][0];
+		}
+    }
+    $campaigns = get_posts(['post_parent' => $post->ID, 'post_type' => 'campaign', 'numberposts' => 100]);
+    $ids = array();
+    $ids[] = $post->ID;
+
+    foreach ($campaigns as $campaign) {
+		$ids[] = $campaign->ID;
+    }
+    $id_list = implode($ids, ",");
+
+    $sql = "SELECT
+			sum(amount)
+		FROM
+			{$wpdb->prefix}furik_transactions AS transaction
+			LEFT OUTER JOIN {$wpdb->prefix}posts campaigns ON (transaction.campaign=campaigns.ID)
+		WHERE campaigns.ID in ($id_list)
+			AND transaction.transaction_status in (".FURIK_STATUS_DISPLAYABLE.")
+		ORDER BY time DESC";
+
+	$result = $wpdb->get_var($sql);
+
+	$return['collected'] = $result;
+
+	if ($amount > 0) {
+		$return['goal'] = $amount;
+		$percentage = $return['percentage'] = round(1.0 * $result/$amount*100);
+		$return['progress_bar'] = "<div class=\"furik-progress-bar\"><span style=\"width: " . ($percentage > 100 ? 100 : $percentage) . "%\"></span></div>";
+	}
+
+    return $return;
+}
+
 function furik_transaction_log($transaction_id, $message) {
 	global $wpdb;
 
