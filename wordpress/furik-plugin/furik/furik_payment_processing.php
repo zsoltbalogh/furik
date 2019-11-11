@@ -67,7 +67,12 @@ function furik_process_payment_form() {
 		die();
 	}
 
-	$amount = is_numeric($_POST['furik_form_amount']) && $_POST['furik_form_amount'] > 0 ? $_POST['furik_form_amount'] : die("Error: amount is not a number.");
+	$amount_field = 'furik_form_amount';
+	if ($_POST['furik_form_amount'] == 'other') {
+		$amount_field = 'furik_form_amount_other';
+	}
+
+	$amount = is_numeric($_POST[$amount_field]) && $_POST[$amount_field] > 0 ? $_POST[$amount_field	s] : die("Error: amount is not a number.");
 	$name = $_POST['furik_form_name'];
 	$anon = $_POST['furik_form_anon'] ? 1 : 0;
 	$email = $_POST['furik_form_email'];
