@@ -34,4 +34,25 @@ Displays the order reference if it's valid. Used on the bank transfer thank you 
 Provides information about the payment (date, referece ids), it's used on return page.
 
 ### [furik_progress]
-Shows the percentage of the collected amount. The full amount can be specified with the "amount" variable, if it's not set, the full amount is shown. The goal of the campaign can be set in the `GOAL` custom field.
+Shows the percentage of the collected amount. The full amount can be specified with the "amount" variable, if it's not set, the full amount is shown. The goal of the campaign can be set in the `GOAL` custom field. CSS is required to show the progress bar, recommended CSS for a small red progress bar:
+
+    .furik-progress-bar {
+    	background-color: #aaaaaaa;
+    	height: 20px;
+    	padding: 5px;
+    	width: 200px;
+    	margin: 5px 0;
+    	border-radius: 5px;
+    	box-shadow: 0 1px 1px #444 inset, 0 1px 0 #888;
+    	}
+     
+    .furik-progress-bar span {
+    	display: inline-block;
+    	float: left;
+    	height: 100%;
+    	border-radius: 3px;
+    	box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
+    	transition: width .4s ease-in-out;
+    	overflow: hidden;
+    	background-color: #D44236;
+    	}

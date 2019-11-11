@@ -42,27 +42,6 @@ function furik_shortcode_progress($atts) {
 
 	if ($amount > 0) {
 		$percentage = round(1.0 * $result/$amount*100);
-		$r .= "<style>
-				.furik-progress-bar {
-					background-color: #aaaaaaa;
-					height: 20px;
-					padding: 5px;
-					width: 200px;
-					margin: 5px 0;
-					border-radius: 5px;
-					box-shadow: 0 1px 1px #444 inset, 0 1px 0 #888;
-					}
-				.furik-progress-bar span {
-					display: inline-block;
-					float: left;
-					height: 100%;
-					border-radius: 3px;
-					box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
-					transition: width .4s ease-in-out;
-					overflow: hidden;
-					background-color: #D44236;
-					}
-				</style>";
 		$r .= "<div class=\"furik-progress-bar\"><span style=\"width: " . ($percentage > 100 ? 100 : $percentage) . "%\"></span></div>";
 		$r .= "<p class=\"furik-percentage\">" . $percentage . "% ".__('completed', 'furik')."</p>";
 		$r .= "<p class=\"furik-goal\">".__('Goal', 'furik') . ": " . number_format($amount, 0, ',', ' ') . " Ft</p>";
