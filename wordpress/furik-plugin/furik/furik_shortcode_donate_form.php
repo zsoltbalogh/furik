@@ -18,9 +18,23 @@ function furik_shortcode_donate_form( $atts ) {
         $post = get_post();
     }
 
+    $amount_content = "";
     if ($post->post_type == 'campaign') {
         $campaign = $post->post_title;
         $campaign_id = $post->ID;
+        $meta = get_post_custom($post->ID);
+
+        if (isset($meta['AMOUNT_CONTENT'][0]) && $meta['AMOUNT_CONTENT'][0]) {
+            $amount_content = $meta['AMOUNT_CONTENT'][0];
+        }
+        else {
+            if ($campaign->post_parent) {
+                $parent_campaign_meta = get_post_custom($campaign->post_parent);
+                if (isset($parent_campaign_meta['AMOUNT_CONTENT'][0]) && $parent_campaign_meta['AMOUNT_CONTENT'][0]) {
+                    $amount_content = $parent_campaign_meta['AMOUNT_CONTENT'][0];
+                }
+            }
+        }
     }
     else {
         $campaign = __('General donation', 'furik');
@@ -56,10 +70,15 @@ function furik_shortcode_donate_form( $atts ) {
 
     $r .= "<br />";
 
-    $r .= "<div class=\"form-field form-group form-required\">";
-    $r .= "<label for=\"furik_form_email\">".__('Donation amount', 'furik')." (Forint):</label>";
-    $r .= "<input type=\"number\" class=\"form-control\" name=\"furik_form_amount\" id=\"furik_form_amount\" value=\"$amount\" required=\"1\" />";
-    $r .= "</div>";
+    if (isset($amount_content) && $amount_content) {
+        $r .= $amount_content;
+    }
+    else {
+        $r .= "<div class=\"form-field form-group form-required\">";
+        $r .= "<label for=\"furik_form_email\">".__('Donation amount', 'furik')." (Forint):</label>";
+        $r .= "<input type=\"number\" class=\"form-control\" name=\"furik_form_amount\" id=\"furik_form_amount\" value=\"$amount\" required=\"1\" />";
+        $r .= "</div>";
+    }
 
     $r .= "<br />";
 
