@@ -17,14 +17,14 @@ Provides an URL back to the campaign which received the payment. It requires the
 ### [furik_campaigns]
 Lists all the child campaigns. It can be configured with the `show` parameter which lists the type of data we should list and the order, comma separated. Available data types: `image`, `title`, `excerpt`. The `image` URL is taken from the `IMAGE` custom field of the campaign. Default value: `image,title,excerpt`.
 
+### [furik_donate_form]
+Displays the donation form. The `amount` is the default amount value in the form. If the `AMOUNT_CONTENT` custom field is set for the campaign or the parent campaign, it replaces the amount box. This field should contain a form field with the name `furik_form_amount`.
+
 ### [furik_donate_link amount=5000]
 Prepares a link to the donations page and sets the default amount to the `amount` value. If this is put on a campaign page, the campaign information is included in the donation.
 
 ### [furik_donations]
 Lists the donations.
-
-### [furik_form amount=5000]
-Prepares a donation form with the provided `amount` value as default donation amount.
 
 ### [furik_order_ref]
 Displays the order reference if it's valid. Used on the bank transfer thank you pages.
