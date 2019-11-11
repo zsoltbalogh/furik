@@ -12,29 +12,29 @@ function furik_shortcode_campaigns($atts) {
 	$show = explode(",", $a['show']);
 
 	foreach ($campaigns as $campaign) {
-		$r .= "<div class=\"sub-campaign-listing\">";
+		$r .= "<div class=\"furik-sub-campaign-listing\">";
 		$progress = furik_progress($campaign->ID);
 
 		foreach ($show as $field) {
 			switch ($field) {
 				case "image":
 					$meta = get_post_custom($campaign->ID);
-					$r .= "<a href=\"".$campaign->guid."\"><img src=\"" . $meta['IMAGE'][0] . "\" class=\"sub-campaign-image\" alt=\"" . esc_html($campaign->post_title) . "\"/></a>";
+					$r .= "<a href=\"".$campaign->guid."\"><img src=\"" . $meta['IMAGE'][0] . "\" class=\"furik-sub-campaign-image\" alt=\"" . esc_html($campaign->post_title) . "\"/></a>";
 					break;
 				case "title":
-					$r .= "<div class=\"sub-campaign-title\"><a href=\"".$campaign->guid."\">".esc_html($campaign->post_title)."</a></div>";
+					$r .= "<div class=\"furik-sub-campaign-title\"><a href=\"".$campaign->guid."\">".esc_html($campaign->post_title)."</a></div>";
 					break;
 				case "excerpt":
-					$r .= "<div class=\"sub-campaign-title\">".esc_html($campaign->post_excerpt)."</div>";
+					$r .= "<div class=\"furik-sub-campaign-title\">".esc_html($campaign->post_excerpt)."</div>";
 					break;
 				case "progress_bar":
-					$r .= "<div class=\"sub-campaign-progress-bar\">" . $progress['progress_bar'] . "</div>";
+					$r .= "<div class=\"furik-sub-campaign-progress-bar\">" . $progress['progress_bar'] . "</div>";
 					break;
 				case "completed":
-					$r .= "<div class=\"sub-campaign-percentage\">" . $progress['percentage'] . "% " . __('completed', 'furik') . "</div>";
+					$r .= "<div class=\"furik-sub-campaign-percentage\">" . $progress['percentage'] . "% " . __('completed', 'furik') . "</div>";
 					break;
 				case "goal":
-					$r .= "<p class=\"sub-campaign-goal\">".__('Goal', 'furik') . ": " . number_format($progress['goal'], 0, ',', ' ') . " Ft</p>";
+					$r .= "<p class=\"furik-sub-campaign-goal\">".__('Goal', 'furik') . ": " . number_format($progress['goal'], 0, ',', ' ') . " Ft</p>";
 					break;
 				default:
 					$r .= __('Unknown field: ', 'furik') . $field;
