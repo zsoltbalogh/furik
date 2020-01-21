@@ -7,7 +7,8 @@ function furik_shortcode_donate_form( $atts ) {
     $a = shortcode_atts( array(
 	   'amount' => '5000',
        'skip_message' => false,
-       'enable_cash' => false
+       'enable_cash' => false,
+       'enable_monthly' => true
     ), $atts );
 
     $amount = is_numeric($_GET['furik_amount']) ? $_GET['furik_amount'] : $atts['amount'];
@@ -85,6 +86,11 @@ function furik_shortcode_donate_form( $atts ) {
     // $r .= "<label>" . __('Type of donation', 'furik') . "</label>";
     $r .= "<div>";
     $r .= "<div class=\"form-check form-check-inline\"><input type=\"radio\" id=\"furik_form_type_0\" class=\"form-check-input\" name=\"furik_form_type\" value=\"0\" checked=\"1\" /><label for=\"furik_form_type_0\" class=\"form-check-label\">".__('Online payment', 'furik')."</label></div>";
+
+    if ($a['enable_monthly']) {
+        $r .= "<div class=\"form-check form-check-inline\"><input type=\"radio\" id=\"furik_form_type_1\" class=\"form-check-input\" name=\"furik_form_type\" value=\"3\"><label for=\"furik_form_type_1\" class=\"form-check-label\">".__('Monthly automatic donation', 'furik')."</label></div>";
+    }
+
     $r .= "<div class=\"form-check form-check-inline\"><input type=\"radio\" id=\"furik_form_type_1\" class=\"form-check-input\" name=\"furik_form_type\" value=\"1\"><label for=\"furik_form_type_1\" class=\"form-check-label\">".__('Bank transfer', 'furik')."</label></div>";
 
     if ($a['enable_cash']) {
