@@ -31,11 +31,23 @@ class Donations_List extends WP_List_Table {
 		switch ($item['transaction_status']) {
 			case "":
 				return __('Pending', 'furik');
-			case 1:
+			case FURIK_STATUS_SUCCESSFUL:
 				return __('Successful, waiting for confirmation', 'furik');
-			case 2:
+			case FURIK_STATUS_UNSUCCESSFUL:
 				return __('Unsuccessful card payment', 'furik');
-			case 10:
+			case FURIK_STATUS_TRANSFER_ADDED:
+			case FURIK_STATUS_CASH_ADDED:
+				$actions = array(
+					'approve' => sprintf('<br /><a href="?page=%s&action=%s&campaign=%s&orderby=%s&order=%s&paged=%s">' . __('Approve', 'furik') . '</a>',
+						$_REQUEST['page'],
+						'approve',
+						$item['id'],
+						@$_GET['orderby'],
+						@$_GET['order'],
+						@$_GET['paged']),
+				);
+				return sprintf('%1$s %2$s', __('Waiting for confirmation', 'furik'), $actions['approve'] );
+			case FURIK_STATUS_IPN_SUCCESSFUL:
 				return __('Successful and confirmed', 'furik');
 			default:
 				return __('Unknown', 'furik');
@@ -94,6 +106,7 @@ class Donations_List extends WP_List_Table {
 			'email' => __('E-mail', 'furik'),
 		    'amount' => __('Amount', 'furik'),
 		    'transaction_type' => __('Type', 'furik'),
+		    'transaction_id' => __('Transaction ID', 'furik'),
 		    'campaign_name' => __('Campaign', 'furik'),
 		    'time' => __('Time', 'sp'),
 		    'transaction_status' => __('Status', 'furik')
@@ -170,6 +183,16 @@ class Donations_List_Plugin {
 	}
 
 	public function donations_list_page() {
+		global $wpdb;
+
+		if (isset($_GET['action']) && $_GET['action'] == 'approve' && isset($_GET['campaign'])) {
+			$wpdb->update(
+				"{$wpdb->prefix}furik_transactions",
+				array("transaction_status" => FURIK_STATUS_IPN_SUCCESSFUL),
+				array("id" => esc_sql($_GET['campaign']))
+			);
+		}
+
 		?>
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php _e('Donations', 'furik') ?></h1>

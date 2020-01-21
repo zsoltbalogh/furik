@@ -3,44 +3,54 @@
  * WordPress shortcode: [furik_campaigns]: lists all child campaigns
  */
 function furik_shortcode_campaigns($atts) {
+	global $wpdb;
+
+	$default_layout = <<<EOT
+<div class="furik-sub-campaign-listing">
+	<a href="{url}"><img src="{image}" alt="{title}" class="furik-sub-campaign-image" /></a>
+	<div class="furik-sub-campaign-title"><a href="{url}">{title}</a></div>
+	<div class="furik-sub-campaign-excerpt">{excerpt}</div>
+	<div class="furik-sub-campaign-progress-bar">{progress_bar}</div>
+	<div class="furik-sub-campaign-percentage">{percentage}%</div>
+	<div class="furik-sub-campaign-collected">{collected}</div>
+	<p class="furik-sub-campaign-goal">{goal}</p>
+</div>
+EOT;
+
 	$a = shortcode_atts( array(
-	   'show' => 'image,title,excerpt,progress_bar,completed,goal'
+		'layout' => $default_layout,
+		'default_image' => '',
 	), $atts );
 
 	$post = get_post();
 	$campaigns = get_posts(['post_parent' => $post->ID, 'post_type' => 'campaign', 'numberposts' => 100]);
-	$show = explode(",", $a['show']);
+
+	$r = "";
 
 	foreach ($campaigns as $campaign) {
-		$r .= "<div class=\"furik-sub-campaign-listing\">";
 		$progress = furik_progress($campaign->ID);
+		$meta = get_post_custom($campaign->ID);
+		$sql = "SELECT
+				sum(amount)
+			FROM
+				{$wpdb->prefix}furik_transactions AS transaction
+				LEFT OUTER JOIN {$wpdb->prefix}posts campaigns ON (transaction.campaign=campaigns.ID)
+			WHERE campaigns.ID in ({$campaign->ID})
+				AND transaction.transaction_status in (".FURIK_STATUS_DISPLAYABLE.")
+			ORDER BY time DESC";
 
-		foreach ($show as $field) {
-			switch ($field) {
-				case "image":
-					$meta = get_post_custom($campaign->ID);
-					$r .= "<a href=\"".$campaign->guid."\"><img src=\"" . $meta['IMAGE'][0] . "\" class=\"furik-sub-campaign-image\" alt=\"" . esc_html($campaign->post_title) . "\"/></a>";
-					break;
-				case "title":
-					$r .= "<div class=\"furik-sub-campaign-title\"><a href=\"".$campaign->guid."\">".esc_html($campaign->post_title)."</a></div>";
-					break;
-				case "excerpt":
-					$r .= "<div class=\"furik-sub-campaign-title\">".esc_html($campaign->post_excerpt)."</div>";
-					break;
-				case "progress_bar":
-					$r .= "<div class=\"furik-sub-campaign-progress-bar\">" . $progress['progress_bar'] . "</div>";
-					break;
-				case "completed":
-					$r .= "<div class=\"furik-sub-campaign-percentage\">" . $progress['percentage'] . "% " . __('completed', 'furik') . "</div>";
-					break;
-				case "goal":
-					$r .= "<p class=\"furik-sub-campaign-goal\">".__('Goal', 'furik') . ": " . number_format($progress['goal'], 0, ',', ' ') . " Ft</p>";
-					break;
-				default:
-					$r .= __('Unknown field: ', 'furik') . $field;
-			}
-		}
-		$r .= "</div>";
+		$collected = $wpdb->get_var($sql);
+
+		$r .= strtr($a['layout'], [
+			'{url}' => $campaign->guid,
+			'{image}' => (@$meta['IMAGE'][0] ?: $a['default_image']),
+			'{title}' => esc_html($campaign->post_title),
+			'{excerpt}' => esc_html($campaign->post_excerpt),
+			'{progress_bar}' => $progress['progress_bar'],
+			'{percentage}' => $progress['percentage'],
+			'{goal}' => number_format($progress['goal'], 0, ',', ' '),
+			'{collected}' => number_format($collected, 0, ',', ' '),
+		]);
 	}
 
 	return $r;

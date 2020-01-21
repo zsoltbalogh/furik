@@ -7,14 +7,65 @@ function furik_shortcode_progress($atts) {
 		'amount' => 0
     ), $atts );
 
-    $result = furik_progress(NULL, $a['amount']);
+	global $wpdb;
 
-	$r .= "<p class=\"furik-collected\">" . number_format($result['collected'], 0, ',', ' ') . " Ft</p>";
+    $post = get_post();
+    $amount = $a['amount'];
+    if (!$amount) {
+		$meta = get_post_custom($post->ID);
+		if (is_numeric($meta['GOAL'][0])) {
+			$amount = $meta['GOAL'][0];
+		}
+    }
+    $campaigns = get_posts(['post_parent' => $post->ID, 'post_type' => 'campaign', 'numberposts' => 100]);
+    $ids = array();
+    $ids[] = $post->ID;
 
-	if ($result['goal'] > 0) {
-		$r .= $result['progress_bar'];
-		$r .= "<p class=\"furik-percentage\">" . $result['percentage'] . "% ".__('completed', 'furik')."</p>";
-		$r .= "<p class=\"furik-goal\">".__('Goal', 'furik') . ": " . number_format($result['goal'], 0, ',', ' ') . " Ft</p>";
+    foreach ($campaigns as $campaign) {
+		$ids[] = $campaign->ID;
+    }
+    $id_list = implode($ids, ",");
+
+    $sql = "SELECT
+			sum(amount)
+		FROM
+			{$wpdb->prefix}furik_transactions AS transaction
+			LEFT OUTER JOIN {$wpdb->prefix}posts campaigns ON (transaction.campaign=campaigns.ID)
+		WHERE campaigns.ID in ($id_list)
+			AND transaction.transaction_status in (".FURIK_STATUS_DISPLAYABLE.")
+		ORDER BY time DESC";
+
+	$result = $wpdb->get_var($sql);
+
+	$r .= "<p class=\"furik-collected\">" . number_format($result, 0, ',', ' ') . " Ft</p>";
+
+
+	if ($amount > 0) {
+		$percentage = round(1.0 * $result/$amount*100);
+		$r .= "<style>
+				.furik-progress-bar {
+					background-color: #aaaaaaa;
+					height: 20px;
+					padding: 5px;
+					width: 200px;
+					margin: 5px 0;
+					border-radius: 5px;
+					box-shadow: 0 1px 1px #444 inset, 0 1px 0 #888;
+					}
+				.furik-progress-bar span {
+					display: inline-block;
+					float: left;
+					height: 100%;
+					border-radius: 3px;
+					box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
+					transition: width .4s ease-in-out;
+					overflow: hidden;
+					background-color: #D44236;
+					}
+				</style>";
+		$r .= "<div class=\"furik-progress-bar\"><span style=\"width: " . ($percentage > 100 ? 100 : $percentage) . "%\"></span></div>";
+		$r .= "<p class=\"furik-percentage\">" . $percentage . "% ".__('completed', 'furik')."</p>";
+		$r .= "<p class=\"furik-goal\">".__('Goal', 'furik') . ": " . number_format($amount, 0, ',', ' ') . " Ft</p>";
 	}
 
     return $r;
