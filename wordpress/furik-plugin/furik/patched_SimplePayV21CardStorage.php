@@ -36,7 +36,7 @@
   * @license  http://www.gnu.org/licenses/gpl-3.0.html  GNU GENERAL PUBLIC LICENSE (GPL V3.0)
   * @link     http://simplepartner.hu/online_fizetesi_szolgaltatas.html
   */
-class SimplePayDo extends Base
+class SimplePayDo extends SimpleBase
 {
     protected $currentInterface = 'do';
     protected $returnArray = [];
@@ -80,7 +80,7 @@ class SimplePayDo extends Base
   * @license  http://www.gnu.org/licenses/gpl-3.0.html  GNU GENERAL PUBLIC LICENSE (GPL V3.0)
   * @link     http://simplepartner.hu/online_fizetesi_szolgaltatas.html
   */
-class SimplePayCardQuery extends Base
+class SimplePayCardQuery extends SimpleBase
 {
     protected $currentInterface = 'cardquery';
     protected $returnArray = [];
@@ -122,7 +122,7 @@ class SimplePayCardQuery extends Base
   * @license  http://www.gnu.org/licenses/gpl-3.0.html  GNU GENERAL PUBLIC LICENSE (GPL V3.0)
   * @link     http://simplepartner.hu/online_fizetesi_szolgaltatas.html
   */
-class SimplePayCardCancel extends Base
+class SimplePayCardCancel extends SimpleBase
 {
     protected $currentInterface = 'cardcancel';
     protected $returnArray = [];
@@ -163,7 +163,7 @@ class SimplePayCardCancel extends Base
    * @license  http://www.gnu.org/licenses/gpl-3.0.html  GNU GENERAL PUBLIC LICENSE (GPL V3.0)
    * @link     http://simplepartner.hu/online_fizetesi_szolgaltatas.html
    */
-class SimplePayDoRecurring extends Base
+class SimplePayDoRecurring extends SimpleBase
 {
 
     protected $currentInterface = 'dorecurring';
