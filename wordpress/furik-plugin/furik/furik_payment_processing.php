@@ -123,36 +123,46 @@ function furik_process_payment_form() {
 }
 
 function furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $email) {
-	require_once 'patched_SimplePayment.class.php';
+	require_once 'SimplePayV21.php';
 
-	$lu = new SimpleLiveUpdate(furik_get_simple_config(), 'HUF');
-	$lu->setField("ORDER_REF", $transactionId);
-	$lu->setField("LANGUAGE", "HU");
+	$lu = new SimplePayStart;
+
+	$config = furik_get_simple_config();
+	$lu->addConfig($config);
+
+	$lu->addData('orderRef', $transactionId);
+	$lu->addData('language', 'HU');
+	$lu->addData('currency', 'HUF');
+	$lu->addData('customerEmail', $email);
+	$lu->addData('methods', array('CARD'));
+	$lu->addData('url', $config['URL']);
+
 	if ($campaign) {
-		$lu->addProduct(array(
-		    'name' => "$campaign->post_title",
-		    'code' => "$campaign->ID",
-		    'info' => "$campaign->post_title",
+		$lu->addItems(array(
+		    'title' => "$campaign->post_title",
+		    'ref' => "$campaign->ID",
+		    'description' => "$campaign->post_title",
 		    'price' => $amount,
 		    'vat' => 0,
-		    'qty' => 1
+		    'amount' => 1
 		));
 	}
 	else {
-		$lu->addProduct(array(
-		    'name' => __('General donation', 'furik'),
-		    'code' => 0,
-		    'info' => __('General donation', 'furik'),
+		$lu->addItems(array(
+		    'title' => __('General donation', 'furik'),
+		    'ref' => 0,
+		    'description' => __('General donation', 'furik'),
 		    'price' => $amount,
-		    'vat' => 0,
-		    'qty' => 1
+		    'tax' => 0,
+		    'amount' => 1
 		));
 	}
 
-	$lu->setField("BILL_EMAIL", $email);
-	$display = $lu->createHtmlForm('SimplePayForm', 'auto', __('Redirecting to the payment partner page', 'furik'));
+	$lu->formDetails['element'] = 'auto';
+	$lu->runStart();
+	$lu->getHtmlForm();
 
-	echo $display;
+	echo $lu->returnData['form'];
 
 	die(__('Redirecting to the payment partner page', 'furik'));
 }
@@ -203,8 +213,11 @@ function furik_get_simple_config() {
 	    'SANDBOX' => !$furik_production_system,
 	    'PROTOCOL' => $furik_homepage_https ? 'https' : 'http',			//http or https
 
-	    'BACK_REF' => furik_url('', ['furik_process_payment' => 1], false),
-	    'TIMEOUT_URL' => furik_url($furik_payment_timeout_url, ['furik_process_payment' => 1, 'furik_timeout' => 1], false),
+	    'URL' => furik_url('', ['furik_process_payment' => 1]),
+	    'URLS_SUCCESS' => furik_url('', ['furik_process_payment' => 1]),
+	    'URLS_FAILED' => furik_url('', ['furik_process_payment' => 1]),
+	    'URLS_FAILED' => furik_url('', ['furik_process_payment' => 1]),
+	    'URLS_CANCEL' => furik_url($furik_payment_timeout_url, ['furik_process_payment' => 1, 'furik_timeout' => 1]),
 	    'ORDER_TIMEOUT' => 30,
 	    'IRN_BACK_URL' => $_SERVER['HTTP_HOST'] . '/irn.php',        //url of payment irn page
 	    'IDN_BACK_URL' => $_SERVER['HTTP_HOST'] . '/idn.php',        //url of payment idn page
@@ -214,18 +227,7 @@ function furik_get_simple_config() {
 	    'POST_DATA' => $_POST,
 	    'SERVER_DATA' => $_SERVER,
 
-	    'LOGGER' => false,                                   //basic transaction log
-	    'LOG_PATH' => 'log',  								//path of log file
-
-		'DEBUG_LIVEUPDATE_PAGE' => false,					//Debug message on demo LiveUpdate page (only for development purpose)
-		'DEBUG_LIVEUPDATE' => false,						//LiveUpdate debug into log file
-		'DEBUG_BACKREF' => false,							//BackRef debug into log file
-		'DEBUG_IPN' => false,								//IPN debug into log file
-		'DEBUG_IRN' => false,								//IRN debug into log file
-		'DEBUG_IDN' => false,								//IDN debug into log file
-		'DEBUG_IOS' => false,								//IOS debug into log file
-		'DEBUG_ONECLICK' => false,							//OneClick debug into log file
-		'DEBUG_ALU' => false,								//ALU debug into log file
+	    'LOGGER' => false
 	);
 
 	return $config;
