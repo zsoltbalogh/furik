@@ -3,12 +3,17 @@
  * Processes IPN messages from Simple
  */
 function furik_process_ipn() {
-	require_once 'patched_SimplePayment.class.php';
-	$ipn = new SimpleIpn(furik_get_simple_config(), "HUF");
+	require_once 'SimplePayV21.php';
 
-	if ($ipn->validateReceived()) {
-		furik_update_transaction_status($_POST['REFNOEXT'], FURIK_STATUS_IPN_SUCCESSFUL);
-		$ipn->confirmReceived();
+	$trx = new SimplePayIpn;
+	$trx->addConfig(furik_get_simple_config());
+
+	$json = file_get_contents("php://input");
+
+	if ($trx->isIpnSignatureCheck($json)) {
+		$content = json_decode($trx->checkOrSetToJson($json), true);
+		furik_update_transaction_status($content['orderRef'], FURIK_STATUS_IPN_SUCCESSFUL);
+		$trx->runIpnConfirm();
 	}
 }
 
