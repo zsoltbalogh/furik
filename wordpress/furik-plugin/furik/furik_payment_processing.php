@@ -23,36 +23,46 @@ function furik_process_payment() {
 		$furik_payment_timeout_url,
 		$furik_payment_unsuccessful_url;
 
-	require_once 'patched_SimplePayment.class.php';
+	require_once 'SimplePayV21.php';
 
-	$backref = new SimpleBackRef(furik_get_simple_config(), "HUF");
-	$backref->order_ref = (isset($_REQUEST['order_ref'])) ? $_REQUEST['order_ref'] : 'N/A';
+	$trx = new SimplePayBack;
+	$trx->addConfig(furik_get_simple_config());
 
-	$campaign_id = furik_get_post_id_from_order_ref($backref->order_ref);
+	$result = array();
+	if (isset($_REQUEST['r']) && isset($_REQUEST['s'])) {
+	    if ($trx->isBackSignatureCheck($_REQUEST['r'], $_REQUEST['s'])) {
+	        $result = $trx->getRawNotification();
+	    }
+	}
+
+	$order_ref = $result['o'];
+
+	$campaign_id = furik_get_post_id_from_order_ref($order_ref);
 	$url_config = [
 		'campaign_id' => $campaign_id,
-		'furik_order_ref' => $backref->order_ref,
-		'furik_check' => furik_order_sign($backref->order_ref)
+		'furik_order_ref' => $order_ref,
+		'furik_check' => furik_order_sign($order_ref)
 	];
 
-	$vendor_ref = $backref->backStatusArray['PAYREFNO'];
+	$vendor_ref = $result['t'];
 
 	if ($_REQUEST['err']) {
 		furik_transaction_log($backref->order_ref, $_REQUEST['err']);
 	}
 
-	if ($backref->checkResponse()){
-		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_SUCCESSFUL, $vendor_ref);
+	if ($result['e'] == 'SUCCESS') {
+		furik_update_transaction_status($order_ref, FURIK_STATUS_SUCCESSFUL, $vendor_ref);
 		header("Location: " . furik_url($furik_payment_successful_url, $url_config));
 	}
-	elseif ($_REQUEST['furik_timeout']) {
-		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_CANCELLED, $vendor_ref);
+	elseif ($result['e'] == 'CANCEL') {
+		furik_update_transaction_status($order_ref, FURIK_STATUS_CANCELLED, $vendor_ref);
 		header("Location: " . furik_url($furik_payment_timeout_url, $url_config));
 	}
-	else {
-		furik_update_transaction_status($backref->order_ref, FURIK_STATUS_UNSUCCESSFUL, $vendor_ref);
+	else { // FAIL
+		furik_update_transaction_status($order_ref, FURIK_STATUS_UNSUCCESSFUL, $vendor_ref);
 		header("Location: " . furik_url($furik_payment_unsuccessful_url, $url_config));
 	}
+
 	die();
 }
 
