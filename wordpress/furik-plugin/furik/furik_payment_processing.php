@@ -51,10 +51,6 @@ function furik_process_payment() {
 
 	$vendor_ref = $result['t'];
 
-	if ($_REQUEST['err']) {
-		furik_transaction_log($backref->order_ref, $_REQUEST['err']);
-	}
-
 	if ($result['e'] == 'SUCCESS') {
 		furik_update_transaction_status($order_ref, FURIK_STATUS_SUCCESSFUL, $vendor_ref);
 		header("Location: " . furik_url($furik_payment_successful_url, $url_config));
@@ -126,8 +122,8 @@ function furik_process_payment_form() {
 		die(__('Database error. Please contact the site administrator.', 'furik'));
 	}
 
-	if ($type == 0) {
-		furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $email);
+	if (($type == 0) || ($type == 3)) {
+		furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $email, $type == 3);
 	}
 	elseif ($type == 1) {
 		furik_redirect_to_transfer_page($transactionId);
@@ -137,7 +133,7 @@ function furik_process_payment_form() {
 	}
 }
 
-function furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $email) {
+function furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $email, $recurring = false) {
 	require_once 'SimplePayV21.php';
 
 	$lu = new SimplePayStart;
@@ -150,7 +146,15 @@ function furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $e
 	$lu->addData('currency', 'HUF');
 	$lu->addData('customerEmail', $email);
 	$lu->addData('methods', array('CARD'));
+	$lu->addData('total', $amount);
 	$lu->addData('url', $config['URL']);
+
+
+	if ($recurring) {
+		$lu->addGroupData('recurring', 'times', 24);
+		$lu->addGroupData('recurring', 'until', '2020-12-01T18:00:00+02:00');
+		$lu->addGroupData('recurring', 'maxAmount', $amount);
+	}
 
 	if ($campaign) {
 		$lu->addItems(array(
