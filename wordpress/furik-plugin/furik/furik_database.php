@@ -5,6 +5,7 @@ define("FURIK_STATUS_UNSUCCESSFUL", 2);
 define("FURIK_STATUS_CANCELLED", 3);
 define("FURIK_STATUS_TRANSFER_ADDED", 4);
 define("FURIK_STATUS_CASH_ADDED", 5);
+define("FURIK_STATUS_FUTURE", 6);
 define("FURIK_STATUS_IPN_SUCCESSFUL", 10);
 define("FURIK_STATUS_DISPLAYABLE", "1, 10");
 
@@ -42,6 +43,10 @@ function furik_install() {
 		message longtext,
 		transaction_status int,
 		vendor_ref varchar(255),
+		recurring int,
+		parent int,
+		token varchar(255),
+		token_validity datetime,
 		PRIMARY KEY  (id)
 	) $charset_collate;";
 

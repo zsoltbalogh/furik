@@ -91,6 +91,7 @@ function furik_process_payment_form() {
 	$campaign_id = is_numeric($_POST['furik_campaign']) ? $_POST['furik_campaign'] : 0;
 	$campaign = $campaign_id > 0 ? get_post($campaign_id) : null;
 	$type = furik_numr("furik_form_type");
+	$recurring = $type == 3 ? 1 : 0;
 
 	$wpdb->insert(
 		"{$wpdb->prefix}furik_transactions",
@@ -102,7 +103,8 @@ function furik_process_payment_form() {
 			'email' => $email,
 			'message' => $message,
 			'amount' => $amount,
-			'campaign' => $campaign_id
+			'campaign' => $campaign_idl,
+			'recurring' => $recurring
 		)
 	);
 
@@ -123,7 +125,7 @@ function furik_process_payment_form() {
 	}
 
 	if (($type == 0) || ($type == 3)) {
-		furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $email, $type == 3);
+		furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, $amount, $email, $type == 3);
 	}
 	elseif ($type == 1) {
 		furik_redirect_to_transfer_page($transactionId);
@@ -133,7 +135,9 @@ function furik_process_payment_form() {
 	}
 }
 
-function furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $email, $recurring = false) {
+function furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, $amount, $email, $recurring = false, $token_validity = 0) {
+	global $wpdb;
+
 	require_once 'SimplePayV21.php';
 
 	$lu = new SimplePayStart;
@@ -149,10 +153,12 @@ function furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $e
 	$lu->addData('total', $amount);
 	$lu->addData('url', $config['URL']);
 
-
+	$token_validity = null;
 	if ($recurring) {
+		$token_validity = strtotime("+729 days");
+		$until = date("Y-m-d\TH:i:s+02:00", $token_validity);
 		$lu->addGroupData('recurring', 'times', 24);
-		$lu->addGroupData('recurring', 'until', '2020-12-01T18:00:00+02:00');
+		$lu->addGroupData('recurring', 'until', $until);
 		$lu->addGroupData('recurring', 'maxAmount', $amount);
 	}
 
@@ -180,6 +186,28 @@ function furik_prepare_simplepay_redirect($transactionId, $campaign, $amount, $e
 	$lu->formDetails['element'] = 'auto';
 	$lu->runStart();
 	$lu->getHtmlForm();
+	$returnData = $lu->getReturnData();
+
+	$time = time();
+
+	foreach ($returnData['tokens'] as $token) {
+		$time = strtotime("+1 month", $time);
+
+		$wpdb->insert(
+			"{$wpdb->prefix}furik_transactions",
+			array(
+				'time' => date("Y-m-d H:i:s", $time),
+				'transaction_type' => 0,
+				'name' => $name,
+				'amount' => $amount,
+				'campaign' => $campaign,
+				'parent' => $local_id,
+				'token' => $token,
+				'transaction_status' => FURIK_STATUS_FUTURE,
+				'token_validity' => date("Y-m-d H:i:s", $token_validity)
+			)
+		);
+	}
 
 	echo $lu->returnData['form'];
 
