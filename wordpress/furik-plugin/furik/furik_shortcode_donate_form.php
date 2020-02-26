@@ -8,7 +8,7 @@ function furik_shortcode_donate_form( $atts ) {
 	   'amount' => '5000',
        'skip_message' => false,
        'enable_cash' => false,
-       'enable_monthly' => true
+       'enable_monthly' => false
     ), $atts );
 
     $amount = is_numeric($_GET['furik_amount']) ? $_GET['furik_amount'] : $atts['amount'];
