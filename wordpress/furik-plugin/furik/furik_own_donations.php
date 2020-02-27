@@ -55,6 +55,16 @@ class Own_Donations_List extends WP_List_Table {
 	}
 
 	public function column_transaction_type($item) {
+		global $wpdb;
+
+		if ($item['transaction_type'] == 3) {
+			$line = __('Recurring monthly donation<br />');
+			$sql = "SELECT time FROM {$wpdb->prefix}furik_transactions WHERE transaction_status=".FURIK_STATUS_FUTURE." AND parent=".$item['id']." ORDER BY time LIMIT 1";
+			$next = $wpdb->get_var($sql);
+			$line .= __('Next', 'furik') . ": " . $next;
+
+			return $line;
+		}
 		switch ($item['transaction_type']) {
 			case 0:
 				return __('SimplePay Card', 'furik');
