@@ -81,7 +81,7 @@ class Own_Donations_List extends WP_List_Table {
 				LEFT OUTER JOIN {$wpdb->prefix}posts campaigns ON ({$wpdb->prefix}furik_transactions.campaign=campaigns.ID)
 				LEFT OUTER JOIN {$wpdb->prefix}posts parentcampaigns ON (campaigns.post_parent=parentcampaigns.ID)
 			WHERE
-				email='" . esc_sql($user->email). "' ";
+				email='" . esc_sql($user->user_email) . "' ";
 		if (!empty($_REQUEST['orderby'])) {
 			$sql .= ' ORDER BY ' . esc_sql($_REQUEST['orderby']);
 			$sql .= ! empty($_REQUEST['order']) ? ' ' . esc_sql($_REQUEST['order']) : ' ASC';
@@ -99,7 +99,7 @@ class Own_Donations_List extends WP_List_Table {
 
 		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}furik_transactions
 			WHERE
-				email='" . esc_sql($user->email). "'";
+				email='" . esc_sql($user->user_email) . "'";
 
 		return $wpdb->get_var($sql);
 	}
@@ -167,11 +167,11 @@ class Own_Donations_List_Plugin {
 
 	public function plugin_menu() {
 		$hook = add_menu_page(
-			__('Furik Donations', 'furik'),
-			__('Donations', 'furik'),
+			__('Own Furik Donations', 'furik'),
+			__('Own Donations', 'furik'),
 			'read',
-			'wp_list_table_class',
-			[$this, 'donations_list_page'],
+			'own_donations',
+			[$this, 'own_donations_list_page'],
 			'dashicons-chart-line'
 		);
 		add_action("load-$hook", [$this, 'screen_option']);
@@ -190,20 +190,10 @@ class Own_Donations_List_Plugin {
 		$this->donations_obj = new Own_Donations_List();
 	}
 
-	public function donations_list_page() {
-		global $wpdb;
-
-		if (isset($_GET['action']) && $_GET['action'] == 'approve' && isset($_GET['campaign'])) {
-			$wpdb->update(
-				"{$wpdb->prefix}furik_transactions",
-				array("transaction_status" => FURIK_STATUS_IPN_SUCCESSFUL),
-				array("id" => esc_sql($_GET['campaign']))
-			);
-		}
-
+	public function own_donations_list_page() {
 		?>
 		<div class="wrap">
-			<h1 class="wp-heading-inline"><?php _e('Donations', 'furik') ?></h1>
+			<h1 class="wp-heading-inline"><?php _e('Own Donations', 'furik') ?></h1>
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder">
 					<div id="post-body-content">
