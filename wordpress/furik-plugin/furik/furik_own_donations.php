@@ -3,7 +3,7 @@ if (!class_exists('WP_List_Table') ) {
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
-class Donations_List extends WP_List_Table {
+class Own_Donations_List extends WP_List_Table {
 
 	public function __construct() {
 		parent::__construct( [
@@ -70,6 +70,8 @@ class Donations_List extends WP_List_Table {
 	public static function get_donations($per_page = 5, $page_number = 1) {
 		global $wpdb;
 
+		$user = wp_get_current_user();
+
 		$sql = "SELECT
 				{$wpdb->prefix}furik_transactions.*,
 				campaigns.post_title AS campaign_name,
@@ -77,7 +79,9 @@ class Donations_List extends WP_List_Table {
 			FROM
 				{$wpdb->prefix}furik_transactions
 				LEFT OUTER JOIN {$wpdb->prefix}posts campaigns ON ({$wpdb->prefix}furik_transactions.campaign=campaigns.ID)
-				LEFT OUTER JOIN {$wpdb->prefix}posts parentcampaigns ON (campaigns.post_parent=parentcampaigns.ID)";
+				LEFT OUTER JOIN {$wpdb->prefix}posts parentcampaigns ON (campaigns.post_parent=parentcampaigns.ID)
+			WHERE
+				email='" . esc_sql($user->email). "' ";
 		if (!empty($_REQUEST['orderby'])) {
 			$sql .= ' ORDER BY ' . esc_sql($_REQUEST['orderby']);
 			$sql .= ! empty($_REQUEST['order']) ? ' ' . esc_sql($_REQUEST['order']) : ' ASC';
@@ -91,7 +95,11 @@ class Donations_List extends WP_List_Table {
 	public static function record_count() {
 		global $wpdb;
 
-		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}furik_transactions";
+		$user = wp_get_current_user();
+
+		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}furik_transactions
+			WHERE
+				email='" . esc_sql($user->email). "'";
 
 		return $wpdb->get_var($sql);
 	}
@@ -143,7 +151,7 @@ class Donations_List extends WP_List_Table {
 	}
 }
 
-class Donations_List_Plugin {
+class Own_Donations_List_Plugin {
 
 	static $instance;
 	public $donations_obj;
@@ -161,7 +169,7 @@ class Donations_List_Plugin {
 		$hook = add_menu_page(
 			__('Furik Donations', 'furik'),
 			__('Donations', 'furik'),
-			'manage_options',
+			'read',
 			'wp_list_table_class',
 			[$this, 'donations_list_page'],
 			'dashicons-chart-line'
@@ -172,14 +180,14 @@ class Donations_List_Plugin {
 	public function screen_option() {
 		$option = 'per_page';
 		$args   = [
-			'label' => 'Donations',
+			'label' => 'Own Donations',
 			'default' => 20,
 			'option' => 'donations_per_page'
 		];
 
 		add_screen_option($option, $args);
 
-		$this->donations_obj = new Donations_List();
+		$this->donations_obj = new Own_Donations_List();
 	}
 
 	public function donations_list_page() {
@@ -224,5 +232,5 @@ class Donations_List_Plugin {
 }
 
 add_action( 'plugins_loaded', function () {
-	Donations_List_Plugin::get_instance();
+	Own_Donations_List_Plugin::get_instance();
 } );
