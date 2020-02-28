@@ -11,7 +11,7 @@ function furik_shortcode_register_user( $atts ) {
 			$random_password = wp_generate_password( $length = 12, $include_standard_special_chars = false );
 			$user_id = wp_create_user( $transaction->email, $random_password, $transaction->email );
 
-			return "Registration was successful.";
+			return __("If you'd like to make changes to the recurring payment, please log in with your e-mail address. Your password is: ", 'furik') . $random_password;
 		}
 	}
 }
