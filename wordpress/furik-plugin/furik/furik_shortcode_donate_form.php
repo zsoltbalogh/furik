@@ -3,7 +3,7 @@
  * WordPress shortcode: [furik_donate_form], paramters: amount.
  */
 function furik_shortcode_donate_form( $atts ) {
-	global $furik_data_transmission_declaration_url;
+	global $furik_data_transmission_declaration_url, $furik_monthly_explanation_url;
     $a = shortcode_atts( array(
 	   'amount' => '5000',
        'skip_message' => false,
@@ -88,7 +88,7 @@ function furik_shortcode_donate_form( $atts ) {
     $r .= "<div class=\"form-check form-check-inline\"><input type=\"radio\" id=\"furik_form_type_0\" class=\"form-check-input\" name=\"furik_form_type\" value=\"0\" checked=\"1\" /><label for=\"furik_form_type_0\" class=\"form-check-label\">".__('Online payment', 'furik')."</label></div>";
 
     if ($a['enable_monthly']) {
-        $r .= "<div class=\"form-check form-check-inline\"><input type=\"radio\" id=\"furik_form_type_1\" class=\"form-check-input\" name=\"furik_form_type\" value=\"3\"><label for=\"furik_form_type_1\" class=\"form-check-label\">".__('Monthly automatic donation', 'furik')."</label></div>";
+        $r .= "<div class=\"form-check form-check-inline\"><input type=\"radio\" id=\"furik_form_type_1\" class=\"form-check-input\" name=\"furik_form_type\" value=\"3\"><label for=\"furik_form_type_1\" class=\"form-check-label\">".__('Monthly automatic donation', 'furik'). " <a href=\"" . furik_url($furik_monthly_explanation_url) . "\" target=\"_blank\">". __("What's this?", 'furik')."</a></label></div>";
     }
 
     $r .= "<div class=\"form-check form-check-inline\"><input type=\"radio\" id=\"furik_form_type_1\" class=\"form-check-input\" name=\"furik_form_type\" value=\"1\"><label for=\"furik_form_type_1\" class=\"form-check-label\">".__('Bank transfer', 'furik')."</label></div>";
