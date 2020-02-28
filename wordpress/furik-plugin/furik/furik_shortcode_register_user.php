@@ -7,7 +7,7 @@ function furik_shortcode_register_user( $atts ) {
 		$order_ref = $_REQUEST['furik_order_ref'];
 		$transaction = furik_get_transaction($order_ref);
 
-		if (!email_exists($transaction->email)) {
+		if ($transaction->recurring && !email_exists($transaction->email)) {
 			$random_password = wp_generate_password( $length = 12, $include_standard_special_chars = false );
 			$user_id = wp_create_user( $transaction->email, $random_password, $transaction->email );
 
