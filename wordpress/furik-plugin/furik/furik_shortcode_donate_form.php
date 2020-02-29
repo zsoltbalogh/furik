@@ -85,16 +85,16 @@ function furik_shortcode_donate_form( $atts ) {
     $r .= "<div class=\"form-field form-group furik-payment-method\">";
     // $r .= "<label>" . __('Type of donation', 'furik') . "</label>";
     $r .= "<div>";
-    $r .= "<div class=\"form-check form-check-inline\"><input type=\"radio\" id=\"furik_form_type_0\" class=\"form-check-input\" name=\"furik_form_type\" value=\"0\" checked=\"1\" /><label for=\"furik_form_type_0\" class=\"form-check-label\">".__('Online payment', 'furik')."</label></div>";
+    $r .= "<div class=\"form-check form-check-inline\"><input type=\"radio\" id=\"furik_form_type_0\" class=\"form-check-input\" name=\"furik_form_type\" value=\"0\" checked=\"1\" onChange=\"document.getElementById('furik_form_accept_reg_div').style.display='none'; document.getElementById('furik_form_submit_button').value='" . __('Send', 'furik')."'\" /><label for=\"furik_form_type_0\" class=\"form-check-label\">".__('Online payment', 'furik')."</label></div>";
 
     if ($a['enable_monthly']) {
-        $r .= "<div class=\"form-check form-check-inline\"><input type=\"radio\" id=\"furik_form_type_1\" class=\"form-check-input\" name=\"furik_form_type\" value=\"3\"><label for=\"furik_form_type_1\" class=\"form-check-label\">".__('Monthly automatic donation', 'furik'). " <a href=\"" . furik_url($furik_monthly_explanation_url) . "\" target=\"_blank\">". __("What's this?", 'furik')."</a></label></div>";
+        $r .= "<div class=\"form-check form-check-inline\"><input type=\"radio\" id=\"furik_form_type_1\" class=\"form-check-input\" name=\"furik_form_type\" value=\"3\" onChange=\"document.getElementById('furik_form_accept_reg_div').style.display='block'; document.getElementById('furik_form_submit_button').value='" . __('Donation with card registration', 'furik')."'\"><label for=\"furik_form_type_1\" class=\"form-check-label\">".__('Monthly automatic donation', 'furik'). " <a href=\"" . furik_url($furik_monthly_explanation_url) . "\" target=\"_blank\">". __("What's this?", 'furik')."</a></label></div>";
     }
 
-    $r .= "<div class=\"form-check form-check-inline\"><input type=\"radio\" id=\"furik_form_type_1\" class=\"form-check-input\" name=\"furik_form_type\" value=\"1\"><label for=\"furik_form_type_1\" class=\"form-check-label\">".__('Bank transfer', 'furik')."</label></div>";
+    $r .= "<div class=\"form-check form-check-inline\"><input type=\"radio\" id=\"furik_form_type_1\" class=\"form-check-input\" name=\"furik_form_type\" value=\"1\" onChange=\"document.getElementById('furik_form_accept_reg_div').style.display='none'; document.getElementById('furik_form_submit_button').value='" . __('Send', 'furik')."'\"><label for=\"furik_form_type_1\" class=\"form-check-label\">".__('Bank transfer', 'furik')."</label></div>";
 
     if ($a['enable_cash']) {
-        $r .= "<div class=\"form-check form-check-inline\"><input type=\"radio\" id=\"furik_form_type_2\" class=\"form-check-input\" name=\"furik_form_type\" value=\"2\"><label for=\"furik_form_type_2\" class=\"form-check-label\">".__('Cash donation', 'furik')."</label></div>";
+        $r .= "<div class=\"form-check form-check-inline\"><input type=\"radio\" id=\"furik_form_type_2\" class=\"form-check-input\" name=\"furik_form_type\" value=\"2\" onChange=\"document.getElementById('furik_form_accept_reg_div').style.display='none'; document.getElementById('furik_form_submit_button').value='" . __('Send', 'furik')."'\"><label for=\"furik_form_type_2\" class=\"form-check-label\">".__('Cash donation', 'furik')."</label></div>";
     }
 
     $r .= "</div>";
@@ -106,8 +106,12 @@ function furik_shortcode_donate_form( $atts ) {
     $r .= "<label for=\"furik_form_accept\" class=\"form-check-label\"><input type=\"checkbox\" name=\"furik_form_accept\" id=\"furik_form_accept\" class=\"form-check-input\" required=\"1\"><a href=\"".furik_url($furik_data_transmission_declaration_url)."\" target=\"_blank\">".__('I accept the data transmission declaration', 'furik')."</a></label>";
     $r .= "</div>";
 
+    $r .= "<div class=\"form-field form-check furik-form-accept-reg\" id=\"furik_form_accept_reg_div\" style=\"display: none\">";
+    $r .= "<label for=\"furik_form_accept_reg\" class=\"form-check-label\"><input type=\"checkbox\" name=\"furik_form_accept-reg\" id=\"furik_form_accept_reg\" class=\"form-check-input\" required=\"1\"><a href=\"".furik_url($furik_card_registration_statement_url)."\" target=\"_blank\">".__('I accept the card registration statement', 'furik')."</a></label>";
+    $r .= "</div>";
+
     $r .= "<div class=\"py-4 footer-btns\"><div class=\"submit-btn\">";
-    $r .= "<p class=\"submit\"><input type=\"submit\" class=\"button button-primary rounded-xl btn btn-primary\" value=\"".__('Send', 'furik')."\" /></p>";
+    $r .= "<p class=\"submit\"><input type=\"submit\" class=\"button button-primary rounded-xl btn btn-primary\" id=\"furik_form_submit_button\" value=\"".__('Send', 'furik')."\" /></p>";
     $r .= "</div><div class=\"simple-logo\">";
     $r .= "<a href=\"http://simplepartner.hu/PaymentService/Fizetesi_tajekoztato.pdf\" target=\"_blank\"><img src=\"".furik_url("/wp-content/plugins/furik/images/simplepay.png")."\" title=\"SimplePay - Online bankkártyás fizetés\" alt=\"SimplePay vásárlói tájékoztató\"></a>";
     $r .= "</div>";
