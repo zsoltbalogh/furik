@@ -16,6 +16,7 @@ $furik_donations_url = "tamogatas";
 $furik_payment_transfer_url = "bank-transfer-donation";
 $furik_payment_cash_url = "cash-donation";
 
+$furik_card_registration_statement_url = "card-registration-statement";
 $furik_data_transmission_declaration_url = "data-transmission-declaration";
 $furik_monthly_explanation_url = "monthly-donation";
 
