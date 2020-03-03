@@ -1,99 +1,115 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Furik\n"
-"POT-Creation-Date: 2019-05-11 13:18+0200\n"
-"PO-Revision-Date: 2019-05-11 13:18+0200\n"
+"POT-Creation-Date: 2020-03-03 21:06+0100\n"
+"PO-Revision-Date: 2020-03-03 21:11+0100\n"
 "Last-Translator: \n"
 "Language-Team: Furik\n"
 "Language: hu_HU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: _x;__;_e\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: furik_admin_donations.php:10
+#: furik_admin_donations.php:10 furik_own_donations.php:10
 msgid "Donation"
 msgstr "Támogatás"
 
-#: furik_admin_donations.php:11 furik_admin_donations.php:150
-#: furik_admin_donations.php:175
+#: furik_admin_donations.php:11 furik_admin_donations.php:163
+#: furik_admin_donations.php:198 furik_own_donations.php:11
 msgid "Donations"
 msgstr "Támogatások"
 
-#: furik_admin_donations.php:22 furik_payment_processing.php:138
-#: furik_payment_processing.php:140 furik_shortcode_donate_form.php:18
+#: furik_admin_donations.php:22 furik_own_donations.php:22
+#: furik_payment_processing.php:178 furik_payment_processing.php:180
+#: furik_shortcode_donate_form.php:42
 msgid "General donation"
 msgstr "Általános támogatás"
 
-#: furik_admin_donations.php:33
+#: furik_admin_donations.php:33 furik_own_donations.php:33
 msgid "Pending"
 msgstr "Folyamatban"
 
-#: furik_admin_donations.php:35
+#: furik_admin_donations.php:35 furik_own_donations.php:35
 msgid "Successful, waiting for confirmation"
 msgstr "Sikeres fizetés, visszajelzésre vár"
 
-#: furik_admin_donations.php:37
+#: furik_admin_donations.php:37 furik_own_donations.php:37
 msgid "Unsuccessful card payment"
 msgstr "Sikertelen kártyás fizetés"
 
-#: furik_admin_donations.php:39
+#: furik_admin_donations.php:41 furik_own_donations.php:41
+msgid "Approve"
+msgstr "Jóváhagy"
+
+#: furik_admin_donations.php:49 furik_own_donations.php:49
+msgid "Waiting for confirmation"
+msgstr "Visszajelzésre vár"
+
+#: furik_admin_donations.php:51 furik_own_donations.php:51
 msgid "Successful and confirmed"
 msgstr "Sikeres és visszaigazolt"
 
-#: furik_admin_donations.php:41 furik_admin_donations.php:54
+#: furik_admin_donations.php:53 furik_admin_donations.php:66
+#: furik_own_donations.php:53 furik_own_donations.php:82
 msgid "Unknown"
 msgstr "Ismeretlen"
 
-#: furik_admin_donations.php:48
+#: furik_admin_donations.php:60 furik_own_donations.php:76
 msgid "SimplePay Card"
 msgstr "SimplePay kártyás"
 
-#: furik_admin_donations.php:50 furik_shortcode_donate_form.php:68
+#: furik_admin_donations.php:62 furik_own_donations.php:78
+#: furik_shortcode_donate_form.php:114
 msgid "Bank transfer"
 msgstr "Átutalás"
 
-#: furik_admin_donations.php:52
+#: furik_admin_donations.php:64 furik_own_donations.php:80
 msgid "Cash payment"
 msgstr "Készpénzes támogatás"
 
-#: furik_admin_donations.php:88
+#: furik_admin_donations.php:100 furik_own_donations.php:124
 msgid "No donations avaliable."
 msgstr "Nincs támogatás a rendszerben."
 
-#: furik_admin_donations.php:93
+#: furik_admin_donations.php:105 furik_own_donations.php:129
 msgid "Name"
 msgstr "Név"
 
-#: furik_admin_donations.php:94
+#: furik_admin_donations.php:106 furik_own_donations.php:130
 msgid "E-mail"
 msgstr "E-mail"
 
-#: furik_admin_donations.php:95
+#: furik_admin_donations.php:107 furik_own_donations.php:131
 msgid "Amount"
 msgstr "Összeg"
 
-#: furik_admin_donations.php:96
+#: furik_admin_donations.php:108 furik_own_donations.php:132
 msgid "Type"
 msgstr "Típus"
 
-#: furik_admin_donations.php:97 furik_campaigns.php:6
+#: furik_admin_donations.php:109 furik_own_donations.php:133
+msgid "Transaction ID"
+msgstr "Tranzakció azonosító"
+
+#: furik_admin_donations.php:110 furik_campaigns.php:6
+#: furik_own_donations.php:134
 msgid "Campaign"
 msgstr "Kampány"
 
-#: furik_admin_donations.php:98
+#: furik_admin_donations.php:111 furik_own_donations.php:135
 msgid "Time"
 msgstr "Idő"
 
-#: furik_admin_donations.php:99
+#: furik_admin_donations.php:112 furik_own_donations.php:136
 msgid "Status"
 msgstr "Állapot"
 
-#: furik_admin_donations.php:149
+#: furik_admin_donations.php:162
 msgid "Furik Donations"
 msgstr "Furik Támogatások"
 
@@ -145,65 +161,173 @@ msgstr "Nincs találat a kukában"
 msgid "Donation campaigns"
 msgstr "Támogatási kampányok"
 
-#: furik_payment_processing.php:66
+#: furik_own_donations.php:61
+msgid "Recurring monthly donation<br />"
+msgstr "Ismétlődő havi támogatás"
+
+#: furik_own_donations.php:65
+msgid "Next"
+msgstr "Következő"
+
+#: furik_own_donations.php:68
+msgid "Expired or cancelled."
+msgstr "Lejárt vagy lemondott."
+
+#: furik_own_donations.php:70
+msgid "Cancel future donations"
+msgstr "Jövőbeni támogatások lemondása"
+
+#: furik_own_donations.php:186
+msgid "Own Furik Donations"
+msgstr "Adományok"
+
+#: furik_own_donations.php:187 furik_own_donations.php:228
+msgid "Own Donations"
+msgstr "Adományok"
+
+#: furik_payment_processing.php:78
 msgid "Please accept the data transmission agreement."
 msgstr "Kérjük fogadd el az adatkezelési nyilatkozatot."
 
-#: furik_payment_processing.php:106
+#: furik_payment_processing.php:125
 msgid "Database error. Please contact the site administrator."
 msgstr "Adatbázis hiba. Kérjük vedd fel a kapcsolatot az oldal üzemeltetőivel."
 
-#: furik_payment_processing.php:148 furik_payment_processing.php:152
+#: furik_payment_processing.php:215
 msgid "Redirecting to the payment partner page"
 msgstr "Átirányítás a pénzügyi szolgáltató partner oldalára"
 
-#: furik_shortcode_donate_form.php:27
-msgid "Supported cause"
-msgstr "Támogatott kezdeményezés"
-
-#: furik_shortcode_donate_form.php:34
+#: furik_shortcode_donate_form.php:50
 msgid "Your name"
 msgstr "Neved"
 
-#: furik_shortcode_donate_form.php:39 furik_shortcode_donations.php:43
+#: furik_shortcode_donate_form.php:56 furik_shortcode_donations.php:54
 msgid "Anonymous donation"
 msgstr "Aninom támogatás"
 
-#: furik_shortcode_donate_form.php:45
+#: furik_shortcode_donate_form.php:61
 msgid "E-mail address"
 msgstr "E-mail címed"
 
-#: furik_shortcode_donate_form.php:52
-msgid "Donation amount"
-msgstr "Támogatás összege"
-
-#: furik_shortcode_donate_form.php:59
+#: furik_shortcode_donate_form.php:67
 msgid "Message"
 msgstr "Üzenet"
 
-#: furik_shortcode_donate_form.php:66
-msgid "Type of donation"
-msgstr "Támogatás típusa"
+#: furik_shortcode_donate_form.php:79
+msgid "Donation amount"
+msgstr "Támogatás összege"
 
-#: furik_shortcode_donate_form.php:67
+#: furik_shortcode_donate_form.php:91 furik_shortcode_donate_form.php:111
+#: furik_shortcode_donate_form.php:121 furik_shortcode_donate_form.php:141
+msgid "Send"
+msgstr "Eküld"
+
+#: furik_shortcode_donate_form.php:94
 msgid "Online payment"
 msgstr "Kártyás fizetés"
 
-#: furik_shortcode_donate_form.php:69
+#: furik_shortcode_donate_form.php:101
+msgid "Donation with card registration"
+msgstr "Kártya regisztrációs támogatás"
+
+#: furik_shortcode_donate_form.php:104
+msgid "Monthly automatic donation"
+msgstr "Havi automatikus támogatás"
+
+#: furik_shortcode_donate_form.php:104
+msgid "What's this?"
+msgstr "Mi ez?"
+
+#: furik_shortcode_donate_form.php:124
 msgid "Cash donation"
 msgstr "Készpénzes támogatás"
 
-#: furik_shortcode_donate_form.php:75
+#: furik_shortcode_donate_form.php:133
 msgid "I accept the data transmission declaration"
 msgstr "Az adatkezélési és továbbítási nyilatkozatot elfogadom"
 
-#: furik_shortcode_donate_form.php:79
-msgid "Donate"
-msgstr "Támogatás"
+#: furik_shortcode_donate_form.php:137
+msgid "I accept the card registration statement"
+msgstr "Elfogadom a kártyaregisztrációs nyilatkozatot"
 
-#: furik_shortcode_donations.php:32
+#: furik_shortcode_donations.php:45
 msgid "No donations yet. Be the first one!"
 msgstr "Egyelőre nem érkezett be támogatás. Legyél Te az első!"
+
+#: furik_shortcode_donations.php:71 furik_shortcode_donations.php:75
+msgid "now"
+msgstr "most"
+
+#: furik_shortcode_donations.php:76
+msgid "1 minute ago"
+msgstr "1 perce"
+
+#: furik_shortcode_donations.php:77
+#, php-format
+msgid "%d minutes ago"
+msgstr "%d perce"
+
+#: furik_shortcode_donations.php:78
+msgid "1 hour ago"
+msgstr "1 órája"
+
+#: furik_shortcode_donations.php:79
+#, php-format
+msgid "%d hours ago"
+msgstr "%d órája"
+
+#: furik_shortcode_donations.php:81
+msgid "Yesterday"
+msgstr "Tegnap"
+
+#: furik_shortcode_donations.php:82
+#, php-format
+msgid "%d days ago"
+msgstr "%d napja"
+
+#: furik_shortcode_donations.php:83
+#, php-format
+msgid "%d weeks ago"
+msgstr "%d hete"
+
+#: furik_shortcode_donations.php:84
+msgid "last month"
+msgstr "előző hónapban"
+
+#: furik_shortcode_donations.php:90
+msgid "in a minute"
+msgstr "egy perce"
+
+#: furik_shortcode_donations.php:91
+#, php-format
+msgid "in %d minutes"
+msgstr "%d perce"
+
+#: furik_shortcode_donations.php:92
+msgid "in an hour"
+msgstr "egy órája"
+
+#: furik_shortcode_donations.php:93
+#, php-format
+msgid "in %d hours"
+msgstr "%d órája"
+
+#: furik_shortcode_donations.php:95
+msgid "Tomorrow"
+msgstr "Holnap"
+
+#: furik_shortcode_donations.php:97
+msgid "next week"
+msgstr "jövő héten"
+
+#: furik_shortcode_donations.php:98
+#, php-format
+msgid "in %d weeks"
+msgstr "%d héten belül"
+
+#: furik_shortcode_donations.php:99
+msgid "next month"
+msgstr "jövő hónapban"
 
 #: furik_shortcode_payment_info.php:12
 msgid "SimplePay reference id"
@@ -217,17 +341,33 @@ msgstr "Tranzakció azonosító"
 msgid "Date"
 msgstr "Dátum"
 
-#: furik_shortcode_progress.php:33
-msgid "Donations so far"
-msgstr "Eddigi támogatások"
+#: furik_shortcode_progress.php:67
+msgid "completed"
+msgstr "teljesítve"
 
-#: furik_shortcode_progress.php:59
+#: furik_shortcode_progress.php:68
 msgid "Goal"
 msgstr "Cél"
 
-#: furik_shortcode_progress.php:60
-msgid "completed"
-msgstr "teljesítve"
+#: furik_shortcode_register_user.php:14
+msgid ""
+"If you'd like to make changes to the recurring payment, please log in with "
+"your e-mail address. Your password is: "
+msgstr ""
+"Ha meg szeretnél változtatni bármit az ismétlődő fizetésben, kérjük lépj be "
+"az e-mail címeddel rendszerünkbe. A jelszavad: "
+
+#~ msgid "Supported cause"
+#~ msgstr "Támogatott kezdeményezés"
+
+#~ msgid "Type of donation"
+#~ msgstr "Támogatás típusa"
+
+#~ msgid "Donate"
+#~ msgstr "Támogatás"
+
+#~ msgid "Donations so far"
+#~ msgstr "Eddigi támogatások"
 
 #~ msgid "Redirecting to our payment partner."
 #~ msgstr "Átirányítás a pénzügyi partnerünkhöz."
