@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Furik\n"
-"POT-Creation-Date: 2020-03-03 21:06+0100\n"
-"PO-Revision-Date: 2020-03-03 21:11+0100\n"
+"POT-Creation-Date: 2020-03-03 21:13+0100\n"
+"PO-Revision-Date: 2020-03-03 21:15+0100\n"
 "Last-Translator: \n"
 "Language-Team: Furik\n"
 "Language: hu_HU\n"
@@ -103,7 +103,7 @@ msgstr "Kampány"
 
 #: furik_admin_donations.php:111 furik_own_donations.php:135
 msgid "Time"
-msgstr "Idő"
+msgstr "Időpont"
 
 #: furik_admin_donations.php:112 furik_own_donations.php:136
 msgid "Status"
@@ -162,20 +162,20 @@ msgid "Donation campaigns"
 msgstr "Támogatási kampányok"
 
 #: furik_own_donations.php:61
-msgid "Recurring monthly donation<br />"
-msgstr "Ismétlődő havi támogatás"
+msgid "Recurring monthly donation"
+msgstr "Rendszeres havi támogatás"
 
 #: furik_own_donations.php:65
 msgid "Next"
 msgstr "Következő"
 
-#: furik_own_donations.php:68
-msgid "Expired or cancelled."
-msgstr "Lejárt vagy lemondott."
-
-#: furik_own_donations.php:70
+#: furik_own_donations.php:66
 msgid "Cancel future donations"
 msgstr "Jövőbeni támogatások lemondása"
+
+#: furik_own_donations.php:69
+msgid "Expired or cancelled."
+msgstr "Lejárt vagy lemondott."
 
 #: furik_own_donations.php:186
 msgid "Own Furik Donations"

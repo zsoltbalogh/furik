@@ -19,7 +19,7 @@ class Own_Donations_List extends WP_List_Table {
 
 	public function column_campaign_name($item) {
 		if (!$item['campaign_name']) {
-			return __('General donation');
+			return __('General donation', 'furik');
 		}
 		if (!$item['parent_campaign_name']) {
 			return $item['campaign_name'];
@@ -58,16 +58,16 @@ class Own_Donations_List extends WP_List_Table {
 		global $wpdb;
 
 		if ($item['transaction_type'] == 3) {
-			$line = __('Recurring monthly donation<br />');
+			$line = __('Recurring monthly donation', 'furik'). "<br />";
 			$sql = "SELECT time FROM {$wpdb->prefix}furik_transactions WHERE transaction_status=".FURIK_STATUS_FUTURE." AND parent=".$item['id']." ORDER BY time LIMIT 1";
 			$next = $wpdb->get_var($sql);
 			if ($next) {
 				$line .= __('Next', 'furik') . ": " . $next . "<br />";
+				$line .= "<a href=\"?page=".$_REQUEST['page']."&cancelRecurring=".$item['id']."&transactionId=".$item['transaction_id']."\">".__('Cancel future donations', 'furik')."</a>";
 			}
 			else {
 				$line .= __('Expired or cancelled.', 'furik') ."<br />";
 			}
-			$line .= "<a href=\"?page=".$_REQUEST['page']."&cancelRecurring=".$item['id']."&transactionId=".$item['transaction_id']."\">".__('Cancel future donations', 'furik')."</a>";
 
 			return $line;
 		}
@@ -132,7 +132,7 @@ class Own_Donations_List extends WP_List_Table {
 		    'transaction_type' => __('Type', 'furik'),
 		    'transaction_id' => __('Transaction ID', 'furik'),
 		    'campaign_name' => __('Campaign', 'furik'),
-		    'time' => __('Time', 'sp'),
+		    'time' => __('Time', 'furik'),
 		    'transaction_status' => __('Status', 'furik')
 		];
 
