@@ -20,14 +20,27 @@ EOT;
 	$a = shortcode_atts( array(
 		'layout' => $default_layout,
 		'default_image' => '',
+		'parent_campaign' => null,
+		'except' => null,
 	), $atts );
 
-	$post = get_post();
-	$campaigns = get_posts(['post_parent' => $post->ID, 'post_type' => 'campaign', 'numberposts' => 100]);
+	if ($a['parent_campaign'] === null) {
+		$post = get_post();
+		$campaigns = get_posts(['post_parent' => $post->ID, 'post_type' => 'campaign', 'numberposts' => 100]);
+	} else {
+		$campaigns = get_posts(['post_parent' => $a['parent_campaign'], 'post_type' => 'campaign', 'numberposts' => 100]);
+	}
 
 	$r = "";
 
 	foreach ($campaigns as $campaign) {
+
+		if ($except = explode(',', $a['except'])) {
+			if (in_array($campaign->ID, $except)) {
+				continue;
+			}
+		}
+
 		$progress = furik_progress($campaign->ID);
 		$meta = get_post_custom($campaign->ID);
 		$sql = "SELECT
