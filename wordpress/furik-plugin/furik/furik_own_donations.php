@@ -188,7 +188,7 @@ class Own_Donations_List_Plugin {
 			'read',
 			'own_donations',
 			[$this, 'own_donations_list_page'],
-			'dashicons-chart-line'
+			'dashicons-heart'
 		);
 		add_action("load-$hook", [$this, 'screen_option']);
 	}
