@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Furik\n"
 "POT-Creation-Date: 2020-03-03 21:13+0100\n"
-"PO-Revision-Date: 2020-03-03 21:15+0100\n"
+"PO-Revision-Date: 2020-03-06 10:52+0100\n"
 "Last-Translator: \n"
 "Language-Team: Furik\n"
 "Language: hu_HU\n"
@@ -244,7 +244,7 @@ msgstr "Készpénzes támogatás"
 
 #: furik_shortcode_donate_form.php:133
 msgid "I accept the data transmission declaration"
-msgstr "Az adatkezélési és továbbítási nyilatkozatot elfogadom"
+msgstr "Az adatkezelési és továbbítási nyilatkozatot elfogadom"
 
 #: furik_shortcode_donate_form.php:137
 msgid "I accept the card registration statement"

@@ -83,7 +83,7 @@ class Own_Donations_List extends WP_List_Table {
 		}
 	}
 
-	public static function get_donations($per_page = 5, $page_number = 1) {
+	public static function get_donations($per_page = 50, $page_number = 1) {
 		global $wpdb;
 
 		$user = wp_get_current_user();
@@ -154,7 +154,7 @@ class Own_Donations_List extends WP_List_Table {
 	}
 
 	public function prepare_items() {
-		$per_page = $this->get_items_per_page('donations_per_page', 20);
+		$per_page = $this->get_items_per_page('donations_per_page', 50);
 		$current_page = $this->get_pagenum();
 		$total_items = self::record_count();
 
@@ -212,12 +212,14 @@ class Own_Donations_List_Plugin {
 		if (isset($_GET['cancelRecurring']) && is_numeric($_GET['cancelRecurring'])) {
 			$user = wp_get_current_user();
 
-			$sql = "SELECT count(*) FROM {$wpdb->prefix}furik_transactions
+			$sql = "SELECT vendor_ref FROM {$wpdb->prefix}furik_transactions
 				WHERE id=" . $_GET['cancelRecurring'] . " AND
 				transaction_id='" . esc_sql($_GET['transactionId']) . "' AND
 				email='" . esc_sql($user->user_email) . "'";
 
-			if ($wpdb->get_var($sql) == 1) {
+			if ($vendor_ref = $wpdb->get_var($sql)) {
+				furik_cancel_recurring($vendor_ref);
+
 				$wpdb->query(
 					"DELETE FROM {$wpdb->prefix}furik_transactions WHERE parent=".$_GET['cancelRecurring']." AND transaction_status=".FURIK_STATUS_FUTURE
 				);

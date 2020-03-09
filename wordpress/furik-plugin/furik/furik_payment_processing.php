@@ -1,4 +1,18 @@
 <?php
+function furik_cancel_recurring($vendor_ref) {
+	global $furik_payment_merchant;
+
+	require_once 'SimplePayV21.php';
+	require_once 'SimplePayV21CardStorage.php';
+
+	$trx = new SimplePayCardCancel;
+	$trx->addConfig(furik_get_simple_config());
+	$trx->addConfigData('merchantAccount', $furik_payment_merchant);
+
+	$trx->runCardCancel();
+	$trx->addData('cardId', $vendor_ref);
+	$trx->runCardCancel();
+}
 /**
  * Processes IPN messages from Simple
  */
@@ -104,7 +118,7 @@ function furik_process_payment_form() {
 			'email' => $email,
 			'message' => $message,
 			'amount' => $amount,
-			'campaign' => $campaign_idl,
+			'campaign' => $campaign_id,
 			'recurring' => $recurring
 		)
 	);
