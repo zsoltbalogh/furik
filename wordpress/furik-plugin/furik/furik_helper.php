@@ -9,6 +9,11 @@ function furik_order_sign($order_ref) {
 	return md5($order_ref . $furik_payment_secret_key . "internal");
 }
 
+function furik_transaction_id($local_id) {
+	transactionId = substr(md5($_SERVER['SERVER_ADDR']), 0, 4) . '-' . $local_id;
+	return $transactionId;
+}
+
 function furik_url($uri, $parameters = array(), $add_proto = true) {
 	global $furik_homepage_https, $furik_homepage_url;
 	$url = "";

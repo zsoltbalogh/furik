@@ -125,7 +125,7 @@ function furik_process_payment_form() {
 
 	$local_id = $wpdb->insert_id;
 
-	$transactionId = substr(md5($_SERVER['SERVER_ADDR']), 0, 4) . '-' . $local_id;
+	$transactionId = furik_transaction_id($local_id);
 
 	$wpdb->update(
 		"{$wpdb->prefix}furik_transactions",
@@ -148,6 +148,36 @@ function furik_process_payment_form() {
 	elseif ($type == 2) {
 		furik_redirect_to_thank_you_cash($transactionId);
 	}
+}
+
+function furik_process_recurring() {
+	global $wpdb;
+	$sql = "SELECT *
+		FROM
+			{$wpdb->prefix}furik_transactions
+		WHERE time <= now()
+			AND transaction_status in (".FURIK_STATUS_FUTURE.")
+		ORDER BY time DESC";
+
+	$result = $wpdb->get_results($sql);
+	echo "<pre>";
+	foreach ($result as $payment) {
+		// TODO: Double check the validity of the payment by checking if more than 25 days happened since last payment
+
+		echo $payment->amount ." ". $payment->time."\n";
+
+		$trx = new SimplePayDorecurring;
+
+		$trx->addConfig(furik_get_simple_config());
+		$trx->addData('orderRef', $payment->transaction_id);
+		$trx->addData('methods', array('CARD'));
+		$trx->addData('currency', 'HUF');
+		$trx->addData('total', $payment->recurring);
+		$trx->addData('customerEmail', $payment->email);
+		$trx->addData('token', $payment->token);
+		$v2QueryResult = $trx->runDorecurring();
+	}
+	die("Processing recurring payment.");
 }
 
 function furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, $amount, $email, $recurring = false, $token_validity = 0) {
@@ -214,6 +244,7 @@ function furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, 
 				'time' => date("Y-m-d H:i:s", $time),
 				'transaction_type' => 0,
 				'name' => $name,
+				'email' => $email,
 				'amount' => $amount,
 				'campaign' => $campaign,
 				'parent' => $local_id,
@@ -221,6 +252,14 @@ function furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, 
 				'transaction_status' => FURIK_STATUS_FUTURE,
 				'token_validity' => date("Y-m-d H:i:s", $token_validity)
 			)
+		);
+
+		$transactionId = furik_transaction_id($local_id);
+
+		$wpdb->update(
+			"{$wpdb->prefix}furik_transactions",
+			array("transaction_id" => $transactionId),
+			array("id" => $local_id)
 		);
 	}
 
@@ -297,6 +336,10 @@ function furik_get_simple_config() {
 
 if ($_POST['furik_action'] == "process_payment_form") {
 	furik_process_payment_form();
+}
+
+if (isset($_GET['furik_process_recurring'])) {
+	furik_process_recurring();
 }
 
 if (isset($_GET['furik_process_payment'])) {
