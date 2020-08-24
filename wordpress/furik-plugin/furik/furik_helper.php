@@ -10,7 +10,7 @@ function furik_order_sign($order_ref) {
 }
 
 function furik_transaction_id($local_id) {
-	transactionId = substr(md5($_SERVER['SERVER_ADDR']), 0, 4) . '-' . $local_id;
+	$transactionId = substr(md5($_SERVER['SERVER_ADDR']), 0, 4) . '-' . $local_id;
 	return $transactionId;
 }
 
