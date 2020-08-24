@@ -254,6 +254,8 @@ function furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, 
 			)
 		);
 
+		$local_id = $wpdb->insert_id;
+
 		$transactionId = furik_transaction_id($local_id);
 
 		$wpdb->update(
