@@ -162,6 +162,9 @@ function furik_process_recurring() {
 	$result = $wpdb->get_results($sql);
 	echo "<pre>";
 	foreach ($result as $payment) {
+		require_once "SimplePayV21.php";
+		require_once "SimplePayV21CardStorage.php";
+
 		// TODO: Double check the validity of the payment by checking if more than 25 days happened since last payment
 
 		echo $payment->amount ." ". $payment->time."\n";
@@ -172,12 +175,23 @@ function furik_process_recurring() {
 		$trx->addData('orderRef', $payment->transaction_id);
 		$trx->addData('methods', array('CARD'));
 		$trx->addData('currency', 'HUF');
-		$trx->addData('total', $payment->recurring);
+		$trx->addData('total', $payment->amount);
 		$trx->addData('customerEmail', $payment->email);
 		$trx->addData('token', $payment->token);
-		$v2QueryResult = $trx->runDorecurring();
+		$trx->runDorecurring();
+
+		$returnData = $trx->getReturnData();
+
+		$newStatus = $returnData['total'] > 0 ? FURIK_STATUS_SUCCESSFUL : FURIK_STATUS_RECURRING_FAILED;
+
+		$wpdb->update(
+			"{$wpdb->prefix}furik_transactions",
+			array("transaction_status" => $newStatus),
+			array("id" => $payment->id)
+		);
 	}
-	die("Processing recurring payment.");
+
+	die("Processed recurring payments.");
 }
 
 function furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, $amount, $email, $recurring = false, $token_validity = 0) {
