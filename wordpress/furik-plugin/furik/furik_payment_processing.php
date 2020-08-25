@@ -182,6 +182,8 @@ function furik_process_recurring() {
 
 		$returnData = $trx->getReturnData();
 
+		furik_transaction_log($payment->transaction_id, serialize($returnData));
+
 		$newStatus = $returnData['total'] > 0 ? FURIK_STATUS_SUCCESSFUL : FURIK_STATUS_RECURRING_FAILED;
 
 		$wpdb->update(
