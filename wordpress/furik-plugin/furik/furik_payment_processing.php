@@ -356,7 +356,7 @@ if ($_POST['furik_action'] == "process_payment_form") {
 	furik_process_payment_form();
 }
 
-if (isset($_GET['furik_process_recurring'])) {
+if (isset($_GET['furik_process_recurring']) && ($_GET['furik_process_recurring'] == $furik_processing_recurring_secret)) {
 	furik_process_recurring();
 }
 

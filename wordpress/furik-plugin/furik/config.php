@@ -20,5 +20,7 @@ $furik_card_registration_statement_url = "card-registration-statement";
 $furik_data_transmission_declaration_url = "data-transmission-declaration";
 $furik_monthly_explanation_url = "monthly-donation";
 
+$furik_processing_recurring_secret = "aekah2Qu";
+
 @include_once "config_local.php";
 ?>
