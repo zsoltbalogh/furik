@@ -258,7 +258,7 @@ function furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, 
 			"{$wpdb->prefix}furik_transactions",
 			array(
 				'time' => date("Y-m-d H:i:s", $time),
-				'transaction_type' => 0,
+				'transaction_type' => FURIK_TRANSACTION_TYPE_RECURRING_AUTO,
 				'name' => $name,
 				'email' => $email,
 				'amount' => $amount,

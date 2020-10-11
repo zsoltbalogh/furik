@@ -63,7 +63,9 @@ class Donations_List extends WP_List_Table {
 			case 2:
 				return __('Cash payment', 'furik');
 			case 3:
-				return __('Monthly automatic donation', 'furik');
+				return __('Recurring (registration)', 'furik');
+			case 4:
+				return __('Recurring (automatic)', 'furik');
 			default:
 				return __('Unknown', 'furik');
 		}
