@@ -79,7 +79,7 @@ class Recurring_List extends WP_List_Table {
 	public static function record_count() {
 		global $wpdb;
 
-		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}furik_transactions WHERE transaction_status != ". FURIK_STATUS_FUTURE;
+		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}furik_transactions WHERE transaction_type = ". FURIK_TRANSACTION_TYPE_RECURRING_REG;
 
 		return $wpdb->get_var($sql);
 	}
