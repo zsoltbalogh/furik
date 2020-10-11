@@ -140,7 +140,7 @@ function furik_process_payment_form() {
 	}
 
 	if (($type == 0) || ($type == 3)) {
-		furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, $amount, $email, $type == 3);
+		furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, $amount, $email, $type == 3, $name);
 	}
 	elseif ($type == 1) {
 		furik_redirect_to_transfer_page($transactionId);
@@ -196,7 +196,7 @@ function furik_process_recurring() {
 	die("Processed recurring payments.");
 }
 
-function furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, $amount, $email, $recurring = false, $token_validity = 0) {
+function furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, $amount, $email, $recurring = false, $name) {
 	global $wpdb;
 
 	require_once 'SimplePayV21.php';
