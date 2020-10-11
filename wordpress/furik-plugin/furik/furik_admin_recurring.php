@@ -3,7 +3,7 @@ if (!class_exists('WP_List_Table') ) {
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
-class Donations_List extends WP_List_Table {
+class Recurring_List extends WP_List_Table {
 
 	public function __construct() {
 		parent::__construct( [
@@ -54,23 +54,6 @@ class Donations_List extends WP_List_Table {
 		}
 	}
 
-	public function column_transaction_type($item) {
-		switch ($item['transaction_type']) {
-			case 0:
-				return __('SimplePay Card', 'furik');
-			case 1:
-				return __('Bank transfer', 'furik');
-			case 2:
-				return __('Cash payment', 'furik');
-			case 3:
-				return __('Recurring (registration)', 'furik');
-			case 4:
-				return __('Recurring (automatic)', 'furik');
-			default:
-				return __('Unknown', 'furik');
-		}
-	}
-
 	public static function get_donations($per_page = 5, $page_number = 1) {
 		global $wpdb;
 
@@ -82,7 +65,7 @@ class Donations_List extends WP_List_Table {
 				{$wpdb->prefix}furik_transactions
 				LEFT OUTER JOIN {$wpdb->prefix}posts campaigns ON ({$wpdb->prefix}furik_transactions.campaign=campaigns.ID)
 				LEFT OUTER JOIN {$wpdb->prefix}posts parentcampaigns ON (campaigns.post_parent=parentcampaigns.ID)
-			WHERE transaction_status != ". FURIK_STATUS_FUTURE;
+			WHERE transaction_type = ". FURIK_TRANSACTION_TYPE_RECURRING_REG;
 		if (!empty($_REQUEST['orderby'])) {
 			$sql .= ' ORDER BY ' . esc_sql($_REQUEST['orderby']);
 			$sql .= ! empty($_REQUEST['order']) ? ' ' . esc_sql($_REQUEST['order']) : ' ASC';
@@ -102,7 +85,7 @@ class Donations_List extends WP_List_Table {
 	}
 
 	public function no_items() {
-		_e('No donations are avaliable.', 'furik');
+		_e('No recurring donations are avaliable.', 'furik');
 	}
 
 	function get_columns() {
@@ -110,10 +93,8 @@ class Donations_List extends WP_List_Table {
 			'name' => __('Name', 'furik'),
 			'email' => __('E-mail', 'furik'),
 		    'amount' => __('Amount', 'furik'),
-		    'transaction_type' => __('Type', 'furik'),
-		    'transaction_id' => __('Transaction ID', 'furik'),
 		    'campaign_name' => __('Campaign', 'furik'),
-		    'time' => __('Time', 'sp'),
+		    'time' => __('Registration time', 'sp'),
 		    'transaction_status' => __('Status', 'furik')
 		];
 
@@ -125,7 +106,6 @@ class Donations_List extends WP_List_Table {
 			'name' => array('name', false),
 			'email' => array('email', false),
 			'amount' => array('amount', false),
-			'transaction_type' => array('transaction_type', false),
 			'campaign_name' => array('campaign_name', false),
 			'time' => array('time', true),
 			'transaction_status' => array('transaction_status', false)
@@ -148,13 +128,13 @@ class Donations_List extends WP_List_Table {
 	}
 }
 
-class Donations_List_Plugin {
+class Recurring_List_Plugin {
 
 	static $instance;
 	public $donations_obj;
 
 	public function __construct() {
-		add_filter('set-screen-option', [ __CLASS__, 'set_screen' ], 10, 3);
+		add_filter('set-screen-option', [ __CLASS__, 'set_screen' ], 11, 3);
 		add_action('admin_menu', [$this, 'plugin_menu']);
 	}
 
@@ -164,10 +144,10 @@ class Donations_List_Plugin {
 
 	public function plugin_menu() {
 		$hook = add_menu_page(
-			__('Furik Donations', 'furik'),
-			__('Donations', 'furik'),
+			__('Recurring donations', 'furik'),
+			__('Recurring donations', 'furik'),
 			'manage_options',
-			'wp_list_table_class',
+			'recurring_donations',
 			[$this, 'donations_list_page'],
 			'dashicons-chart-line'
 		);
@@ -177,30 +157,21 @@ class Donations_List_Plugin {
 	public function screen_option() {
 		$option = 'per_page';
 		$args   = [
-			'label' => 'Donations',
+			'label' => 'Recurring donations',
 			'default' => 20,
 			'option' => 'donations_per_page'
 		];
 
 		add_screen_option($option, $args);
 
-		$this->donations_obj = new Donations_List();
+		$this->donations_obj = new Recurring_List();
 	}
 
 	public function donations_list_page() {
 		global $wpdb;
-
-		if (isset($_GET['action']) && $_GET['action'] == 'approve' && isset($_GET['campaign'])) {
-			$wpdb->update(
-				"{$wpdb->prefix}furik_transactions",
-				array("transaction_status" => FURIK_STATUS_IPN_SUCCESSFUL),
-				array("id" => esc_sql($_GET['campaign']))
-			);
-		}
-
 		?>
 		<div class="wrap">
-			<h1 class="wp-heading-inline"><?php _e('Donations', 'furik') ?></h1>
+			<h1 class="wp-heading-inline"><?php _e('Recurring donations', 'furik') ?></h1>
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder">
 					<div id="post-body-content">
@@ -229,5 +200,5 @@ class Donations_List_Plugin {
 }
 
 add_action( 'plugins_loaded', function () {
-	Donations_List_Plugin::get_instance();
+	Recurring_List_Plugin::get_instance();
 } );

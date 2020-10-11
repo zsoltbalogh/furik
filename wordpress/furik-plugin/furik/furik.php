@@ -25,6 +25,7 @@ include_once "furik_shortcode_register_user.php";
 include_once "furik_payment_processing.php";
 
 include_once "furik_admin_donations.php";
+include_once "furik_admin_recurring.php";
 include_once "furik_campaigns.php";
 include_once "furik_own_donations.php";
 
