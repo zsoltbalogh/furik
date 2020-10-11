@@ -13,6 +13,7 @@ define("FURIK_STATUS_DISPLAYABLE", "1, 10");
 define("FURIK_TRANSACTION_TYPE_SIMPLEPAY", 0);
 define("FURIK_TRANSACTION_TYPE_TRANSFER", 1);
 define("FURIK_TRANSACTION_TYPE_CASH", 2);
+define("FURIK_TRANSACTION_TYPE_RECURRING", 3);
 
 function furik_get_transaction($order_ref) {
 	global $wpdb;
