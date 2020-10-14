@@ -251,34 +251,36 @@ function furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, 
 
 	$time = time();
 
-	foreach ($returnData['tokens'] as $token) {
-		$time = strtotime("+1 month", $time);
+	if (isset($returnData['tokens'])) {
+		foreach ($returnData['tokens'] as $token) {
+			$time = strtotime("+1 month", $time);
 
-		$wpdb->insert(
-			"{$wpdb->prefix}furik_transactions",
-			array(
-				'time' => date("Y-m-d H:i:s", $time),
-				'transaction_type' => FURIK_TRANSACTION_TYPE_RECURRING_AUTO,
-				'name' => $name,
-				'email' => $email,
-				'amount' => $amount,
-				'campaign' => $campaign,
-				'parent' => $local_id,
-				'token' => $token,
-				'transaction_status' => FURIK_STATUS_FUTURE,
-				'token_validity' => date("Y-m-d H:i:s", $token_validity)
-			)
-		);
+			$wpdb->insert(
+				"{$wpdb->prefix}furik_transactions",
+				array(
+					'time' => date("Y-m-d H:i:s", $time),
+					'transaction_type' => FURIK_TRANSACTION_TYPE_RECURRING_AUTO,
+					'name' => $name,
+					'email' => $email,
+					'amount' => $amount,
+					'campaign' => $campaign,
+					'parent' => $local_id,
+					'token' => $token,
+					'transaction_status' => FURIK_STATUS_FUTURE,
+					'token_validity' => date("Y-m-d H:i:s", $token_validity)
+				)
+			);
 
-		$local_id = $wpdb->insert_id;
+			$local_id = $wpdb->insert_id;
 
-		$transactionId = furik_transaction_id($local_id);
+			$transactionId = furik_transaction_id($local_id);
 
-		$wpdb->update(
-			"{$wpdb->prefix}furik_transactions",
-			array("transaction_id" => $transactionId),
-			array("id" => $local_id)
-		);
+			$wpdb->update(
+				"{$wpdb->prefix}furik_transactions",
+				array("transaction_id" => $transactionId),
+				array("id" => $local_id)
+			);
+		}
 	}
 
 	echo $lu->returnData['form'];
