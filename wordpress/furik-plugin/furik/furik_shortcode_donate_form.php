@@ -43,7 +43,24 @@ function furik_shortcode_donate_form( $atts ) {
         $campaign = __('General donation', 'furik');
     }
 
-    $r = "<form method=\"POST\" action=\"".$_SERVER['REQUEST_URI']."\">";
+    $r = '<script type="text/javascript">
+    function toggle_data_transmission() {
+        var monthly = document.getElementById("furik_form_recurring_1");
+        var method = document.getElementById("furik_form_type_0");
+        if (monthly.checked && method.checked) {
+            document.getElementById("furik_form_accept_reg_div").style.display="block";
+            document.getElementById("furik_form_submit_button").value="' . __('Donation with card registration', 'furik').'";
+            document.getElementById("furik_form_accept_reg").required=true
+        }
+        else {
+            document.getElementById("furik_form_accept_reg_div").style.display="none";
+            document.getElementById("furik_form_submit_button").value="' . __('Send', 'furik').'";
+            document.getElementById("furik_form_accept_reg").required=false
+        }
+    }
+    </script>';
+
+    $r .= "<form method=\"POST\" action=\"".$_SERVER['REQUEST_URI']."\">";
     $r .= "<input type=\"hidden\" name=\"furik_action\" value=\"process_payment_form\" />";
     $r .= "<input type=\"hidden\" name=\"furik_campaign\" value=\"$campaign_id\" />";
 
@@ -82,45 +99,46 @@ function furik_shortcode_donate_form( $atts ) {
         $r .= "</div>";
     }
 
+
+    if ($a['enable_monthly']) {
+        $r .= "<hr />";
+        $r .= "<div class=\"form-field form-group furik-payment-recurring\">";
+        $r .= "<div>";
+        $r .= "<div class=\"form-check form-check-inline\">
+            <input type=\"radio\" id=\"furik_form_recurring_0\" class=\"form-check-input\" name=\"furik_form_recurring\" value=\"0\" checked=\"1\"
+                onChange=\"toggle_data_transmission()\"
+            />
+            <label for=\"furik_form_recurring_0\" class=\"form-check-label\">".__('One time donation', 'furik')."</label></div>";
+
+        $r .= "<div class=\"form-check form-check-inline\">
+            <input type=\"radio\" id=\"furik_form_recurring_1\" class=\"form-check-input\" name=\"furik_form_recurring\" value=\"1\"
+                onChange=\"toggle_data_transmission()\"
+                />
+                <label for=\"furik_form_recurring_1\" class=\"form-check-label\">".__('Monthly recurring', 'furik')."</label></div>";
+
+        $r .= "</div>";
+        $r .= "</div>";
+    }
+
     $r .= "<hr />";
     $r .= "<div class=\"form-field form-group furik-payment-method\">";
-    // $r .= "<label>" . __('Type of donation', 'furik') . "</label>";
     $r .= "<div>";
     $r .= "<div class=\"form-check form-check-inline\">
         <input type=\"radio\" id=\"furik_form_type_0\" class=\"form-check-input\" name=\"furik_form_type\" value=\"0\" checked=\"1\"
-            onChange=\"document.getElementById('furik_form_accept_reg_div').style.display='none';
-                document.getElementById('furik_form_submit_button').value='" . __('Send', 'furik')."';
-                document.getElementById('furik_form_accept_reg').required=false\"
+            onChange=\"toggle_data_transmission()\"
         />
         <label for=\"furik_form_type_0\" class=\"form-check-label\">".__('Online payment', 'furik')."</label></div>";
 
-    if ($a['enable_monthly']) {
-        $r .= "<div class=\"form-check form-check-inline\">
-            <input type=\"radio\" id=\"furik_form_type_1\" class=\"form-check-input\" name=\"furik_form_type\" value=\"3\"
-                onChange=\"
-                    document.getElementById('furik_form_accept_reg_div').style.display='block';
-                    document.getElementById('furik_form_submit_button').value='" . __('Donation with card registration', 'furik')."';
-                    document.getElementById('furik_form_accept_reg').required=true\"
-            />
-            <label for=\"furik_form_type_1\" class=\"form-check-label\">".__('Monthly automatic donation', 'furik'). " <a href=\"" . furik_url($furik_monthly_explanation_url) . "\" target=\"_blank\">". __("What's this?", 'furik')."</a></label></div>";
-    }
-
     $r .= "<div class=\"form-check form-check-inline\">
         <input type=\"radio\" id=\"furik_form_type_1\" class=\"form-check-input\" name=\"furik_form_type\" value=\"1\"
-            onChange=\"
-                document.getElementById('furik_form_accept_reg_div').style.display='none';
-                document.getElementById('furik_form_submit_button').value='" . __('Send', 'furik')."';
-                document.getElementById('furik_form_accept_reg').required=false\"
+            onChange=\"toggle_data_transmission()\"
             />
             <label for=\"furik_form_type_1\" class=\"form-check-label\">".__('Bank transfer', 'furik')."</label></div>";
 
     if ($a['enable_cash']) {
         $r .= "<div class=\"form-check form-check-inline\">
             <input type=\"radio\" id=\"furik_form_type_2\" class=\"form-check-input\" name=\"furik_form_type\" value=\"2\"
-                onChange=\"
-                    document.getElementById('furik_form_accept_reg_div').style.display='none';
-                    document.getElementById('furik_form_submit_button').value='" . __('Send', 'furik')."';
-                    document.getElementById('furik_form_accept_reg').required=false\"
+                onChange=\"toggle_data_transmission()\"
             />
             <label for=\"furik_form_type_2\" class=\"form-check-label\">".__('Cash donation', 'furik')."</label></div>";
     }
