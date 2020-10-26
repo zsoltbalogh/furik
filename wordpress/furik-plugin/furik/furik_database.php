@@ -50,6 +50,7 @@ function furik_install() {
 		parent int,
 		token varchar(255),
 		token_validity datetime,
+		newsletter_status int,
 		PRIMARY KEY  (id)
 	) $charset_collate;";
 

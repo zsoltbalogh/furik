@@ -8,7 +8,8 @@ function furik_shortcode_donate_form( $atts ) {
 	   'amount' => '5000',
        'skip_message' => false,
        'enable_cash' => false,
-       'enable_monthly' => false
+       'enable_monthly' => false,
+       'enable_newsletter' => false
     ), $atts );
 
     $amount = is_numeric($_GET['furik_amount']) ? $_GET['furik_amount'] : $atts['amount'];
@@ -136,6 +137,12 @@ function furik_shortcode_donate_form( $atts ) {
     $r .= "<div class=\"form-field form-check furik-form-accept-reg\" id=\"furik_form_accept_reg_div\" style=\"display: none\">";
     $r .= "<label for=\"furik_form_accept_reg\" class=\"form-check-label\"><input type=\"checkbox\" name=\"furik_form_accept-reg\" id=\"furik_form_accept_reg\" class=\"form-check-input\"><a href=\"".furik_url($furik_card_registration_statement_url)."\" target=\"_blank\">".__('I accept the card registration statement', 'furik')."</a></label>";
     $r .= "</div>";
+
+    if ($a['enable_newsletter']) {
+        $r .= "<div class=\"form-field form-check furik-form-newsletter\">";
+        $r .= "<label for=\"furik_form_newsletter\" class=\"form-check-label\"><input type=\"checkbox\" name=\"furik_form_newsletter\" id=\"furik_form_newsletter\" class=\"form-check-input\">".__('Subscribe to our newsletter', 'furik')."</label>";
+        $r .= "</div>";
+    }
 
     $r .= "<div class=\"py-4 footer-btns\"><div class=\"submit-btn\">";
     $r .= "<p class=\"submit\"><input type=\"submit\" class=\"button button-primary rounded-xl btn btn-primary\" id=\"furik_form_submit_button\" value=\"".__('Send', 'furik')."\" /></p>";

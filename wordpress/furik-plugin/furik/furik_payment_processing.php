@@ -107,6 +107,7 @@ function furik_process_payment_form() {
 	$campaign = $campaign_id > 0 ? get_post($campaign_id) : null;
 	$type = furik_numr("furik_form_type");
 	$recurring = $type == 3 ? 1 : 0;
+	$newsletter =$_POST['furik_form_newsletter'] ? 1 : 0;
 
 	$wpdb->insert(
 		"{$wpdb->prefix}furik_transactions",
@@ -119,7 +120,8 @@ function furik_process_payment_form() {
 			'message' => $message,
 			'amount' => $amount,
 			'campaign' => $campaign_id,
-			'recurring' => $recurring
+			'recurring' => $recurring,
+			'newsletter_status' => $newsletter
 		)
 	);
 
