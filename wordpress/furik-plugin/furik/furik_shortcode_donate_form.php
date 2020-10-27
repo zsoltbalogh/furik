@@ -114,7 +114,7 @@ function furik_shortcode_donate_form( $atts ) {
             <input type=\"radio\" id=\"furik_form_recurring_1\" class=\"form-check-input\" name=\"furik_form_recurring\" value=\"1\"
                 onChange=\"toggle_data_transmission()\"
                 />
-                <label for=\"furik_form_recurring_1\" class=\"form-check-label\">".__('Monthly recurring', 'furik')."</label></div>";
+                <label for=\"furik_form_recurring_1\" class=\"form-check-label\">".__('Recurring donation', 'furik')." <a href=\"" . furik_url($furik_monthly_explanation_url) . "\" target=\"_blank\">". __("What's this?", 'furik')."</a></label></div>";
 
         $r .= "</div>";
         $r .= "</div>";

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Furik\n"
-"POT-Creation-Date: 2020-10-27 09:52+0100\n"
-"PO-Revision-Date: 2020-10-27 09:52+0100\n"
+"POT-Creation-Date: 2020-10-27 19:19+0100\n"
+"PO-Revision-Date: 2020-10-27 19:19+0100\n"
 "Last-Translator: \n"
 "Language-Team: Furik\n"
 "Language: hu_HU\n"
@@ -268,8 +268,12 @@ msgid "One time donation"
 msgstr "Egyszeri támogatás"
 
 #: furik_shortcode_donate_form.php:117
-msgid "Monthly recurring"
-msgstr "Havi rendszerességű"
+msgid "Recurring donation"
+msgstr "Rendszeres támogatás"
+
+#: furik_shortcode_donate_form.php:117
+msgid "What's this?"
+msgstr "Mi ez?"
 
 #: furik_shortcode_donate_form.php:130
 msgid "Online payment"
@@ -398,11 +402,11 @@ msgstr ""
 "Ha meg szeretnél változtatni bármit az ismétlődő fizetésben, kérjük lépj be "
 "az e-mail címeddel rendszerünkbe. A jelszavad: "
 
+#~ msgid "Monthly recurring"
+#~ msgstr "Havi rendszerességű"
+
 #~ msgid "Monthly automatic donation"
 #~ msgstr "Havi automatikus támogatás"
-
-#~ msgid "What's this?"
-#~ msgstr "Mi ez?"
 
 #~ msgid "Supported cause"
 #~ msgstr "Támogatott kezdeményezés"
