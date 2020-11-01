@@ -46,16 +46,18 @@ function furik_shortcode_donate_form( $atts ) {
     $r = '<script type="text/javascript">
     function toggle_data_transmission() {
         var monthly = document.getElementById("furik_form_recurring_1");
-        var method = document.getElementById("furik_form_type_0");
-        if (monthly.checked && method.checked) {
+        if (monthly.checked) {
             document.getElementById("furik_form_accept_reg_div").style.display="block";
             document.getElementById("furik_form_submit_button").value="' . __('Donation with card registration', 'furik').'";
-            document.getElementById("furik_form_accept_reg").required=true
+            document.getElementById("furik_form_accept_reg").required=true;
+            document.getElementById("furik_form_type_0").checked=true;
+            document.getElementById("furik_form_bank_transfer_option").style.display="none";
         }
         else {
             document.getElementById("furik_form_accept_reg_div").style.display="none";
             document.getElementById("furik_form_submit_button").value="' . __('Send', 'furik').'";
-            document.getElementById("furik_form_accept_reg").required=false
+            document.getElementById("furik_form_accept_reg").required=false;
+            document.getElementById("furik_form_bank_transfer_option").style.display="block";
         }
     }
     </script>';
@@ -129,7 +131,7 @@ function furik_shortcode_donate_form( $atts ) {
         />
         <label for=\"furik_form_type_0\" class=\"form-check-label\">".__('Online payment', 'furik')."</label></div>";
 
-    $r .= "<div class=\"form-check form-check-inline\">
+    $r .= "<div class=\"form-check form-check-inline\" id=\"furik_form_bank_transfer_option\">
         <input type=\"radio\" id=\"furik_form_type_1\" class=\"form-check-input\" name=\"furik_form_type\" value=\"1\"
             onChange=\"toggle_data_transmission()\"
             />
