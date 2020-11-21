@@ -4,7 +4,7 @@
 
 ### Fix the issue with parent chaining 
 
-    update wp_furik_transactions as a SET parent=(select id from wp_furik_transactions WHERE recurring=1 and id < a.id ORDER BY id DESC limit 1) WHERE parent is not null and recurring is null and parent not in (select id from wp_furik_transactions WHERE recurring=1)
+    update wp_furik_transactions as a SET parent=(select id from (select * from wp_furik_transactions) as d1 WHERE recurring=1 and id < a.id ORDER BY id DESC limit 1) WHERE parent is not null and recurring is null and parent not in (select id from (select * from wp_furik_transactions) as d2 WHERE recurring=1)
 
 ### Verify it worked well
 
