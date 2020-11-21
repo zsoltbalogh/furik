@@ -261,6 +261,7 @@ function furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, 
 	$returnData = $lu->getReturnData();
 
 	$time = time();
+	$parent_id = $local_id;
 
 	if (isset($returnData['tokens'])) {
 		foreach ($returnData['tokens'] as $token) {
@@ -275,7 +276,7 @@ function furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, 
 					'email' => $email,
 					'amount' => $amount,
 					'campaign' => $campaign,
-					'parent' => $local_id,
+					'parent' => $parent_id,
 					'token' => $token,
 					'transaction_status' => FURIK_STATUS_FUTURE,
 					'token_validity' => date("Y-m-d H:i:s", $token_validity)
