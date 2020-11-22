@@ -58,12 +58,13 @@ class Recurring_List extends WP_List_Table {
 		global $wpdb;
 
 		$sql = "SELECT
-				{$wpdb->prefix}furik_transactions.*,
+				tr.*,
 				campaigns.post_title AS campaign_name,
-				parentcampaigns.post_title AS parent_campaign_name
+				parentcampaigns.post_title AS parent_campaign_name,
+				(SELECT sum(amount) FROM {$wpdb->prefix}furik_transactions WHERE (parent=tr.id OR id=tr.id) AND transaction_status=".FURIK_STATUS_IPN_SUCCESSFUL.") as full_amount
 			FROM
-				{$wpdb->prefix}furik_transactions
-				LEFT OUTER JOIN {$wpdb->prefix}posts campaigns ON ({$wpdb->prefix}furik_transactions.campaign=campaigns.ID)
+				{$wpdb->prefix}furik_transactions as tr
+				LEFT OUTER JOIN {$wpdb->prefix}posts campaigns ON (tr.campaign=campaigns.ID)
 				LEFT OUTER JOIN {$wpdb->prefix}posts parentcampaigns ON (campaigns.post_parent=parentcampaigns.ID)
 			WHERE transaction_type = ". FURIK_TRANSACTION_TYPE_RECURRING_REG;
 		if (!empty($_REQUEST['orderby'])) {
@@ -90,9 +91,11 @@ class Recurring_List extends WP_List_Table {
 
 	function get_columns() {
 		$columns = [
+			'transaction_id' => __('ID', 'furik'),
 			'name' => __('Name', 'furik'),
 			'email' => __('E-mail', 'furik'),
 		    'amount' => __('Amount', 'furik'),
+		    'full_amount' => __('Full amount', 'furik'),
 		    'campaign_name' => __('Campaign', 'furik'),
 		    'time' => __('Registration time', 'sp'),
 		    'transaction_status' => __('Status', 'furik')
@@ -103,9 +106,11 @@ class Recurring_List extends WP_List_Table {
 
 	public function get_sortable_columns() {
 		$sortable_columns = array(
+			'transaction_id' => array('ID', 'furik'),
 			'name' => array('name', false),
 			'email' => array('email', false),
 			'amount' => array('amount', false),
+			'full_amount' => array('full_amount', false),
 			'campaign_name' => array('campaign_name', false),
 			'time' => array('time', true),
 			'transaction_status' => array('transaction_status', false)
