@@ -27,6 +27,10 @@ class Recurring_List extends WP_List_Table {
 		return $item['campaign_name'] . " (" . $item['parent_campaign_name'] .")";
 	}
 
+	public function column_transaction_id($item) {
+		return "<a href=\"admin.php?page=wp_list_table_class&filter_by_parent=" . $item['id'] . "\">". $item['transaction_id'] . "</a>";
+	}
+
 	public function column_transaction_status($item) {
 		switch ($item['transaction_status']) {
 			case "":

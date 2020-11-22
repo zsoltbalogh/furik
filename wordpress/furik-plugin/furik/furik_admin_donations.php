@@ -49,6 +49,8 @@ class Donations_List extends WP_List_Table {
 				return sprintf('%1$s %2$s', __('Waiting for confirmation', 'furik'), $actions['approve'] );
 			case FURIK_STATUS_IPN_SUCCESSFUL:
 				return __('Successful and confirmed', 'furik');
+			case FURIK_STATUS_FUTURE:
+				return __('Future donation', 'furik');
 			default:
 				return __('Unknown', 'furik');
 		}
@@ -75,14 +77,14 @@ class Donations_List extends WP_List_Table {
 		global $wpdb;
 
 		$sql = "SELECT
-				{$wpdb->prefix}furik_transactions.*,
+				tr.*,
 				campaigns.post_title AS campaign_name,
 				parentcampaigns.post_title AS parent_campaign_name
 			FROM
-				{$wpdb->prefix}furik_transactions
-				LEFT OUTER JOIN {$wpdb->prefix}posts campaigns ON ({$wpdb->prefix}furik_transactions.campaign=campaigns.ID)
+				{$wpdb->prefix}furik_transactions as tr
+				LEFT OUTER JOIN {$wpdb->prefix}posts campaigns ON (tr.campaign=campaigns.ID)
 				LEFT OUTER JOIN {$wpdb->prefix}posts parentcampaigns ON (campaigns.post_parent=parentcampaigns.ID)
-			WHERE transaction_status != ". FURIK_STATUS_FUTURE;
+			WHERE " . self::get_filter_query();
 		if (!empty($_REQUEST['orderby'])) {
 			$sql .= ' ORDER BY ' . esc_sql($_REQUEST['orderby']);
 			$sql .= ! empty($_REQUEST['order']) ? ' ' . esc_sql($_REQUEST['order']) : ' ASC';
@@ -90,13 +92,24 @@ class Donations_List extends WP_List_Table {
 		$sql .= " LIMIT $per_page";
 		$sql .= ' OFFSET ' . ($page_number - 1) * $per_page;
 		$result = $wpdb->get_results($sql, 'ARRAY_A');
+
 		return $result;
+	}
+
+	public static function get_filter_query() {
+		if (is_numeric($_GET['filter_by_parent'])) {
+			$parent_id = $_GET['filter_by_parent'];
+			return "(tr.id = $parent_id OR tr.parent=$parent_id)";
+		}
+		else {
+			return "transaction_status != ". FURIK_STATUS_FUTURE;
+		}
 	}
 
 	public static function record_count() {
 		global $wpdb;
 
-		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}furik_transactions WHERE transaction_status != ". FURIK_STATUS_FUTURE;
+		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}furik_transactions as tr WHERE " . self::get_filter_query();
 
 		return $wpdb->get_var($sql);
 	}
@@ -107,11 +120,11 @@ class Donations_List extends WP_List_Table {
 
 	function get_columns() {
 		$columns = [
+			'transaction_id' => __('ID', 'furik'),
 			'name' => __('Name', 'furik'),
 			'email' => __('E-mail', 'furik'),
 		    'amount' => __('Amount', 'furik'),
 		    'transaction_type' => __('Type', 'furik'),
-		    'transaction_id' => __('Transaction ID', 'furik'),
 		    'campaign_name' => __('Campaign', 'furik'),
 		    'time' => __('Time', 'sp'),
 		    'transaction_status' => __('Status', 'furik')
@@ -122,6 +135,7 @@ class Donations_List extends WP_List_Table {
 
 	public function get_sortable_columns() {
 		$sortable_columns = array(
+			'transaction_id' => array('id', false),
 			'name' => array('name', false),
 			'email' => array('email', false),
 			'amount' => array('amount', false),
