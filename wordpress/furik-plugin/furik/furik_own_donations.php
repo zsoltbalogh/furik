@@ -98,7 +98,8 @@ class Own_Donations_List extends WP_List_Table {
 				LEFT OUTER JOIN {$wpdb->prefix}posts parentcampaigns ON (campaigns.post_parent=parentcampaigns.ID)
 			WHERE
 				email='" . esc_sql($user->user_email) . "' AND
-				parent IS NULL";
+				parent IS NULL AND
+					(recurring IS NULL OR (recurring=1 AND transaction_status=10))";
 		if (!empty($_REQUEST['orderby'])) {
 			$sql .= ' ORDER BY ' . esc_sql($_REQUEST['orderby']);
 			$sql .= ! empty($_REQUEST['order']) ? ' ' . esc_sql($_REQUEST['order']) : ' ASC';
