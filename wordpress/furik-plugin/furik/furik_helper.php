@@ -1,4 +1,36 @@
 <?php
+/**
+ * Load template.
+ *
+ * @param string $_template_file Filename with extension.
+ * @param array $args Array of arguments.
+ */
+function furik_load_template( $_template_file, $args = array() ) {
+    $plugin = basename( plugin_dir_path(   __FILE__   ) );
+    $overridden_template = locate_template( $plugin . '/' . $_template_file );
+
+    ob_start();
+
+    if ( $overridden_template ) {
+        /*
+         * Method locate_template() returns path to file.
+         * If either the child theme or the parent theme have overridden the template.
+         */
+        load_template( $overridden_template, true, $args );
+    } else {
+        /*
+         * If neither the child nor parent theme have overridden the template,
+         * we load the template from the 'templates' sub-directory of the directory this file is in.
+         */
+        load_template( dirname( __FILE__ ) . '/templates/' . $_template_file, true, $args );
+    }
+
+    $content = ob_get_contents();
+    ob_end_clean();
+
+    return $content;
+}
+
 function furik_numr($name, $def = 0) {
 	return is_numeric($_REQUEST[$name]) ? $_REQUEST[$name] : $def;
 }
