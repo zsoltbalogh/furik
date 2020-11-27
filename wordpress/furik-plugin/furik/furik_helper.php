@@ -1,4 +1,9 @@
 <?php
+function furik_extra_field_enabled($name) {
+	global $furik_enable_extra_fields;
+
+	return in_array($name, $furik_enable_extra_fields);
+}
 /**
  * Load template.
  *

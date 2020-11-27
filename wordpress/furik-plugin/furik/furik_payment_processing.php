@@ -102,6 +102,11 @@ function furik_process_payment_form() {
 	$name = $_POST['furik_form_name'];
 	$anon = $_POST['furik_form_anon'] ? 1 : 0;
 	$email = $_POST['furik_form_email'];
+
+	if (furik_extra_field_enabled('phone_number')) {
+		$phone_number = $_POST['furik_form_phone_number'];
+	}
+
 	$message = $_POST['furik_form_message'];
 	$campaign_id = is_numeric($_POST['furik_campaign']) ? $_POST['furik_campaign'] : 0;
 	$campaign = $campaign_id > 0 ? get_post($campaign_id) : null;
@@ -126,6 +131,7 @@ function furik_process_payment_form() {
 			'name' => $name,
 			'anon' => $anon,
 			'email' => $email,
+			'phone_number' => $phone_number,
 			'message' => $message,
 			'amount' => $amount,
 			'campaign' => $campaign_id,

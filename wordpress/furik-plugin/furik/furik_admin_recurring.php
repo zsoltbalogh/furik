@@ -97,7 +97,12 @@ class Recurring_List extends WP_List_Table {
 		$columns = [
 			'transaction_id' => __('ID', 'furik'),
 			'name' => __('Name', 'furik'),
-			'email' => __('E-mail', 'furik'),
+			'email' => __('E-mail', 'furik')
+		];
+		if (furik_extra_field_enabled('phone_number')) {
+			$columns += ['phone_number' => __('Phone Number', 'furik')];
+		}
+		$columns += [
 		    'amount' => __('Amount', 'furik'),
 		    'full_amount' => __('Full amount', 'furik'),
 		    'campaign_name' => __('Campaign', 'furik'),

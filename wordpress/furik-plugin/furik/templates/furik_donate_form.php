@@ -47,6 +47,13 @@ if ( ! defined( 'ABSPATH' ) ) exit;
         <input type="email" class="form-control" name="furik_form_email" id="furik_form_email" required="1"/>
     </div>
 
+    <?php if (furik_extra_field_enabled('phone_number')) : ?>
+        <div class="form-field form-group">
+            <label for="furik_form_phone_number"><?php echo __('Phone number', 'furik'); ?>:</label>
+            <input type="tel" class="form-control" name="furik_form_phone_number" id="furik_form_phone_number" />
+        </div>
+    <?php endif; ?>
+
     <?php if (!$args['a']['skip_message']) : ?>
         <div class="form-field form-group">
             <label for="furik_form_message"><?php echo __('Message', 'furik'); ?>:</label>

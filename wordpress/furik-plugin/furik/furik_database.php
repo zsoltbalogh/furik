@@ -43,6 +43,7 @@ function furik_install() {
 		name varchar(255),
 		anon int,
 		email varchar(255),
+		phone_number varchar(255),
 		amount int,
 		campaign int,
 		message longtext,
