@@ -86,7 +86,7 @@ function furik_process_payment() {
  * Prepares an automatic redirect link to SimplePay with the posted data
  */
 function furik_process_payment_form() {
-	global $wpdb;
+	global $wpdb, $furik_name_order_eastern;
 
 	if (!$_POST['furik_form_accept']) {
 		_e('Please accept the data transmission agreement.', 'furik');
@@ -99,7 +99,15 @@ function furik_process_payment_form() {
 	}
 
 	$amount = is_numeric($_POST[$amount_field]) && $_POST[$amount_field] > 0 ? $_POST[$amount_field] : die("Error: amount is not a number.");
-	$name = $_POST['furik_form_name'];
+	if (!furik_extra_field_enabled('name_separation')) {
+		$name = $_POST['furik_form_name'];
+	}
+	else {
+		$first_name = $_POST['furik_form_first_name'];
+		$last_name = $_POST['furik_form_last_name'];
+
+		$name = $furik_name_order_eastern ? "$last_name $first_name" : "$first_name $last_name";
+	}
 	$anon = $_POST['furik_form_anon'] ? 1 : 0;
 	$email = $_POST['furik_form_email'];
 
@@ -129,6 +137,8 @@ function furik_process_payment_form() {
 			'time' => current_time( 'mysql' ),
 			'transaction_type' => $type,
 			'name' => $name,
+			'first_name' => $first_name,
+			'last_name' => $last_name,
 			'anon' => $anon,
 			'email' => $email,
 			'phone_number' => $phone_number,

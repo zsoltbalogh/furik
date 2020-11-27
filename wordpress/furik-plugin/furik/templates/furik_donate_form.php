@@ -29,10 +29,21 @@ if ( ! defined( 'ABSPATH' ) ) exit;
     <input type="hidden" name="furik_action" value="process_payment_form"/>
     <input type="hidden" name="furik_campaign" value="<?php echo $args['campaign_id']; ?>"/>
 
-    <div class="form-field form-group form-required">
-        <label for="furik_form_name"><?php echo __('Your name', 'furik'); ?>:</label>
-        <input type="text" name="furik_form_name" id="furik_form_name" class="form-control" required="1"/>
-    </div>
+    <?php if (!furik_extra_field_enabled('name_separation')) : ?>
+        <div class="form-field form-group form-required">
+            <label for="furik_form_name"><?php echo __('Your name', 'furik'); ?>:</label>
+            <input type="text" name="furik_form_name" id="furik_form_name" class="form-control" required="1"/>
+        </div>
+    <?php else : ?>
+        <div class="form-field form-group form-required">
+            <label for="furik_form_name"><?php echo __('First name', 'furik'); ?>:</label>
+            <input type="text" name="furik_form_first_name" id="furik_form_first_name" class="form-control" required="1"/>
+        </div>
+        <div class="form-field form-group form-required">
+            <label for="furik_form_name"><?php echo __('Last name', 'furik'); ?>:</label>
+            <input type="text" name="furik_form_last_name" id="furik_form_last_name" class="form-control" required="1"/>
+        </div>
+    <?php endif; ?>
 
     <?php if (!isset($args['meta']['ANON_DISABLED'])) : ?>
         <div class="form-field form-check">

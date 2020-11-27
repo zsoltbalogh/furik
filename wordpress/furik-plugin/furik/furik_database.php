@@ -41,6 +41,8 @@ function furik_install() {
 		transaction_id varchar(100) NOT NULL,
 		transaction_type int DEFAULT 0,
 		name varchar(255),
+		first_name varchar(255),
+		last_name varchar(255),
 		anon int,
 		email varchar(255),
 		phone_number varchar(255),

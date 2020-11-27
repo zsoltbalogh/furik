@@ -22,7 +22,9 @@ $furik_monthly_explanation_url = "monthly-donation";
 
 $furik_processing_recurring_secret = "aekah2Qu";
 
-$furik_enable_extra_fields = array("phone_number");
+$furik_enable_extra_fields = array("phone_number", "name_separation");
+
+$furik_name_order_eastern = false;
 
 @include_once "config_local.php";
 ?>
