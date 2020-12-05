@@ -26,5 +26,13 @@ $furik_enable_extra_fields = array("phone_number", "name_separation");
 
 $furik_name_order_eastern = false;
 
+$furik_email_thanks_enabled = false;
+
+/**
+* Set $furik_change_sender to true if you would like to change the from address in the outgoing e-mails. The address needs to be set in the email templates (tempates/furik_email_*).
+*/
+$furik_email_change_sender = false;
+
+
 @include_once "config_local.php";
 ?>

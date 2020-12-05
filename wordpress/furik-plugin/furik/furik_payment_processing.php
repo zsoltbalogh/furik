@@ -68,6 +68,7 @@ function furik_process_payment() {
 
 	if ($result['e'] == 'SUCCESS') {
 		furik_update_transaction_status($order_ref, FURIK_STATUS_SUCCESSFUL, $vendor_ref);
+		furik_send_email_for_order($order_ref);
 		header("Location: " . furik_url($furik_payment_successful_url, $url_config));
 	}
 	elseif ($result['e'] == 'CANCEL') {
@@ -382,6 +383,40 @@ function furik_get_simple_config() {
 	return $config;
 }
 
+function furik_send_email_for_order($order_ref) {
+	global $furik_email_thanks_enabled;
+
+	if (!$furik_email_thanks_enabled) {
+		return;
+	}
+
+	$transaction = furik_get_transaction($order_ref);
+
+	if (($transaction->transaction_type != FURIK_TRANSACTION_TYPE_SIMPLEPAY) &&
+		($transaction->transaction_type != FURIK_TRANSACTION_TYPE_RECURRING_REG)) {
+
+		return;
+	}
+
+	$template = "regular_thanks";
+
+	if ($transaction->recurring) {
+		$random_password = furik_register_user($transaction->email);
+
+		if (!$random_password) {
+			$already_registered = true;
+		}
+
+		$template = "recurring_thanks";
+	}
+
+	ob_start();
+	include_once __DIR__ . "/templates/furik_email_" . $template . ".php";
+	$body = ob_get_clean();
+
+	furik_send_email($furik_sender_address, $furik_sender_name, $transaction->email, $furik_email_subject, $body);
+}
+
 if ($_POST['furik_action'] == "process_payment_form") {
 	furik_process_payment_form();
 }
@@ -391,7 +426,7 @@ if (isset($_GET['furik_process_recurring']) && ($_GET['furik_process_recurring']
 }
 
 if (isset($_GET['furik_process_payment'])) {
-	furik_process_payment();
+	add_action('init', 'furik_process_payment');
 }
 
 if (isset($_GET['furik_process_ipn'])) {

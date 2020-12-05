@@ -1,4 +1,19 @@
 <?php
+function furik_email_content_type() {
+	return "text/html";
+}
+
+function furik_email_from_address() {
+	global $furik_email_from_address;
+
+	return $furik_email_from_address;
+}
+
+function furik_email_from_name() {
+	global $furik_email_from_name;
+
+	return $furik_email_from_name;
+}
 function furik_extra_field_enabled($name) {
 	global $furik_enable_extra_fields;
 
@@ -44,6 +59,40 @@ function furik_order_sign($order_ref) {
 	global $furik_payment_secret_key;
 
 	return md5($order_ref . $furik_payment_secret_key . "internal");
+}
+
+function furik_register_user($email) {
+	if (email_exists($email)) {
+		return false;
+	}
+
+	$random_password = wp_generate_password($length = 12, $include_standard_special_chars = false);
+	wp_create_user($email, $random_password, $email);
+
+	return $random_password;
+}
+
+function furik_send_email($from_address, $from_name, $to_address, $subject, $body) {
+	global $furik_email_from_address, $furik_email_from_name, $furik_email_change_sender;
+
+	$furik_email_from_address = $from_address;
+	$furik_email_from_name = $from_name;
+
+	add_filter('wp_mail_content_type','furik_email_content_type');
+
+	if ($furik_email_change_sender) {
+		add_filter('wp_mail_from', 'furik_email_from_address');
+		add_filter('wp_mail_from_name', 'furik_email_from_name');
+	}
+
+	wp_mail($to_address, $subject, $body);
+
+	remove_filter('wp_mail_content_type','furik_email_content_type');
+
+	if ($furik_email_change_sender) {
+		remove_filter('wp_mail_from', 'furik_email_from_address');
+		remove_filter('wp_mail_from_name', 'furik_email_from_name');
+	}
 }
 
 function furik_transaction_id($local_id) {
