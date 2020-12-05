@@ -411,7 +411,14 @@ function furik_send_email_for_order($order_ref) {
 	}
 
 	ob_start();
-	include_once __DIR__ . "/templates/furik_email_" . $template . ".php";
+
+	if (file_exists(__DIR__ . "/templates/custom_furik_email_" . $template . ".php")) {
+		include_once __DIR__ . "/templates/custom_furik_email_" . $template . ".php";
+	}
+	else {
+		include_once __DIR__ . "/templates/furik_email_" . $template . ".php";
+	}
+
 	$body = ob_get_clean();
 
 	furik_send_email($furik_sender_address, $furik_sender_name, $transaction->email, $furik_email_subject, $body);
