@@ -398,7 +398,7 @@ function furik_send_email_for_order($order_ref) {
 		return;
 	}
 
-	$template = "regular_thanks";
+	furik_send_email($furik_sender_address, $furik_sender_name, $transaction->email, $furik_email_subject, furik_email_get_body("regular_thanks"));
 
 	if ($transaction->recurring) {
 		$random_password = furik_register_user($transaction->email);
@@ -407,21 +407,8 @@ function furik_send_email_for_order($order_ref) {
 			$already_registered = true;
 		}
 
-		$template = "recurring_thanks";
+		furik_send_email($furik_sender_address, $furik_sender_name, $transaction->email, $furik_email_subject, $furik_email_get_body("recurring_information"));
 	}
-
-	ob_start();
-
-	if (file_exists(__DIR__ . "/templates/custom_furik_email_" . $template . ".php")) {
-		include_once __DIR__ . "/templates/custom_furik_email_" . $template . ".php";
-	}
-	else {
-		include_once __DIR__ . "/templates/furik_email_" . $template . ".php";
-	}
-
-	$body = ob_get_clean();
-
-	furik_send_email($furik_sender_address, $furik_sender_name, $transaction->email, $furik_email_subject, $body);
 }
 
 if ($_POST['furik_action'] == "process_payment_form") {

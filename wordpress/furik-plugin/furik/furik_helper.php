@@ -14,6 +14,19 @@ function furik_email_from_name() {
 
 	return $furik_email_from_name;
 }
+
+function furik_email_get_body($tempate) {
+	ob_start();
+
+	if (file_exists(__DIR__ . "/templates/custom_furik_email_" . $template . ".php")) {
+		include_once __DIR__ . "/templates/custom_furik_email_" . $template . ".php";
+	}
+	else {
+		include_once __DIR__ . "/templates/furik_email_" . $template . ".php";
+	}
+
+	return ob_get_clean();
+}
 function furik_extra_field_enabled($name) {
 	global $furik_enable_extra_fields;
 

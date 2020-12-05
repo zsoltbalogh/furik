@@ -1,7 +1,7 @@
 <?php
 $furik_sender_name = "Test";
 $furik_sender_address = "test@bzz.hu";
-$furik_email_subject = "Thank you!";
+$furik_email_subject = "Login information";
 ?>
 <div dir="ltr">
 	Hi <?php echo $transaction->first_name ?>,
