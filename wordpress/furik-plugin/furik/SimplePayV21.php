@@ -46,7 +46,7 @@ class Base
     public $config = [];
     protected $headers = [];
     protected $hashAlgo = 'sha384';
-    public $sdkVersion = 'SimplePay_PHP_SDK_2.0.9_200130';
+    public $sdkVersion = 'SimplePay_PHP_SDK_2.1.0_200825';
     protected $logSeparator = '|';
     protected $logContent = [];
     protected $debugMessage = [];
@@ -75,7 +75,7 @@ class Base
     {
         $this->logContent['runMode'] = strtoupper($this->currentInterface);
         $ver = (float)phpversion();
-        $this->logContent['PHP'] = $ver;
+        $this->logContent['phpVersion'] = $ver;
         if (is_numeric($ver)) {
             if ($ver < 7.0) {
                 $this->phpVersion = 5;
@@ -84,7 +84,7 @@ class Base
     }
 
     /**
-     * Add uniq config field
+     * Add unique config field
      *
      * @param string $key   Config field name
      * @param string $value Vonfig field value
@@ -268,7 +268,7 @@ class Base
     {
         $saltBase = '';
         $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for ($i=1; $i < $length; $i++) {
+        for ($i=0; $i <= $length; $i++) {
             $saltBase .= substr($chars, rand(1, strlen($chars)), 1);
         }
         return hash('md5', $saltBase);
@@ -359,6 +359,12 @@ class Base
         $this->config['api'] = 'live';
         if ($this->config['SANDBOX']) {
             $this->config['api'] = 'sandbox';
+        }
+        $this->logContent['environment'] = strtoupper($this->config['api']);
+
+        $this->config['logger'] = false;
+        if (isset($this->config['LOGGER'])) {
+            $this->config['logger'] = $this->config['LOGGER'];
         }
 
         $this->config['logPath'] = 'log';
@@ -474,8 +480,6 @@ class SimplePayStart extends Base
         'merchant' => '',
         'orderRef' => '',
         'currency' => '',
-        'customerEmail' => '',
-        'language' => '',
         'sdkVersion' => '',
         'methods' => [],
         ];
@@ -707,7 +711,6 @@ class SimplePayIpn extends Base
         $this->writeLog(['ipnConfirm' => 'ipnReturnData provided as content by getIpnConfirmContent']);
         return $this->ipnReturnData;
     }
-
 }
 
 
@@ -1094,6 +1097,10 @@ trait Logger
      */
     public function writeLog($log = [])
     {
+        if (!$this->config['logger']) {
+            return false;
+        }
+
         $write = true;
         if (count($log) == 0) {
             $log = $this->logContent;
@@ -1187,7 +1194,6 @@ trait Logger
         }
         unset($logFile, $logText);
     }
-
 }
 
 
@@ -1222,5 +1228,4 @@ trait Sca
         $this->writeLog(['3DSCheckResult' => 'Card issuer bank wants to identify cardholder (challenge)', '3DSChallengeUrl_ERROR' => 'Missing redirect URL']);
         return false;
     }
-
 }
