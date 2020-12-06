@@ -1,9 +1,9 @@
 <?php
 
 /**
- *  Copyright (C) 2019 OTP Mobil Kft.
+ *  Copyright (C) 2020 OTP Mobil Kft.
  *
- *  PHP version 7.x
+ *  PHP version 7
  *
  *  This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -21,12 +21,12 @@
  * @category  SDK
  * @package   SimplePayV21
  * @author    SimplePay IT Support <itsupport@otpmobil.com>
- * @copyright 2019 OTP Mobil Kft.
+ * @copyright 2020 OTP Mobil Kft.
  * @license   http://www.gnu.org/licenses/gpl-3.0.html  GNU GENERAL PUBLIC LICENSE (GPL V3.0)
  * @link      http://simplepartner.hu/online_fizetesi_szolgaltatas.html
  */
- 
- 
+
+
  /**
   * Do
   *
@@ -38,6 +38,8 @@
   */
 class SimplePayDo extends Base
 {
+    use Sca;
+
     protected $currentInterface = 'do';
     protected $returnArray = [];
     public $transactionBase = [
@@ -46,7 +48,6 @@ class SimplePayDo extends Base
         'customerEmail' => '',
         'merchant' => '',
         'currency' => '',
-        'customer' => '',
         ];
 
     /**
@@ -56,9 +57,10 @@ class SimplePayDo extends Base
      */
     public function __construct()
     {
+        parent::__construct();
         $this->apiInterface['do'] = '/v2/do';
-    }    
-    
+    }
+
     /**
      * Run Do
      *
@@ -98,9 +100,10 @@ class SimplePayCardQuery extends Base
      */
     public function __construct()
     {
+        parent::__construct();
         $this->apiInterface['cardquery'] = '/v2/cardquery';
-    }    
-    
+    }
+
     /**
      * Run CardQuery
      *
@@ -139,9 +142,10 @@ class SimplePayCardCancel extends Base
      */
     public function __construct()
     {
+        parent::__construct();
         $this->apiInterface['cardcancel'] = '/v2/cardcancel';
-    }    
-    
+    }
+
     /**
      * Run CardCancel
      *
@@ -155,7 +159,7 @@ class SimplePayCardCancel extends Base
 
 
   /**
-   * Recurring for DO
+   * Recurring
    *
    * @category SDK
    * @package  SimplePayV21_SDK
@@ -165,9 +169,9 @@ class SimplePayCardCancel extends Base
    */
 class SimplePayDoRecurring extends Base
 {
-
+    use Sca;
     protected $currentInterface = 'dorecurring';
-    
+
     /**
      * Constructor for dorecurring
      *
@@ -175,9 +179,10 @@ class SimplePayDoRecurring extends Base
      */
     public function __construct()
     {
+        parent::__construct();
         $this->apiInterface['dorecurring'] = '/v2/dorecurring';
-    }    
-    
+    }
+
     /**
      * Run Dorecurring
      *
@@ -189,3 +194,76 @@ class SimplePayDoRecurring extends Base
     }
 }
 
+
+  /**
+   * TokenQuery
+   *
+   * @category SDK
+   * @package  SimplePayV21_SDK
+   * @author   SimplePay IT Support <itsupport@otpmobil.com>
+   * @license  http://www.gnu.org/licenses/gpl-3.0.html  GNU GENERAL PUBLIC LICENSE (GPL V3.0)
+   * @link     http://simplepartner.hu/online_fizetesi_szolgaltatas.html
+   */
+class SimplePayTokenQuery extends Base
+{
+
+    protected $currentInterface = 'tokenquery';
+
+    /**
+     * Constructor for tokenquery
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->apiInterface['tokenquery'] = '/v2/tokenquery';
+    }
+
+    /**
+     * Run Dorecurring
+     *
+     * @return array $result API response
+     */
+    public function runTokenQuery()
+    {
+        return $this->execApiCall();
+    }
+}
+
+
+  /**
+   * TokenCancel
+   *
+   * @category SDK
+   * @package  SimplePayV21_SDK
+   * @author   SimplePay IT Support <itsupport@otpmobil.com>
+   * @license  http://www.gnu.org/licenses/gpl-3.0.html  GNU GENERAL PUBLIC LICENSE (GPL V3.0)
+   * @link     http://simplepartner.hu/online_fizetesi_szolgaltatas.html
+   */
+class SimplePayTokenCancel extends Base
+{
+
+    protected $currentInterface = 'tokencancel';
+
+    /**
+     * Constructor for tokencancel
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->apiInterface['tokencancel'] = '/v2/tokencancel';
+    }
+
+    /**
+     * Run Dorecurring
+     *
+     * @return array $result API response
+     */
+    public function runTokenCancel()
+    {
+        return $this->execApiCall();
+    }
+}
