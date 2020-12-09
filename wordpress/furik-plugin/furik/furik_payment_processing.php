@@ -238,6 +238,7 @@ function furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, 
 	$lu->addData('language', 'HU');
 	$lu->addData('currency', 'HUF');
 	$lu->addData('customerEmail', $email);
+	$lu->addData('maySelectInvoice', 'true');
 	$lu->addData('methods', array('CARD'));
 	$lu->addData('total', $amount);
 	$lu->addData('url', $config['URL']);
