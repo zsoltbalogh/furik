@@ -102,7 +102,7 @@ class Donations_List extends WP_List_Table {
 			return "(tr.id = $parent_id OR tr.parent=$parent_id)";
 		}
 		else {
-			return "transaction_status != ". FURIK_STATUS_FUTURE;
+			return "((transaction_status != ". FURIK_STATUS_FUTURE . ") or (transaction_status is null))";
 		}
 	}
 
