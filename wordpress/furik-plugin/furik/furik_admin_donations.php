@@ -123,6 +123,7 @@ class Donations_List extends WP_List_Table {
 	function get_columns() {
 		$columns = [
 			'transaction_id' => __('ID', 'furik'),
+			'time' => __('Time', 'furik'),
 			'name' => __('Name', 'furik'),
 			'email' => __('E-mail', 'furik')
 		];
@@ -130,11 +131,12 @@ class Donations_List extends WP_List_Table {
 			$columns += ['phone_number' => __('Phone Number', 'furik')];
 		}
 		$columns += [
-		    'amount' => __('Amount', 'furik'),
-		    'transaction_type' => __('Type', 'furik'),
-		    'campaign_name' => __('Campaign', 'furik'),
-		    'time' => __('Time', 'sp'),
-		    'transaction_status' => __('Status', 'furik')
+			'amount' => __('Amount', 'furik'),
+			'transaction_type' => __('Type', 'furik'),
+			'campaign_name' => __('Campaign', 'furik'),
+			'anon' => __('Anonymity', 'furik'),
+			'newsletter_status' => __('Newsletter Status', 'furik'),
+			'transaction_status' => __('Status', 'furik')
 		];
 
 		return $columns;
@@ -149,6 +151,8 @@ class Donations_List extends WP_List_Table {
 			'transaction_type' => array('transaction_type', false),
 			'campaign_name' => array('campaign_name', false),
 			'time' => array('time', true),
+			'anon' => array('anon', true),
+			'newsletter_status' => array('newsletter_status', true),
 			'transaction_status' => array('transaction_status', false)
 		);
 
@@ -161,8 +165,8 @@ class Donations_List extends WP_List_Table {
 		$total_items = self::record_count();
 
 		$this->set_pagination_args( [
-		    'total_items' => $total_items,
-		    'per_page' => $per_page
+			'total_items' => $total_items,
+			'per_page' => $per_page
 		] );
 
 		$this->items = self::get_donations($per_page, $current_page);

@@ -98,6 +98,7 @@ class Recurring_List extends WP_List_Table {
 	function get_columns() {
 		$columns = [
 			'transaction_id' => __('ID', 'furik'),
+			'time' => __('Registration time', 'furik'),
 			'name' => __('Name', 'furik'),
 			'email' => __('E-mail', 'furik')
 		];
@@ -105,11 +106,12 @@ class Recurring_List extends WP_List_Table {
 			$columns += ['phone_number' => __('Phone Number', 'furik')];
 		}
 		$columns += [
-		    'amount' => __('Amount', 'furik'),
-		    'full_amount' => __('Full amount', 'furik'),
-		    'campaign_name' => __('Campaign', 'furik'),
-		    'time' => __('Registration time', 'sp'),
-		    'transaction_status' => __('Status', 'furik')
+			'amount' => __('Amount', 'furik'),
+			'full_amount' => __('Full amount', 'furik'),
+			'campaign_name' => __('Campaign', 'furik'),
+			'anon' => __('Anonymity', 'furik'),
+			'newsletter_status' => __('Newsletter Status', 'furik'),
+			'transaction_status' => __('Status', 'furik')
 		];
 
 		return $columns;
@@ -118,12 +120,14 @@ class Recurring_List extends WP_List_Table {
 	public function get_sortable_columns() {
 		$sortable_columns = array(
 			'transaction_id' => array('ID', 'furik'),
+			'time' => array('time', true),
 			'name' => array('name', false),
 			'email' => array('email', false),
 			'amount' => array('amount', false),
 			'full_amount' => array('full_amount', false),
 			'campaign_name' => array('campaign_name', false),
-			'time' => array('time', true),
+			'anon' => array('anon', true),
+			'newsletter_status' => array('newsletter_status', true),
 			'transaction_status' => array('transaction_status', false)
 		);
 
@@ -136,8 +140,8 @@ class Recurring_List extends WP_List_Table {
 		$total_items = self::record_count();
 
 		$this->set_pagination_args( [
-		    'total_items' => $total_items,
-		    'per_page' => $per_page
+			'total_items' => $total_items,
+			'per_page' => $per_page
 		] );
 
 		$this->items = self::get_donations($per_page, $current_page);
