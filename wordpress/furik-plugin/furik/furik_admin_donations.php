@@ -225,6 +225,17 @@ class Donations_List_Plugin {
 		}
 
 		?>
+		<style>
+			td.message.column-message {
+				white-space: nowrap;
+				overflow:hidden;
+				text-overflow:ellipsis;
+			}
+			td.message.column-message:hover {
+				white-space: initial;
+				overflow: initial;
+			}
+		</style>
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php _e('Donations', 'furik') ?></h1>
 			<div id="poststuff">
