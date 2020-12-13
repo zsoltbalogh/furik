@@ -109,6 +109,7 @@ class Recurring_List extends WP_List_Table {
 			'amount' => __('Amount', 'furik'),
 			'full_amount' => __('Full amount', 'furik'),
 			'campaign_name' => __('Campaign', 'furik'),
+			'message' => __('Message', 'furik'),
 			'anon' => __('Anonymity', 'furik'),
 			'newsletter_status' => __('Newsletter Status', 'furik'),
 			'transaction_status' => __('Status', 'furik')

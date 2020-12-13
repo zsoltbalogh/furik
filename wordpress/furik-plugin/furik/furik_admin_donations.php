@@ -134,6 +134,7 @@ class Donations_List extends WP_List_Table {
 			'amount' => __('Amount', 'furik'),
 			'transaction_type' => __('Type', 'furik'),
 			'campaign_name' => __('Campaign', 'furik'),
+			'message' => __('Message', 'furik'),
 			'anon' => __('Anonymity', 'furik'),
 			'newsletter_status' => __('Newsletter Status', 'furik'),
 			'transaction_status' => __('Status', 'furik')
