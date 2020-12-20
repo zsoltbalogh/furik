@@ -134,6 +134,12 @@ function furik_transaction_log($transaction_id, $message) {
 function furik_update_transaction_status($order_ref, $status, $vendor_ref = "") {
 	global $wpdb;
 
+	$transaction = furik_get_transaction($order_ref);
+
+	if ($tranaction->transaction_status > $status) {
+		return;
+	}
+
 	$table_name = $wpdb->prefix . 'furik_transactions';
 	$update = array("transaction_status" => $status);
 	if ($vendor_ref) {
