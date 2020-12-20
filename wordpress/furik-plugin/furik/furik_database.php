@@ -136,7 +136,7 @@ function furik_update_transaction_status($order_ref, $status, $vendor_ref = "") 
 
 	$transaction = furik_get_transaction($order_ref);
 
-	if ($tranaction->transaction_status > $status) {
+	if ($transaction->transaction_status >= $status) {
 		return;
 	}
 
