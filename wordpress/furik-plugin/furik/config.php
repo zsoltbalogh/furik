@@ -20,6 +20,8 @@ $furik_card_registration_statement_url = "card-registration-statement";
 $furik_data_transmission_declaration_url = "data-transmission-declaration";
 $furik_monthly_explanation_url = "monthly-donation";
 
+$furik_simplepay_ask_for_invoice_information = true;
+
 $furik_processing_recurring_secret = "aekah2Qu";
 
 $furik_enable_extra_fields = array("phone_number", "name_separation");

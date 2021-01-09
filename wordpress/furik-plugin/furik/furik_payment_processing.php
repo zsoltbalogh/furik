@@ -229,7 +229,7 @@ function furik_process_recurring() {
 }
 
 function furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, $amount, $email, $recurring = false, $name) {
-	global $wpdb;
+	global $wpdb, $furik_simplepay_ask_for_invoice_information;
 
 	require_once 'SimplePayV21.php';
 
@@ -242,7 +242,7 @@ function furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, 
 	$lu->addData('language', 'HU');
 	$lu->addData('currency', 'HUF');
 	$lu->addData('customerEmail', $email);
-	$lu->addData('maySelectInvoice', 'true');
+	$lu->addData('maySelectInvoice', $furik_simplepay_ask_for_invoice_information);
 	$lu->addData('methods', array('CARD'));
 	$lu->addData('total', $amount);
 	$lu->addData('url', $config['URL']);
