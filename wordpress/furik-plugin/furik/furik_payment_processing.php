@@ -180,11 +180,13 @@ function furik_process_payment_form() {
 
 function furik_process_recurring() {
 	global $wpdb;
-	$sql = "SELECT *
+	$sql = "SELECT rec.*
 		FROM
-			{$wpdb->prefix}furik_transactions
-		WHERE time <= now()
-			AND transaction_status in (".FURIK_STATUS_FUTURE.")
+			{$wpdb->prefix}furik_transactions AS rec
+			JOIN {$wpdb->prefix}furik_transactions AS ptr ON (rec.parent=ptr.id)
+		WHERE rec.time <= now()
+			AND rec.transaction_status in (".FURIK_STATUS_FUTURE.")
+			AND ptr.transaction_status in (1, 10)
 		ORDER BY time DESC";
 
 	$result = $wpdb->get_results($sql);
@@ -195,30 +197,32 @@ function furik_process_recurring() {
 
 		// TODO: Double check the validity of the payment by checking if more than 25 days happened since last payment
 
-		echo $payment->amount ." ". $payment->time."\n";
+		echo $payment->id ." ". $payment->amount ." ". $payment->time."\n";
 
-		$trx = new SimplePayDorecurring;
+		if (isset($_GET['runpayments'])) {
+			$trx = new SimplePayDorecurring;
 
-		$trx->addConfig(furik_get_simple_config());
-		$trx->addData('orderRef', $payment->transaction_id);
-		$trx->addData('methods', array('CARD'));
-		$trx->addData('currency', 'HUF');
-		$trx->addData('total', $payment->amount);
-		$trx->addData('customerEmail', $payment->email);
-		$trx->addData('token', $payment->token);
-		$trx->runDorecurring();
+			$trx->addConfig(furik_get_simple_config());
+			$trx->addData('orderRef', $payment->transaction_id);
+			$trx->addData('methods', array('CARD'));
+			$trx->addData('currency', 'HUF');
+			$trx->addData('total', $payment->amount);
+			$trx->addData('customerEmail', $payment->email);
+			$trx->addData('token', $payment->token);
+			$trx->runDorecurring();
 
-		$returnData = $trx->getReturnData();
+			$returnData = $trx->getReturnData();
 
-		furik_transaction_log($payment->transaction_id, serialize($returnData));
+			furik_transaction_log($payment->transaction_id, serialize($returnData));
 
-		$newStatus = $returnData['total'] > 0 ? FURIK_STATUS_SUCCESSFUL : FURIK_STATUS_RECURRING_FAILED;
+			$newStatus = $returnData['total'] > 0 ? FURIK_STATUS_SUCCESSFUL : FURIK_STATUS_RECURRING_FAILED;
 
-		$wpdb->update(
-			"{$wpdb->prefix}furik_transactions",
-			array("transaction_status" => $newStatus),
-			array("id" => $payment->id)
-		);
+			$wpdb->update(
+				"{$wpdb->prefix}furik_transactions",
+				array("transaction_status" => $newStatus),
+				array("id" => $payment->id)
+			);
+		}
 	}
 
 	die("Processed recurring payments.");
