@@ -27,6 +27,15 @@ class Recurring_List extends WP_List_Table {
 		return $item['campaign_name'] . " (" . $item['parent_campaign_name'] .")";
 	}
 
+	public function column_future_count($item) {
+		if ($item['future_count']) {
+			return $item['future_count'] . ' ' . __('future donations', 'furik');
+		}
+		else {
+			return __('Expired or cancelled.', 'furik');
+		}
+	}
+
 	public function column_transaction_id($item) {
 		return "<a href=\"admin.php?page=wp_list_table_class&filter_by_parent=" . $item['id'] . "\">". $item['transaction_id'] . "</a>";
 	}
@@ -65,7 +74,8 @@ class Recurring_List extends WP_List_Table {
 				tr.*,
 				campaigns.post_title AS campaign_name,
 				parentcampaigns.post_title AS parent_campaign_name,
-				(SELECT sum(amount) FROM {$wpdb->prefix}furik_transactions WHERE (parent=tr.id OR id=tr.id) AND transaction_status=".FURIK_STATUS_IPN_SUCCESSFUL.") as full_amount
+				(SELECT sum(amount) FROM {$wpdb->prefix}furik_transactions WHERE (parent=tr.id OR id=tr.id) AND transaction_status=".FURIK_STATUS_IPN_SUCCESSFUL.") as full_amount,
+				(SELECT count(*) FROM {$wpdb->prefix}furik_transactions as ctr WHERE ctr.parent=tr.id AND ctr.transaction_status=".FURIK_STATUS_FUTURE.") as future_count
 			FROM
 				{$wpdb->prefix}furik_transactions as tr
 				LEFT OUTER JOIN {$wpdb->prefix}posts campaigns ON (tr.campaign=campaigns.ID)
@@ -79,6 +89,7 @@ class Recurring_List extends WP_List_Table {
 		}
 		$sql .= " LIMIT $per_page";
 		$sql .= ' OFFSET ' . ($page_number - 1) * $per_page;
+
 		$result = $wpdb->get_results($sql, 'ARRAY_A');
 		return $result;
 	}
@@ -112,7 +123,8 @@ class Recurring_List extends WP_List_Table {
 			'message' => __('Message', 'furik'),
 			'anon' => __('Anonymity', 'furik'),
 			'newsletter_status' => __('Newsletter Status', 'furik'),
-			'transaction_status' => __('Status', 'furik')
+			'transaction_status' => __('Registration status', 'furik'),
+			'future_count' => __('Status', 'furik')
 		];
 
 		return $columns;
