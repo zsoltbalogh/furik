@@ -191,6 +191,17 @@ class Recurring_List_Plugin {
 	public function donations_list_page() {
 		global $wpdb;
 		?>
+		<style>
+			td.message.column-message {
+				white-space: nowrap;
+				overflow:hidden;
+				text-overflow:ellipsis;
+			}
+			td.message.column-message:hover {
+				white-space: initial;
+				overflow: initial;
+			}
+		</style>
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php _e('Recurring donations', 'furik') ?></h1>
 			<div id="poststuff">

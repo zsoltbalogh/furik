@@ -91,8 +91,6 @@ class Donations_List extends WP_List_Table {
 		} else {
 			$sql .= ' ORDER BY TIME DESC';
 		}
-		$sql .= " LIMIT $per_page";
-		$sql .= ' OFFSET ' . ($page_number - 1) * $per_page;
 		$result = $wpdb->get_results($sql, 'ARRAY_A');
 
 		return $result;
@@ -143,34 +141,10 @@ class Donations_List extends WP_List_Table {
 		return $columns;
 	}
 
-	public function get_sortable_columns() {
-		$sortable_columns = array(
-			'transaction_id' => array('id', false),
-			'name' => array('name', false),
-			'email' => array('email', false),
-			'amount' => array('amount', false),
-			'transaction_type' => array('transaction_type', false),
-			'campaign_name' => array('campaign_name', false),
-			'time' => array('time', true),
-			'anon' => array('anon', true),
-			'newsletter_status' => array('newsletter_status', true),
-			'transaction_status' => array('transaction_status', false)
-		);
-
-		return $sortable_columns;
-	}
-
 	public function prepare_items() {
-		$per_page = $this->get_items_per_page('donations_per_page', 20);
-		$current_page = $this->get_pagenum();
 		$total_items = self::record_count();
 
-		$this->set_pagination_args( [
-			'total_items' => $total_items,
-			'per_page' => $per_page
-		] );
-
-		$this->items = self::get_donations($per_page, $current_page);
+		$this->items = self::get_donations();
 	}
 }
 
@@ -225,6 +199,7 @@ class Donations_List_Plugin {
 		}
 
 		?>
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.23/b-1.6.5/b-html5-1.6.5/datatables.min.css"/>
 		<style>
 			td.message.column-message {
 				white-space: nowrap;
@@ -253,6 +228,27 @@ class Donations_List_Plugin {
 				<br class="clear">
 			</div>
 		</div>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.23/b-1.6.5/b-html5-1.6.5/datatables.min.js"></script>
+		<script>
+		jQuery(document).ready( function () {
+			jQuery('.tmogatsok').DataTable({
+				"order": [[ 1, "desc" ]],
+				dom: 'Bfrtip',
+				buttons: [
+					'copyHtml5',
+					'excelHtml5',
+					'csvHtml5',
+					'pdfHtml5'
+				],
+				"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+				"language": {
+					"url": "//cdn.datatables.net/plug-ins/1.10.22/i18n/Hungarian.json"
+				}
+			});
+		} );
+		</script>
 	<?php
 	}
 
