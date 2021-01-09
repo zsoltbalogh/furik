@@ -38,6 +38,7 @@ function furik_install() {
 	$sql_transactions = "CREATE TABLE {$wpdb->prefix}furik_transactions (
 		id int NOT NULL AUTO_INCREMENT,
 		time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+		transaction_time datetime,
 		transaction_id varchar(100) NOT NULL,
 		transaction_type int DEFAULT 0,
 		name varchar(255),

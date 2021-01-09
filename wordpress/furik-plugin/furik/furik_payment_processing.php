@@ -135,7 +135,8 @@ function furik_process_payment_form() {
 	$wpdb->insert(
 		"{$wpdb->prefix}furik_transactions",
 		array(
-			'time' => current_time( 'mysql' ),
+			'time' => current_time('mysql'),
+			'transaction_time' => current_time('mysql'),
 			'transaction_type' => $type,
 			'name' => $name,
 			'first_name' => $first_name,
@@ -195,9 +196,31 @@ function furik_process_recurring() {
 		require_once "SimplePayV21.php";
 		require_once "SimplePayV21CardStorage.php";
 
-		// TODO: Double check the validity of the payment by checking if more than 25 days happened since last payment
 
 		echo $payment->id ." ". $payment->amount ." ". $payment->time."\n";
+
+		$previous_date = $wpdb->get_var($wpdb->prepare(
+			"SELECT transaction_time
+				FROM {$wpdb->prefix}furik_transactions
+				WHERE transaction_time is not null
+					AND (id = $payment->parent OR parent = $payment->parent)
+				ORDER BY id DESC
+				LIMIT 1
+			"));
+
+		if (!$previous_date) {
+			echo "There was no previous transaction date, skipping the previous item on the list.\n";
+
+			continue;
+		}
+
+		$time_diff = time() - strtotime($previous_date);
+
+		if ($time_diff < 60*60*24*25) {
+			echo "The previous one is skipped as the previous payment was not done more than 25 days ago.\n";
+
+			continue;
+		}
 
 		if (isset($_GET['runpayments'])) {
 			$trx = new SimplePayDorecurring;
@@ -219,7 +242,8 @@ function furik_process_recurring() {
 
 			$wpdb->update(
 				"{$wpdb->prefix}furik_transactions",
-				array("transaction_status" => $newStatus),
+				array("transaction_status" => $newStatus,
+					"transaction_time" => date("Y-m-d H:i:s")),
 				array("id" => $payment->id)
 			);
 		}
