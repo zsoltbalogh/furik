@@ -51,6 +51,8 @@ class Donations_List extends WP_List_Table {
 				return __('Successful and confirmed', 'furik');
 			case FURIK_STATUS_FUTURE:
 				return __('Future donation', 'furik');
+			case FURIK_STATUS_RECURRING_FAILED:
+				return __('Recurring transaction failed', 'furik');
 			default:
 				return __('Unknown', 'furik');
 		}
