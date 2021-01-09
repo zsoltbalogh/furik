@@ -41,6 +41,7 @@ function furik_install() {
 		transaction_time datetime,
 		transaction_id varchar(100) NOT NULL,
 		transaction_type int DEFAULT 0,
+		production_system int,
 		name varchar(255),
 		first_name varchar(255),
 		last_name varchar(255),

@@ -87,7 +87,7 @@ function furik_process_payment() {
  * Prepares an automatic redirect link to SimplePay with the posted data
  */
 function furik_process_payment_form() {
-	global $wpdb, $furik_name_order_eastern;
+	global $wpdb, $furik_name_order_eastern, $furik_production_system;
 
 	if (!$_POST['furik_form_accept']) {
 		_e('Please accept the data transmission agreement.', 'furik');
@@ -138,6 +138,7 @@ function furik_process_payment_form() {
 			'time' => current_time('mysql'),
 			'transaction_time' => current_time('mysql'),
 			'transaction_type' => $type,
+			'production_system' => $furik_production_system ? 1 : 0,
 			'name' => $name,
 			'first_name' => $first_name,
 			'last_name' => $last_name,
@@ -253,7 +254,7 @@ function furik_process_recurring() {
 }
 
 function furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, $amount, $email, $recurring = false, $name) {
-	global $wpdb, $furik_simplepay_ask_for_invoice_information;
+	global $wpdb, $furik_simplepay_ask_for_invoice_information, $furik_production_system;
 
 	require_once 'SimplePayV21.php';
 
@@ -318,6 +319,7 @@ function furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, 
 				array(
 					'time' => date("Y-m-d H:i:s", $time),
 					'transaction_type' => FURIK_TRANSACTION_TYPE_RECURRING_AUTO,
+					'production_system' => $furik_production_system ? 1 : 0,
 					'name' => $name,
 					'email' => $email,
 					'amount' => $amount,
