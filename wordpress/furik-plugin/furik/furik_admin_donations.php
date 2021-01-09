@@ -60,16 +60,20 @@ class Donations_List extends WP_List_Table {
 
 	public function column_transaction_type($item) {
 		switch ($item['transaction_type']) {
-			case 0:
+			case FURIK_TRANSACTION_TYPE_SIMPLEPAY:
 				return __('SimplePay Card', 'furik');
-			case 1:
+			case FURIK_TRANSACTION_TYPE_TRANSFER:
 				return __('Bank transfer', 'furik');
-			case 2:
+			case FURIK_TRANSACTION_TYPE_CASH:
 				return __('Cash payment', 'furik');
-			case 3:
+			case FURIK_TRANSACTION_TYPE_RECURRING_REG:
 				return __('Recurring (registration)', 'furik');
-			case 4:
+			case FURIK_TRANSACTION_TYPE_RECURRING_AUTO:
 				return __('Recurring (automatic)', 'furik');
+			case FURIK_TRANSACTION_TYPE_RECURRING_TRANSFER_REG:
+				return __('Recurring transfer (registration)', 'furik');
+			case FURIK_TRANSACTION_TYPE_RECURRING_TRANSFER_AUTO:
+				return __('Recurring transfer (automatic)', 'furik');
 			default:
 				return __('Unknown', 'furik');
 		}

@@ -31,6 +31,11 @@ class Recurring_List extends WP_List_Table {
 		if ($item['future_count']) {
 			return $item['future_count'] . ' ' . __('future donations', 'furik');
 		}
+		elseif ($item['transaction_type'] == FURIK_TRANSACTION_TYPE_RECURRING_TRANSFER_REG) {
+			$days = (time() - strtotime($item['last_transaction']))/60/60/24;
+
+			return sprintf(__('Last payment was recorded %d day(s) ago.', 'furik'), $days);
+		}
 		else {
 			return __('Expired or cancelled.', 'furik');
 		}
@@ -67,6 +72,18 @@ class Recurring_List extends WP_List_Table {
 		}
 	}
 
+	public function column_transaction_type($item) {
+		if ($item['transaction_type'] == FURIK_TRANSACTION_TYPE_RECURRING_REG) {
+			return __('SimplePay Card', 'furik');
+		}
+		elseif ($item['transaction_type'] == FURIK_TRANSACTION_TYPE_RECURRING_TRANSFER_REG) {
+			return __('Bank transfer', 'furik');
+		}
+		else {
+			return __('Unknown', 'furik');
+		}
+	}
+
 	public static function get_donations($per_page = 5, $page_number = 1) {
 		global $wpdb;
 
@@ -75,12 +92,13 @@ class Recurring_List extends WP_List_Table {
 				campaigns.post_title AS campaign_name,
 				parentcampaigns.post_title AS parent_campaign_name,
 				(SELECT sum(amount) FROM {$wpdb->prefix}furik_transactions WHERE (parent=tr.id OR id=tr.id) AND transaction_status=".FURIK_STATUS_IPN_SUCCESSFUL.") as full_amount,
-				(SELECT count(*) FROM {$wpdb->prefix}furik_transactions as ctr WHERE ctr.parent=tr.id AND ctr.transaction_status=".FURIK_STATUS_FUTURE.") as future_count
+				(SELECT count(*) FROM {$wpdb->prefix}furik_transactions as ctr WHERE ctr.parent=tr.id AND ctr.transaction_status=".FURIK_STATUS_FUTURE.") as future_count,
+				(SELECT transaction_time FROM {$wpdb->prefix}furik_transactions as ttr WHERE (ttr.parent=tr.id OR ttr.id=tr.id) ORDER BY id DESC LIMIT 1) as last_transaction
 			FROM
 				{$wpdb->prefix}furik_transactions as tr
 				LEFT OUTER JOIN {$wpdb->prefix}posts campaigns ON (tr.campaign=campaigns.ID)
 				LEFT OUTER JOIN {$wpdb->prefix}posts parentcampaigns ON (campaigns.post_parent=parentcampaigns.ID)
-			WHERE transaction_type = ". FURIK_TRANSACTION_TYPE_RECURRING_REG;
+			WHERE transaction_type in (". FURIK_TRANSACTION_TYPE_RECURRING_REG . ", ". FURIK_TRANSACTION_TYPE_RECURRING_TRANSFER_REG .")";
 		if (!empty($_REQUEST['orderby'])) {
 			$sql .= ' ORDER BY ' . esc_sql($_REQUEST['orderby']);
 			$sql .= ! empty($_REQUEST['order']) ? ' ' . esc_sql($_REQUEST['order']) : ' ASC';
@@ -111,7 +129,8 @@ class Recurring_List extends WP_List_Table {
 			'transaction_id' => __('ID', 'furik'),
 			'time' => __('Registration time', 'furik'),
 			'name' => __('Name', 'furik'),
-			'email' => __('E-mail', 'furik')
+			'email' => __('E-mail', 'furik'),
+			'transaction_type' => __('Type', 'furik')
 		];
 		if (furik_extra_field_enabled('phone_number')) {
 			$columns += ['phone_number' => __('Phone Number', 'furik')];

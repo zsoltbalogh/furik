@@ -125,10 +125,10 @@ function furik_process_payment_form() {
 
 	if ($recurring) {
 		if ($type == 0) {
-			$type = 3;
+			$type = FURIK_TRANSACTION_TYPE_RECURRING_REG;
 		}
 		elseif ($type == 1) {
-			$type = 5;
+			$type = FURIK_TRANSACTION_TYPE_RECURRING_TRANSFER_REG;
 		}
 	}
 
@@ -169,13 +169,13 @@ function furik_process_payment_form() {
 		die(__('Database error. Please contact the site administrator.', 'furik'));
 	}
 
-	if (($type == 0) || ($type == 3)) {
-		furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, $amount, $email, $type == 3, $name);
+	if (($type == FURIK_TRANSACTION_TYPE_SIMPLEPAY) || ($type == FURIK_TRANSACTION_TYPE_RECURRING_REG)) {
+		furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, $amount, $email, $type == FURIK_TRANSACTION_TYPE_RECURRING_REG, $name);
 	}
-	elseif ($type == 1) {
+	elseif (($type == FURIK_TRANSACTION_TYPE_TRANSFER) || ($type == FURIK_TRANSACTION_TYPE_RECURRING_TRANSFER_REG)) {
 		furik_redirect_to_transfer_page($transactionId);
 	}
-	elseif ($type == 2) {
+	elseif ($type == FURIK_TRANSACTION_TYPE_CASH) {
 		furik_redirect_to_thank_you_cash($transactionId);
 	}
 }
