@@ -182,6 +182,10 @@ function furik_process_payment_form() {
 
 function furik_process_recurring() {
 	global $wpdb;
+
+	require_once "SimplePayV21.php";
+	require_once "SimplePayV21CardStorage.php";
+
 	$sql = "SELECT rec.*
 		FROM
 			{$wpdb->prefix}furik_transactions AS rec
@@ -192,13 +196,20 @@ function furik_process_recurring() {
 		ORDER BY time DESC";
 
 	$result = $wpdb->get_results($sql);
+
+	$count = 0;
+
 	echo "<pre>";
+
 	foreach ($result as $payment) {
-		require_once "SimplePayV21.php";
-		require_once "SimplePayV21CardStorage.php";
+		$count++;
 
+		if (isset($_GET['n']) && $count > $_GET['n']) {
+			echo "Skipping other payments due to reaching the limit.\n";
 
-		echo $payment->id ." ". $payment->amount ." ". $payment->time."\n";
+			break;
+		}
+		echo $payment->id ." ". $payment->amount ." ". $payment->time;
 
 		$previous_date = $wpdb->get_var($wpdb->prepare(
 			"SELECT transaction_time
@@ -210,7 +221,7 @@ function furik_process_recurring() {
 			"));
 
 		if (!$previous_date) {
-			echo "There was no previous transaction date, skipping the previous item on the list.\n";
+			echo " &lt;- There was no previous transaction date, skipping the previous item on the list.\n";
 
 			continue;
 		}
@@ -218,10 +229,11 @@ function furik_process_recurring() {
 		$time_diff = time() - strtotime($previous_date);
 
 		if ($time_diff < 60*60*24*25) {
-			echo "The previous one is skipped as the previous payment was not done more than 25 days ago.\n";
+			echo " &lt;- is skipped as the previous payment was not done more than 25 days ago.\n";
 
 			continue;
 		}
+
 
 		if (isset($_GET['runpayments'])) {
 			$trx = new SimplePayDorecurring;
@@ -241,6 +253,8 @@ function furik_process_recurring() {
 
 			$newStatus = $returnData['total'] > 0 ? FURIK_STATUS_SUCCESSFUL : FURIK_STATUS_RECURRING_FAILED;
 
+			echo " new status: ".$newStatus;
+
 			$wpdb->update(
 				"{$wpdb->prefix}furik_transactions",
 				array("transaction_status" => $newStatus,
@@ -248,9 +262,11 @@ function furik_process_recurring() {
 				array("id" => $payment->id)
 			);
 		}
+
+		echo "\n";
 	}
 
-	die("Processed recurring payments.");
+	die("Query finished.");
 }
 
 function furik_prepare_simplepay_redirect($local_id, $transactionId, $campaign, $amount, $email, $recurring = false, $name) {
