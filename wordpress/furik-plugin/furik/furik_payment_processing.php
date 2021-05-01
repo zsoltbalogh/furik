@@ -431,7 +431,7 @@ function furik_get_simple_config() {
 }
 
 function furik_send_email_for_order($order_ref) {
-	global $furik_email_thanks_enabled. $furik_email_send_recurring_only;
+	global $furik_email_thanks_enabled, $furik_email_send_recurring_only;
 
 	if (!$furik_email_thanks_enabled) {
 		return;
