@@ -431,7 +431,7 @@ function furik_get_simple_config() {
 }
 
 function furik_send_email_for_order($order_ref) {
-	global $furik_email_thanks_enabled;
+	global $furik_email_thanks_enabled. $furik_email_send_recurring_only;
 
 	if (!$furik_email_thanks_enabled) {
 		return;
@@ -456,7 +456,9 @@ function furik_send_email_for_order($order_ref) {
 
 	$body = ob_get_clean();
 
-	furik_send_email($furik_sender_address, $furik_sender_name, $transaction->email, $furik_email_subject, $body);
+	if (!$furik_email_send_recurring_only || !$transaction->recurring) {
+		furik_send_email($furik_sender_address, $furik_sender_name, $transaction->email, $furik_email_subject, $body);
+	}
 
 	if ($transaction->recurring) {
 		$random_password = furik_register_user($transaction->email);
