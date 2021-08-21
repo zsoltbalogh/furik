@@ -26,7 +26,7 @@ function furik_process_ipn() {
 
 	if ($trx->isIpnSignatureCheck($json)) {
 		$content = json_decode($trx->checkOrSetToJson($json), true);
-		furik_update_transaction_status($content['orderRef'], FURIK_STATUS_IPN_SUCCESSFUL);
+		furik_update_transaction_status($content['orderRef'], FURIK_STATUS_IPN_SUCCESSFUL, $content['transactionId']);
 		$trx->runIpnConfirm();
 		die();
 	}
