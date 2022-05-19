@@ -261,6 +261,19 @@ function furik_process_recurring() {
 					"transaction_time" => date("Y-m-d H:i:s")),
 				array("id" => $payment->id)
 			);
+
+			if ($newStatus == FURIK_STATUS_RECURRING_FAILED) {
+				$failureCode = $returnData['errorCodes'][0];
+				if ($failureCode == 2063 || $failureCode == 2072) {
+					$wpdb->update(
+						"{$wpdb->prefix}furik_transactions",
+						array("transaction_status" => FURIK_STATUS_RECURRING_PAST_FAILED,
+							"transaction_time" => date("Y-m-d H:i:s")),
+						array("parent" => $payment->parent,
+							"transaction_status" => FURIK_STATUS_FUTURE)
+					);
+				}
+			}
 		}
 
 		echo "\n";
