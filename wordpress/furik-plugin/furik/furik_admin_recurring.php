@@ -99,14 +99,6 @@ class Recurring_List extends WP_List_Table {
 				LEFT OUTER JOIN {$wpdb->prefix}posts campaigns ON (tr.campaign=campaigns.ID)
 				LEFT OUTER JOIN {$wpdb->prefix}posts parentcampaigns ON (campaigns.post_parent=parentcampaigns.ID)
 			WHERE transaction_type in (". FURIK_TRANSACTION_TYPE_RECURRING_REG . ", ". FURIK_TRANSACTION_TYPE_RECURRING_TRANSFER_REG .")";
-		if (!empty($_REQUEST['orderby'])) {
-			$sql .= ' ORDER BY ' . esc_sql($_REQUEST['orderby']);
-			$sql .= ! empty($_REQUEST['order']) ? ' ' . esc_sql($_REQUEST['order']) : ' ASC';
-		} else {
-			$sql .= ' ORDER BY TIME DESC';
-		}
-		$sql .= " LIMIT $per_page";
-		$sql .= ' OFFSET ' . ($page_number - 1) * $per_page;
 
 		$result = $wpdb->get_results($sql, 'ARRAY_A');
 		return $result;
@@ -147,23 +139,6 @@ class Recurring_List extends WP_List_Table {
 		];
 
 		return $columns;
-	}
-
-	public function get_sortable_columns() {
-		$sortable_columns = array(
-			'transaction_id' => array('ID', 'furik'),
-			'time' => array('time', true),
-			'name' => array('name', false),
-			'email' => array('email', false),
-			'amount' => array('amount', false),
-			'full_amount' => array('full_amount', false),
-			'campaign_name' => array('campaign_name', false),
-			'anon' => array('anon', true),
-			'newsletter_status' => array('newsletter_status', true),
-			'transaction_status' => array('transaction_status', false)
-		);
-
-		return $sortable_columns;
 	}
 
 	public function prepare_items() {
