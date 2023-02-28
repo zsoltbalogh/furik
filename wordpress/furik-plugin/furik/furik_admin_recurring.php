@@ -222,6 +222,7 @@ class Recurring_List_Plugin {
 	public function donations_list_page() {
 		global $wpdb;
 		?>
+		<link href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.13.3/b-2.3.5/b-html5-2.3.5/datatables.min.css"/>
 		<style>
 			td.message.column-message {
 				white-space: nowrap;
@@ -250,6 +251,47 @@ class Recurring_List_Plugin {
 				<br class="clear">
 			</div>
 		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+		<script src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.13.3/b-2.3.5/b-html5-2.3.5/datatables.min.js"></script>
+		<script>
+		jQuery(document).ready( function () {
+			jQuery('.tmogatsok').DataTable({
+				"order": [[ 1, "desc" ]],
+				dom: 'Bfrtip',
+				buttons: [
+					'copyHtml5',
+					'excelHtml5',
+					'csvHtml5',
+					'pdfHtml5'
+				],
+				"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+				"language": {
+					"url": "//cdn.datatables.net/plug-ins/1.10.22/i18n/Hungarian.json"
+				},
+				initComplete: function () {
+					this.api().columns([4,8,10,11,12]).every( function () {
+						var column = this;
+						var select = jQuery('<select><option value=""></option></select>')
+							.appendTo( jQuery(column.footer()).empty() )
+							.on( 'change', function () {
+								var val = jQuery.fn.dataTable.util.escapeRegex(
+									jQuery(this).val()
+								);
+
+								column
+									.search( val ? '^'+val+'$' : '', true, false )
+									.draw();
+							} );
+
+						column.data().unique().sort().each( function ( d, j ) {
+							select.append( '<option value="'+d+'">'+d+'</option>' )
+						} );
+					} );
+				}
+			});
+		} );
+		</script>
 	<?php
 	}
 
