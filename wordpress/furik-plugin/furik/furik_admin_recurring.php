@@ -56,13 +56,10 @@ class Recurring_List extends WP_List_Table {
 			case FURIK_STATUS_TRANSFER_ADDED:
 			case FURIK_STATUS_CASH_ADDED:
 				$actions = array(
-					'approve' => sprintf('<br /><a href="?page=%s&action=%s&campaign=%s&orderby=%s&order=%s&paged=%s">' . __('Approve', 'furik') . '</a>',
-						$_REQUEST['page'],
+					'approve' => sprintf('<br /><a href="?action=%s&campaign=%s">' . __('Approve', 'furik') . '</a>',
 						'approve',
 						$item['id'],
-						@$_GET['orderby'],
-						@$_GET['order'],
-						@$_GET['paged']),
+					)
 				);
 				return sprintf('%1$s %2$s', __('Waiting for confirmation', 'furik'), $actions['approve'] );
 			case FURIK_STATUS_IPN_SUCCESSFUL:
@@ -84,7 +81,7 @@ class Recurring_List extends WP_List_Table {
 		}
 	}
 
-	public static function get_donations($per_page = 5, $page_number = 1) {
+	public static function get_donations() {
 		global $wpdb;
 
 		$sql = "SELECT
@@ -142,16 +139,7 @@ class Recurring_List extends WP_List_Table {
 	}
 
 	public function prepare_items() {
-		$per_page = $this->get_items_per_page('donations_per_page', 20);
-		$current_page = $this->get_pagenum();
-		$total_items = self::record_count();
-
-		$this->set_pagination_args( [
-			'total_items' => $total_items,
-			'per_page' => $per_page
-		] );
-
-		$this->items = self::get_donations($per_page, $current_page);
+		$this->items = self::get_donations();
 	}
 }
 
@@ -182,22 +170,13 @@ class Recurring_List_Plugin {
 	}
 
 	public function screen_option() {
-		$option = 'per_page';
-		$args   = [
-			'label' => 'Recurring donations',
-			'default' => 20,
-			'option' => 'donations_per_page'
-		];
-
-		add_screen_option($option, $args);
-
 		$this->donations_obj = new Recurring_List();
 	}
 
 	public function donations_list_page() {
 		global $wpdb;
 		?>
-		<link href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.13.3/b-2.3.5/b-html5-2.3.5/datatables.min.css"/>
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.23/b-1.6.5/b-html5-1.6.5/datatables.min.css"/>
 		<style>
 			td.message.column-message {
 				white-space: nowrap;
@@ -226,9 +205,9 @@ class Recurring_List_Plugin {
 				<br class="clear">
 			</div>
 		</div>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-		<script src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.13.3/b-2.3.5/b-html5-2.3.5/datatables.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.23/b-1.6.5/b-html5-1.6.5/datatables.min.js"></script>
 		<script>
 		jQuery(document).ready( function () {
 			jQuery('.tmogatsok').DataTable({
@@ -253,12 +232,10 @@ class Recurring_List_Plugin {
 								var val = jQuery.fn.dataTable.util.escapeRegex(
 									jQuery(this).val()
 								);
-
 								column
 									.search( val ? '^'+val+'$' : '', true, false )
 									.draw();
 							} );
-
 						column.data().unique().sort().each( function ( d, j ) {
 							select.append( '<option value="'+d+'">'+d+'</option>' )
 						} );
