@@ -131,7 +131,8 @@ class Donations_List extends WP_List_Table {
 	function get_columns() {
 		$columns = [
 			'transaction_id' => __('ID', 'furik'),
-			'time' => __('Time', 'furik'),
+			'time' => __('Planned Transaction Time', 'furik'),
+			'transaction_time' => __('Real Transaction Time', 'furik'),
 			'name' => __('Name', 'furik'),
 			'email' => __('E-mail', 'furik')
 		];
@@ -244,7 +245,11 @@ class Donations_List_Plugin {
 		<script>
 		jQuery(document).ready( function () {
 			jQuery('.tmogatsok').DataTable({
+				<?php if (is_numeric($_GET['filter_by_parent'])) { ?>
+				"order": [[ 1, "asc" ]],
+				<?php } else { ?>
 				"order": [[ 1, "desc" ]],
+				<?php } ?>
 				dom: 'Bfrtip',
 				buttons: [
 					'copyHtml5',
